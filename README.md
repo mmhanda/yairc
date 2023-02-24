@@ -1,2 +1,1 @@
-# yairc
-description
+Yet another internet relay chat
