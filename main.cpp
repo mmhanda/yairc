@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 23:48:54 by mhanda            #+#    #+#             */
-/*   Updated: 2023/03/03 13:01:22 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/03 23:20:24 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//irc
-#include <cstdlib>
 #include <iostream>
-#include <string>
-#include <algorithm>
-#include <ctype.h>
 
 int	main(int ac, char **av)
 {
