@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 23:48:54 by mhanda            #+#    #+#             */
-/*   Updated: 2023/03/03 11:27:13 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/03 13:01:22 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+#include <algorithm>
+#include <ctype.h>
 
 int	main(int ac, char **av)
 {
@@ -28,6 +30,7 @@ int	main(int ac, char **av)
 	else
 	{
 		std::string port_checking(av[1]);
+		std::string password_checking(av[2]);
 		i = 0;
 		while (i < port_checking.size())
 		{
@@ -36,16 +39,30 @@ int	main(int ac, char **av)
 				std::cerr << "ERROR: <port> must be numeric" << std::endl;
 				return (0);
 			}
-			std::cout << port_checking[i] << std::endl;
+			// std::cout << port_checking[i] << std::endl;
 			i++;
 		}
 		port = std::atoi(av[1]);
-		std::cout << " port  = " << port << std::endl;
+		// std::cout << " port  = " << port << std::endl;
 		if (port < 0 || port > 65353)
 		{
-			std::cerr << "ERROR: <port> must be between 0  and 65353" << std::endl;
-			return (0);
+            std::cerr << "ERROR: <port> must be between 0  and 65353" << std::endl;
+            return (0);
 		}
+        // password_checking.erase(std::remove_if(password_checking.begin(), password_checking.end(), ::isspace),   password_checking.end());
+        std::string::iterator  it = password_checking.begin();
+        it = std::remove_if(password_checking.begin(), password_checking.end(), isspace);
+        std::cout << "it = "<< *it<< std::endl;
+		std::cout << "password   = " << password_checking << std::endl;
+        
+        password_checking.erase(it,   password_checking.end());
+        std::cout << "it = "<< *it<< std::endl;
+		std::cout << "password   = " << password_checking << std::endl;
+        if(password_checking.empty() || password_checking.find_first_of(" ") < password_checking.size())
+        {
+			std::cerr << "ERROR:<password> sould not be empty" << std::endl;
+			return (0);
+        }
 		//enter here : start exec
 	}
     
