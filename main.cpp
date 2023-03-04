@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 23:48:54 by mhanda            #+#    #+#             */
-/*   Updated: 2023/03/03 23:20:24 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/04 08:55:44 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 
-int	main(int ac, char **av)
+int checker(int ac , char **av)
 {
 	size_t	i;
 	int		port;
@@ -58,8 +58,15 @@ int	main(int ac, char **av)
 			std::cerr << "ERROR:<password> sould not be empty" << std::endl;
 			return (0);
         }
-		//enter here : start exec
 	}
-    
+	return 1;
+}
+
+int	main(int ac, char **av)
+{
+	
+	if(checker(ac , av) == 0)
+		return 0;
+    //enter here : start exec
 	return (0);
 }
