@@ -1,0 +1,23 @@
+* Yet Another Internet Relay Chat
+
+* Networking API
+
+** Sockets
+
+- protocol types :: PF_INET
+** Sending Data
+
+** Recieving Data
+
+* Internet Relay Chat ([[https://www.rfc-editor.org/rfc/rfc1459][RFC1459]])
+
+** Server
+
+** Client
+
+** Commands
+
+* References
+
+ - [[https://www.rfc-editor.org/rfc/rfc1459][IRC Standard]]
+ - [[https://beej.us/guide/bgnet/html][Beej's Guide to Network Programming]]
