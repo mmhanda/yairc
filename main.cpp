@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 23:48:54 by mhanda            #+#    #+#             */
-/*   Updated: 2023/03/05 11:42:16 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/05 11:45:27 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,8 @@ int	parse_coommand(void)
 		Parameters: <username> <hostname> <servername> <realname>
 */
 
-		if (splited_line[0] == "USER" || splited_line[0] == "/USER")
+		if (splited_line[0] == "USER" || splited_line[0] == "/USER" 
+		|| splited_line[0] == "user" || splited_line[0] == "/user")
 		// if (input.rfind("USER", 0) < input.size() || input.rfind("/USER", 0) < input.size() )
 		{
 			std::cout << "USER is found" << std::endl;
