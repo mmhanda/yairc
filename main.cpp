@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 23:48:54 by mhanda            #+#    #+#             */
-/*   Updated: 2023/03/04 08:55:44 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/05 09:21:19 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,13 @@ int	main(int ac, char **av)
 	
 	if(checker(ac , av) == 0)
 		return 0;
+		while(1)
+		{
+			std::string input;
+			std::getline(std::cin , input);
+			std::cout << "input = " << input<< std::endl;
+			
+		}
     //enter here : start exec
 	return (0);
 }
