@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 23:48:54 by mhanda            #+#    #+#             */
-/*   Updated: 2023/03/05 10:03:18 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/05 10:11:28 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,10 @@ int	parse_coommand(void)
 */
 		if(input.rfind("USER", 0) < input.size())
 		{
+			
 			std::cout <<"USER is found" << std::endl;
+			input.erase(0,4);
+		std::cout << "input after erase = " << input << std::endl;
 		}
 
 	}
