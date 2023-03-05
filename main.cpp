@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 23:48:54 by mhanda            #+#    #+#             */
-/*   Updated: 2023/03/05 11:33:08 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/05 11:42:16 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,10 @@ int	parse_coommand(void)
 		std::cout << "input = " << input << std::endl;
 		while ((position = input.find(" ")) <  input.size())
 		{
+			std::cout << "position = " << position << std::endl;
 			splited_line.push_back(input.substr(0, position));
 			input.erase(0, position+1);
 			// std::cout << "input = " << input << std::endl;
-			// std::cout << "position = " << position << std::endl;
 			// std::cout << "splited_line = " << splited_line[0] << std::endl;
 		}
 		splited_line.push_back(input.substr(0, position));
@@ -95,16 +95,18 @@ int	parse_coommand(void)
 // 		iter = std::remove_if(input.begin(), input.end(), isspace);
 // 		input.erase(iter, input.end());
 // 		std::cout << "input = " << input << std::endl;
-// /*
-// 		Command: USER  
-// 		Parameters: <username> <hostname> <servername> <realname>
-// */
-// 		if (input.rfind("USER", 0) < input.size() || input.rfind("/USER", 0) < input.size() )
-// 		{
-// 			std::cout << "USER is found" << std::endl;
-// 			input.erase(0, 4);
-// 			std::cout << "input after erase = " << input << std::endl;
-// 		}
+/*
+		Command: USER  
+		Parameters: <username> <hostname> <servername> <realname>
+*/
+
+		if (splited_line[0] == "USER" || splited_line[0] == "/USER")
+		// if (input.rfind("USER", 0) < input.size() || input.rfind("/USER", 0) < input.size() )
+		{
+			std::cout << "USER is found" << std::endl;
+			// input.erase(0, 4);
+			// std::cout << "input after erase = " << input << std::endl;
+		}
 	}
 }
 
