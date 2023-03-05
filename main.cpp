@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 23:48:54 by mhanda            #+#    #+#             */
-/*   Updated: 2023/03/05 09:21:19 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/05 09:32:12 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int checker(int ac , char **av)
             std::cerr << "ERROR: <port> must be between 0  and 65353" << std::endl;
             return (0);
 		}
-        // password_checking.erase(std::remove_if(password_checking.begin(), password_checking.end(), ::isspace),   password_checking.end());
         std::string::iterator  it = password_checking.begin();
         it = std::remove_if(password_checking.begin(), password_checking.end(), isspace);
         std::cout << "it = "<< *it<< std::endl;
@@ -71,6 +70,9 @@ int	main(int ac, char **av)
 		{
 			std::string input;
 			std::getline(std::cin , input);
+			std::string::iterator  iter = input.begin();
+			iter = std::remove_if(input.begin(), input.end(), isspace);
+			input.erase(iter , input.end());
 			std::cout << "input = " << input<< std::endl;
 			
 		}
