@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 23:48:54 by mhanda            #+#    #+#             */
-/*   Updated: 2023/03/05 11:45:27 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/05 11:52:32 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ int	parse_coommand(void)
 
 		std::getline(std::cin, input); // read a line
 		size_t  position  = 0;
-		std::cout << "input = " << input << std::endl;
+		// std::cout << "input = " << input << std::endl;
 		while ((position = input.find(" ")) <  input.size())
 		{
-			std::cout << "position = " << position << std::endl;
+			// std::cout << "position = " << position << std::endl;
 			splited_line.push_back(input.substr(0, position));
 			input.erase(0, position+1);
 			// std::cout << "input = " << input << std::endl;
@@ -86,7 +86,7 @@ int	parse_coommand(void)
 		size_t i = 0;
 		while (i < splited_line.size())
 		{
-			std::cout << "splited_line [] = " << splited_line[i] << std::endl;
+			// std::cout << "splited_line [] = " << splited_line[i] << std::endl;
 			i++;
 		}
 		
@@ -99,11 +99,14 @@ int	parse_coommand(void)
 		Command: USER  
 		Parameters: <username> <hostname> <servername> <realname>
 */
-
 		if (splited_line[0] == "USER" || splited_line[0] == "/USER" 
 		|| splited_line[0] == "user" || splited_line[0] == "/user")
 		// if (input.rfind("USER", 0) < input.size() || input.rfind("/USER", 0) < input.size() )
 		{
+			if(splited_line.size() > 5 || splited_line.size() < 5)
+			{
+				std::cerr <<"USER Not enough parameters. \t Parameters: <username> <hostname> <servername> <realname>"<< std::endl;
+			}
 			std::cout << "USER is found" << std::endl;
 			// input.erase(0, 4);
 			// std::cout << "input after erase = " << input << std::endl;
