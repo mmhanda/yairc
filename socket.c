@@ -6,7 +6,7 @@
 //   By: archid <archid-@1337.student.ma>           +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2023/02/25 05:34:06 by archid            #+#    #+#             //
-/*   Updated: 2023/03/03 18:04:33 by archid           ###   ########.fr       */
+/*   Updated: 2023/03/05 06:29:00 by archid           ###   ########.fr       */
 //                                                                            //
 // ************************************************************************** //
 
@@ -52,9 +52,9 @@ static int socket_init(int domain, int type) {
     print_error();
     exit(EXIT_FAILURE);
   }
-    
+
   //fcntl(sock_fd, F_SETFL, O_NONBLOCK);
-  
+
   struct pollfd *current = &fds[n_fds++];
 
   current->fd = sock_fd;
@@ -72,7 +72,7 @@ static void socket_bind(int sock_fd, struct sockaddr *addr) {
 
 int socket_create(const char *host, int port, struct sockaddr *addr) {
   socket_init_addr(host, port, addr);
-  
+
   int sock_fd = socket_init(PF_INET, SOCK_STREAM);
   socket_bind(sock_fd, addr);
 
@@ -94,7 +94,7 @@ int server_start_session(int sock_fd, struct sockaddr *addr) {
     exit(EXIT_FAILURE);
   }
   puts("//");
- 
+
   return session_fd;
 }
 
@@ -150,9 +150,9 @@ int main(int argc, char *argv[]) {
     print_error();
     exit(EXIT_FAILURE);
   }
-  
+
   strncpy((char *)buff, argv[1], sizeof(buff));
-  client_start_session(sock_fd, &addr);  
+  client_start_session(sock_fd, &addr);
   client_send_data(sock_fd, buff, sizeof(buff));
 
 #endif
@@ -161,6 +161,6 @@ int main(int argc, char *argv[]) {
 
 #define SIZE 16
 
-  
+
   return 0;
 }
