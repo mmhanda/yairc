@@ -6,7 +6,7 @@
 //   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2023/02/24 23:53:44 by mhanda            #+#    #+#             //
-//   Updated: 2023/02/25 04:56:03 by archid           ###   ########.fr       //
+//   Updated: 2023/03/05 03:21:28 by archid           ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -25,45 +25,24 @@
 #include <vector>
 
 namespace yairc {
-template<typename T>
+  template<typename T>
 
-class command {
-public:
-	command();
+  class command {
+  public:
+    command();
 
-	bool exec();
-};
+    bool exec();
+  };
 
-class channel;
-typedef class channel *channel_ptr;
+  class channel;
+  typedef class channel *channel_ptr;
 
-class client {
-	friend class channel;
+  class channel {
+  public:
+    channel();
 
-	std::string nickname_, username_;
-	std::vector<channel_ptr> channels_;
+    bool join(client &foo);
+  };
 
-public:
-	client(const std::string &nickname, const std::string &username);
-	client(const client &);
 
-	bool send_msg(const channel &, const std::string &);
-	bool send_dm(const client &, const std::string &);
-	bool recv_dm(const client &, std::string &);
-};
-
-class channel {
-public:
-	channel();
-
-	bool join(client &foo);
-};
-
-class server {
-public:
-	server();
-	server(const server &);
-
-	bool auth_client(const client &);
-};
 } // namespace yairc
