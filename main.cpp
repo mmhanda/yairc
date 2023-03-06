@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 23:48:54 by mhanda            #+#    #+#             */
-/*   Updated: 2023/03/03 23:20:24 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/05 13:04:25 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
+#include <vector>
 
-int	main(int ac, char **av)
+int	checker(int ac, char **av)
 {
 	size_t	i;
 	int		port;
@@ -41,25 +42,87 @@ int	main(int ac, char **av)
 		// std::cout << " port  = " << port << std::endl;
 		if (port < 0 || port > 65353)
 		{
-            std::cerr << "ERROR: <port> must be between 0  and 65353" << std::endl;
-            return (0);
+			std::cerr << "ERROR: <port> must be between 0  and 65353" << std::endl;
+			return (0);
 		}
-        // password_checking.erase(std::remove_if(password_checking.begin(), password_checking.end(), ::isspace),   password_checking.end());
-        std::string::iterator  it = password_checking.begin();
-        it = std::remove_if(password_checking.begin(), password_checking.end(), isspace);
-        std::cout << "it = "<< *it<< std::endl;
-		std::cout << "password   = " << password_checking << std::endl;
-        
-        password_checking.erase(it,   password_checking.end());
-        std::cout << "it = "<< *it<< std::endl;
-		std::cout << "password   = " << password_checking << std::endl;
-        if(password_checking.empty() || password_checking.find_first_of(" ") < password_checking.size())
-        {
+		std::string::iterator it = password_checking.begin();
+		it = std::remove_if(password_checking.begin(), password_checking.end(),
+				isspace);
+		// std::cout << "it = "<< *it<< std::endl;
+		// std::cout << "password   = " << password_checking << std::endl;
+		password_checking.erase(it, password_checking.end());
+		// std::cout << "it = "<< *it<< std::endl;
+		// std::cout << "password   = " << password_checking << std::endl;
+		if (password_checking.empty()
+			|| password_checking.find_first_of(" ") < password_checking.size())
+		{
 			std::cerr << "ERROR:<password> sould not be empty" << std::endl;
 			return (0);
-        }
-		//enter here : start exec
+		}
 	}
-    
+	return (1);
+}
+
+int	parse_coommand(void)
+{
+	size_t	position;
+	size_t	i;
+
+	while (1)
+	{
+		std::vector<std::string> splited_line;
+		std::string input;
+		std::getline(std::cin, input); // read a line
+		position = 0;
+		// std::cout << "input = " << input << std::endl;
+		while ((position = input.find(" ")) < input.size())
+		{
+			// std::cout << "position = " << position << std::endl;
+			splited_line.push_back(input.substr(0, position));
+			input.erase(0, position + 1);
+			// std::cout << "input = " << input << std::endl;
+			// std::cout << "splited_line = " << splited_line[0] << std::endl;
+		}
+		splited_line.push_back(input.substr(0, position));
+		i = 0;
+		while (i < splited_line.size())
+		{
+			// std::cout << "splited_line [] = " << splited_line[i] << std::endl;
+			i++;
+		}
+		/*
+ 		Command: PASS
+		Parameters: <password>
+*/
+		if (splited_line[0] == "/PASS")
+		{
+			std::cout << "PASS Command" << std::endl;
+			if (splited_line.size() != 2)
+			{
+				std::cerr << "PASS Not enough parameters. \t 		Parameters: <password>" << std::endl;
+			}
+		}
+		/*
+		Command: USER  
+		Parameters: <username> <hostname> <servername> <realname>
+*/
+		if (splited_line[0] == "/USER" || splited_line[0] == "/user")
+		{
+			std::cout << "PASS USER" << std::endl;
+			if (splited_line.size() > 5 || splited_line.size() < 5)
+			{
+				std::cerr << "USER Not enough parameters. \t Parameters: <username> <hostname> <servername> <realname>" << std::endl;
+			}
+			std::cout << "USER is found" << std::endl;
+		}
+	}
+}
+
+int	main(int ac, char **av)
+{
+	if (checker(ac, av) == 0)
+		return (0);
+	parse_coommand();
+	//enter here : start exec
 	return (0);
 }
