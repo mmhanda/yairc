@@ -2,9 +2,20 @@
 
 * Networking API
 
-** Sockets
+All networking API function are considered equivalent to system calls such as =read= or =write=, they lay in man(2).
 
-- protocol types :: PF_INET
+** Creating =socket()= and =struct sockaddr=
+
+When =socket()= is created, which is just allocating a file resource in the OS, by specifiying the protocol family and type, and which mode of transmission i.e. UDP or TCP. It requires additional information on the address itself, namelty the host and the port, which both should be in machine encoding i.e. same behaviour as =hton()=.
+
+ - Except that =inet_addr()= returns the address in machine encoding already
+
+#+BEGIN_QUOTE
+  As a legacy, there are two types =struct sockaddr= and =struct sockaddr_in=, they represent the same information, but the later is more convenient to work with.
+#+END_QUOTE
+
+At last, both the socket and the address are entangeled using =bind()=
+
 ** Sending Data
 
 ** Recieving Data
@@ -21,3 +32,7 @@
 
  - [[https://www.rfc-editor.org/rfc/rfc1459][IRC Standard]]
  - [[https://beej.us/guide/bgnet/html][Beej's Guide to Network Programming]]
+
+** Stackoverflow
+
+ - [[https://stackoverflow.com/questions/36985793/blocking-recv-vs-fcntl][disable =recv= blocking]]
