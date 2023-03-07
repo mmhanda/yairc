@@ -6,10 +6,12 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/07 09:24:35 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/07 09:53:00 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <iostream>
+#include <vector>
 
 int	parse_coommand(void)
 {
@@ -41,20 +43,21 @@ int	parse_coommand(void)
 /*
  		Command: PASS 
 	Parameters: <password> (RFC 1459)
+    ERRORS : ERR_ALREADYREGISTRED  ERR_NEEDMOREPARAMS
 */
 		if (splited_line[0] == "PASS")
 		{
 			std::cout << "PASS Command" << std::endl;
 			if (splited_line.size() != 2)
 			{
-				std::cerr << "PASS Not enough parameters. \t 		Parameters: <password>" << std::endl;
+				std::cerr  << "461 " << splited_line[0] <<" :Not enough parameters" << std::endl;
 			}
 		}
 /*
 		        Command: NICK
 	NICK <nickname> [<hopcount>] (RFC 1459)
 	NICK <nickname> (RFC 2812)
-
+    ERRORS : ERR_NONICKNAMEGIVEN   ERR_ERRONEUSNICKNAME   ERR_NICKNAMEINUSE        ERR_NICKCOLLISION
 */
 
 if(splited_line[0]  == "NICK")
@@ -62,7 +65,7 @@ if(splited_line[0]  == "NICK")
 			std::cout << "NICK Command" << std::endl;
 			if (splited_line.size() != 2)
 			{
-				std::cerr << "NICK Not enough parameters. \t 	  Parameters: <nickname>" << std::endl;
+				std::cerr  << "431 " << splited_line[0] <<" :No nickname given" << std::endl;
 			}
 }
 
