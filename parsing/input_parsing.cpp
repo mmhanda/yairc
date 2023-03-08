@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/08 10:28:10 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/08 10:41:35 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	parse_coommand(void)
 	size_t	i;
 	char	*str;
 	char	*str1;
-	int		x;
-	int		h;
+	size_t		x;
+	size_t		h;
 
 	/*
   1235 642 TEXT 0-=+ aKU
@@ -165,13 +165,28 @@ Operator privileges.
 						splited_line[1].erase(0, splited_line[1].find(",") + 1);
 					}
 					channels.push_back((splited_line[1].substr(0)));
-					// channels.push_back((splited_line[1].substr(splited_line[1].find(",")+ 1)));
-					// channels_map.insert();
-					// std::cout << "splited_line [1] = " << splited_line[1] << std::endl;
+
+					
+					while (splited_line[2].find(",") <= splited_line[2].size())
+					{
+						password.push_back((splited_line[2].substr(0,
+										splited_line[2].find(","))));
+						splited_line[2].erase(0, splited_line[2].find(",") + 1);
+					}
+					password.push_back((splited_line[2].substr(0)));
+					
+					
 					h = 0;
 					while (h < channels.size())
 					{
+						channels_map.insert(std::pair<std::string, std::string>(channels[h] , password[h]));
 						std::cout << "channels [" << h << "] ="<< channels[h] << std::endl;
+						h++;
+					}
+					h = 0;
+					while (h < password.size())
+					{
+						std::cout << "password [" << h << "] ="<< password[h] << std::endl;
 						h++;
 					}
 					while (x < splited_line.size())
@@ -179,6 +194,18 @@ Operator privileges.
 						std::cout << "splited_line [] = " << splited_line[x] << std::endl;
 						x++;
 					}
+
+					/*map */
+
+					std::map<std::string, std::string>::iterator it;
+					it  = channels_map.begin();
+					while (it  != channels_map.end())
+					{
+						std::cout << it->first << "::" << it->second<<std::endl;
+					
+						++it;
+					}
+					
 				}
 			}
 		}
