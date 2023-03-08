@@ -6,20 +6,25 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/08 09:59:48 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/08 10:28:10 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cstring>
 #include <iostream>
+#include <map>
+#include <string>
 #include <vector>
-#include <string>  
 
 int	parse_coommand(void)
 {
-	size_t i;
-	/*
+	size_t	i;
+	char	*str;
+	char	*str1;
+	int		x;
+	int		h;
 
+	/*
   1235 642 TEXT 0-=+ aKU
 */
 	while (1)
@@ -34,7 +39,7 @@ int	parse_coommand(void)
 		{
 			/*const_cast <new_type> (expression) why? strtok uses char
 				* and input.c_str() return const char* */
-			char *str = const_cast<char *>(input.c_str());
+			str = const_cast<char *>(input.c_str());
 			/* 
             strtok() stores the pointer in static variable where did you last time left off ,
 	
@@ -52,7 +57,6 @@ int	parse_coommand(void)
 					splited_line.push_back(str);
 					str = strtok(NULL, " ");
 				}
-
 				i = 0;
 				while (i < splited_line.size())
 				{
@@ -78,7 +82,6 @@ int	parse_coommand(void)
 	NICK <nickname> (RFC 2812)
     ERRORS : ERR_NONICKNAMEGIVEN   ERR_ERRONEUSNICKNAME   ERR_NICKNAMEINUSE        ERR_NICKCOLLISION
 */
-
 				if (splited_line[0] == "NICK")
 				{
 					std::cout << "NICK Command" << std::endl;
@@ -87,7 +90,6 @@ int	parse_coommand(void)
 						std::cerr << "431 " << splited_line[0] << " :No nickname given" << std::endl;
 					}
 				}
-
 				/*
 						Command: USER 
 	USER <username> <hostname> <servername> <realname> (RFC 1459)
@@ -102,18 +104,15 @@ int	parse_coommand(void)
 					}
 					std::cout << "USER is found" << std::endl;
 				}
-
 				/*			Command: SERVER
    Parameters: <servername> <hopcount> <info> 
 */
-
 				// if (splited_line[0] == "SERVER")
 				// {
 				// 	std::cout << "SERVER command" << std::endl;
 				// 	if (splited_line.size() != 1)
 				// 		std::cerr << "SERVER  parameters error " << std::endl;
 				// }
-
 				/*
 					Command: OPER   Parameters: <user> <password>
 	OPER message is used by a normal user to obtain operator privileges.
@@ -133,7 +132,7 @@ Operator privileges.
 	*/
 				if (splited_line[0] == "QUIT")
 				{
-					char *str1 = const_cast<char *>(back_up_input.c_str());
+					str1 = const_cast<char *>(back_up_input.c_str());
 					str1 = strtok(str1, ":");
 					str1 = strtok(NULL, ":");
 					if (str1 != NULL)
@@ -150,22 +149,31 @@ Operator privileges.
 						// ERROR :Closing link: (atabiti@localhost) [Client exited]
 					}
 				}
-
 				/*  Command: JOIN Parameters: <channel>{,<channel>} [<key>{,<key>}]*/
 				if (splited_line[0] == "JOIN")
 				{
+					/*use a map of channel name and a password */
+					std::map<std::string, std::string> channels_map;
 					std::cout << "JOIN COMMAND " << std::endl;
-					int x = 0;
-					std::cout << "back_up_input =}{} " << back_up_input << std::endl;
-					
-				
-				std::vector<std::string> channels;
-				channels.push_back((splited_line[1].substr(0,splited_line[1].find(","))));
-				channels.push_back((splited_line[1].substr(splited_line[1].find(",")+1)));
-				
-				std::cout << "channels [0] = " << channels[0] << std::endl;
-				std::cout << "channels [1] = " << channels[1] << std::endl;
-
+					x = 0;
+					std::vector<std::string> channels;
+					std::vector<std::string> password;
+					while (splited_line[1].find(",") <= splited_line[1].size())
+					{
+						channels.push_back((splited_line[1].substr(0,
+										splited_line[1].find(","))));
+						splited_line[1].erase(0, splited_line[1].find(",") + 1);
+					}
+					channels.push_back((splited_line[1].substr(0)));
+					// channels.push_back((splited_line[1].substr(splited_line[1].find(",")+ 1)));
+					// channels_map.insert();
+					// std::cout << "splited_line [1] = " << splited_line[1] << std::endl;
+					h = 0;
+					while (h < channels.size())
+					{
+						std::cout << "channels [" << h << "] ="<< channels[h] << std::endl;
+						h++;
+					}
 					while (x < splited_line.size())
 					{
 						std::cout << "splited_line [] = " << splited_line[x] << std::endl;
