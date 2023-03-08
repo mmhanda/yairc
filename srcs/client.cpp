@@ -6,14 +6,14 @@
 //   By: archid <archid-@1337.student.ma>           +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2023/02/25 01:13:18 by archid            #+#    #+#             //
-//   Updated: 2023/03/05 05:36:50 by archid           ###   ########.fr       //
+//   Updated: 2023/03/08 23:52:38 by archid           ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "client.hpp"
 
 namespace yairc {
-  client::client(int client_fd) : client_fd_(client_fd) {
+	client::client(int client_fd) : client_fd_(client_fd) {
 
-  }
+	}
 }

@@ -4,6 +4,26 @@
 
 All networking API function are considered equivalent to system calls such as =read= or =write=, they lay in man(2).
 
+#+BEGIN_SRC c
+  #define INADDR_ANY              (u_int32_t)0x00000000
+
+  in_addr_t inet_addr(const char *cp);
+
+  uint32_t htonl(uint32_t hostlong);
+  uint16_t htons(uint16_t hostshort);
+  uint32_t ntohl(uint32_t netlong);
+  uint16_t ntohs(uint16_t netshort);
+
+  int socket(int domain, int type, int protocol);
+  int bind(int sock_fd, struct sockaddr *addr, socklen_t addr_size);
+
+  int listen(int socket, int backlog);
+  int connect(int socket, const struct sockaddr *address, socklen_t address_len);
+
+  ssize_t send(int socket, const void *buffer, size_t length, int flags);
+  ssize_t recv(int socket, void *buffer, size_t length, int flags);
+#+END_SRC
+
 ** Creating =socket()= and =struct sockaddr=
 
 When =socket()= is created, which is just allocating a file resource in the OS, by specifiying the protocol family and type, and which mode of transmission i.e. UDP or TCP. It requires additional information on the address itself, namelty the host and the port, which both should be in machine encoding i.e. same behaviour as =hton()=.
@@ -16,9 +36,12 @@ When =socket()= is created, which is just allocating a file resource in the OS, 
 
 At last, both the socket and the address are entangeled using =bind()=
 
-** Sending Data
+** =recv()= Data
 
-** Recieving Data
+
+
+
+** Sending Data
 
 * Internet Relay Chat ([[https://www.rfc-editor.org/rfc/rfc1459][RFC1459]])
 
