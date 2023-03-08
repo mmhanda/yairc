@@ -6,13 +6,14 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/08 09:25:50 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/08 09:59:48 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cstring>
 #include <iostream>
 #include <vector>
+#include <string>  
 
 int	parse_coommand(void)
 {
@@ -48,7 +49,6 @@ int	parse_coommand(void)
 			{
 				while (str != NULL)
 				{
-					// std::cout << "str|" << str << std::endl;
 					splited_line.push_back(str);
 					str = strtok(NULL, " ");
 				}
@@ -89,7 +89,7 @@ int	parse_coommand(void)
 				}
 
 				/*
-				 	Command: USER 
+						Command: USER 
 	USER <username> <hostname> <servername> <realname> (RFC 1459)
 	USER <user> <mode> <unused> <realname> (RFC 2812)
 */
@@ -136,17 +136,41 @@ Operator privileges.
 					char *str1 = const_cast<char *>(back_up_input.c_str());
 					str1 = strtok(str1, ":");
 					str1 = strtok(NULL, ":");
-					if(str1 != NULL)
+					if (str1 != NULL)
 					{
-							/*  If a "Quit Message" is given, this will be sent instead of the default message, the nickname. */
-						std::cerr << "ERROR :Closing link: ["<<str1 <<"]" << std::endl; // str1 is the full message  without : ERROR :Closing link: (asd@localhost) [Gone to have lunch]
+						/*  If a "Quit Message" is given,
+							this will be sent instead of the default message,
+							the nickname. */
+						std::cerr << "ERROR :Closing link: [" << str1 << "]" << std::endl;
+						// str1 is the full message  without : ERROR :Closing link: (asd@localhost) [Gone to have lunch]
 					}
-					if(str1  == NULL)
+					if (str1 == NULL)
 					{
-						std::cerr << "ERROR :Closing link: [Client exited]" << std::endl; // ERROR :Closing link: (atabiti@localhost) [Client exited]
-							
+						std::cerr << "ERROR :Closing link: [Client exited]" << std::endl;
+						// ERROR :Closing link: (atabiti@localhost) [Client exited]
 					}
+				}
+
+				/*  Command: JOIN Parameters: <channel>{,<channel>} [<key>{,<key>}]*/
+				if (splited_line[0] == "JOIN")
+				{
+					std::cout << "JOIN COMMAND " << std::endl;
+					int x = 0;
+					std::cout << "back_up_input =}{} " << back_up_input << std::endl;
 					
+				
+				std::vector<std::string> channels;
+				channels.push_back((splited_line[1].substr(0,splited_line[1].find(","))));
+				channels.push_back((splited_line[1].substr(splited_line[1].find(",")+1)));
+				
+				std::cout << "channels [0] = " << channels[0] << std::endl;
+				std::cout << "channels [1] = " << channels[1] << std::endl;
+
+					while (x < splited_line.size())
+					{
+						std::cout << "splited_line [] = " << splited_line[x] << std::endl;
+						x++;
+					}
 				}
 			}
 		}
