@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/07 12:38:07 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/08 09:18:49 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,25 @@ int	parse_coommand(void)
 	{
 		std::vector<std::string> splited_line;
 		std::string input;
+		std::string back_up_input;
 		std::getline(std::cin, input); // read a line
-										// std::cout << "input = " << input << std::endl << std::endl;
+		back_up_input = input;
+		// std::cout << "before input = " << input << std::endl << std::endl;
 		if (!input.empty())
 		{
 			/*const_cast <new_type> (expression) why? strtok uses char
 				* and input.c_str() return const char* */
 			char *str = const_cast<char *>(input.c_str());
-    /* 
-            strtok() stores the pointer in static variable where did you last time left off , 
-            so on its 2nd call , when we pass the null , strtok() gets the pointer from the static variable .
-            If you provide the same string name , it again starts from beginning.
+			/* 
+            strtok() stores the pointer in static variable where did you last time left off ,
+	
+            so on its 2nd call , when we pass the null ,
+	strtok() gets the pointer from the static variable .
+            If you provide the same string name ,
+	it again starts from beginning.
     */
-			str = strtok(str, " ");            
+			str = strtok(str, " ");
+			// std::cout << "after input = " << input << std::endl << std::endl;
 			if (str != NULL)
 			{
 				while (str != NULL)
@@ -67,7 +73,7 @@ int	parse_coommand(void)
 					}
 				}
 				/*
-				  Command: NICK
+					Command: NICK
 	NICK <nickname> [<hopcount>] (RFC 1459)
 	NICK <nickname> (RFC 2812)
     ERRORS : ERR_NONICKNAMEGIVEN   ERR_ERRONEUSNICKNAME   ERR_NICKNAMEINUSE        ERR_NICKCOLLISION
@@ -83,7 +89,7 @@ int	parse_coommand(void)
 				}
 
 				/*
-			    	Command: USER 
+				 	Command: USER 
 	USER <username> <hostname> <servername> <realname> (RFC 1459)
 	USER <user> <mode> <unused> <realname> (RFC 2812)
 */
@@ -92,7 +98,7 @@ int	parse_coommand(void)
 					std::cout << "PASS USER" << std::endl;
 					if (splited_line.size() > 5 || splited_line.size() < 5)
 					{
-						std::cerr << "USER Not enough parameters. \t Parameters: <username> <hostname> <servername> <realname>" << std::endl;
+						std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
 					}
 					std::cout << "USER is found" << std::endl;
 				}
@@ -101,17 +107,40 @@ int	parse_coommand(void)
    Parameters: <servername> <hopcount> <info> 
 */
 
-				if (splited_line[0] == "SERVER")
-				{
-					std::cout << "SERVER command" << std::endl;
-					if (splited_line.size() != 1)
-						std::cerr << "SERVER  parameters error " << std::endl;
-				}
+				// if (splited_line[0] == "SERVER")
+				// {
+				// 	std::cout << "SERVER command" << std::endl;
+				// 	if (splited_line.size() != 1)
+				// 		std::cerr << "SERVER  parameters error " << std::endl;
+				// }
+
+				/*
+					Command: OPER   Parameters: <user> <password>
+	OPER message is used by a normal user to obtain operator privileges.
+The combination of <user> and <password> are required to gain
+Operator privileges.
+*/
 				if (splited_line[0] == "OPER")
 				{
 					if (splited_line.size() != 2)
 					{
+						std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
 					}
+				}
+				/*
+			Command: QUIT
+  				Parameters: [<Quit message>]
+	*/
+				if (splited_line[0] == "QUIT")
+				{
+					char *str1 = const_cast<char *>(back_up_input.c_str());
+					str1 = strtok(str1, ":");
+					str1 = strtok(NULL, ":");
+					if(str1 != NULL)
+					{
+						std::cout << str1 << std::endl; // str1 is the full message  without :
+					}
+					
 				}
 			}
 		}
