@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/08 10:41:35 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/08 10:50:47 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,9 @@ Operator privileges.
 						// ERROR :Closing link: (atabiti@localhost) [Client exited]
 					}
 				}
-				/*  Command: JOIN Parameters: <channel>{,<channel>} [<key>{,<key>}]*/
+			/*    Command: JOIN Parameters: <channel>{,<channel>} [<key>{,<key>}]
+				  example JOIN #foo,#bar fubar,foobar
+			*/
 				if (splited_line[0] == "JOIN")
 				{
 					/*use a map of channel name and a password */
@@ -180,6 +182,10 @@ Operator privileges.
 					while (h < channels.size())
 					{
 						channels_map.insert(std::pair<std::string, std::string>(channels[h] , password[h]));
+						if(channels[h].empty())
+						{
+							return 0;
+						}
 						std::cout << "channels [" << h << "] ="<< channels[h] << std::endl;
 						h++;
 					}
@@ -189,20 +195,12 @@ Operator privileges.
 						std::cout << "password [" << h << "] ="<< password[h] << std::endl;
 						h++;
 					}
-					while (x < splited_line.size())
-					{
-						std::cout << "splited_line [] = " << splited_line[x] << std::endl;
-						x++;
-					}
-
 					/*map */
-
 					std::map<std::string, std::string>::iterator it;
 					it  = channels_map.begin();
 					while (it  != channels_map.end())
 					{
 						std::cout << it->first << "::" << it->second<<std::endl;
-					
 						++it;
 					}
 					
