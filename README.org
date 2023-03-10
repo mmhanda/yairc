@@ -24,7 +24,7 @@ All networking API function are considered equivalent to system calls such as =r
   ssize_t recv(int socket, void *buffer, size_t length, int flags);
 #+END_SRC
 
-** Creating =socket()= and =struct sockaddr=
+** =socket()= and =struct sockaddr=
 
 When =socket()= is created, which is just allocating a file resource in the OS, by specifiying the protocol family and type, and which mode of transmission i.e. UDP or TCP. It requires additional information on the address itself, namelty the host and the port, which both should be in machine encoding i.e. same behaviour as =hton()=.
 
@@ -36,8 +36,17 @@ When =socket()= is created, which is just allocating a file resource in the OS, 
 
 At last, both the socket and the address are entangeled using =bind()=
 
-** =recv()= Data
+** =listen()=, =accept()= and =poll()= multiple clients
 
+When getting a socket for the server, we may =listen()= for incoming connections. Each new connection is a new =socket()= associated with a client, that is created after calling =accept()=.
+
+However, =listen()= runs asynchronously, =accept()= should be called for as many clients that ahve sent the request. Yet, it blocks e.g. same as waiting for IO. Thus if no new request has been sent, =accept()= will await and blocks the process.
+
+This can be resolved using multitasking, by telling the OS to not block using =fcntl()= to alter the flags of the socket file. And then use =poll()= to fetch only the ones that are ready to be fetched. By setting event =POLLIN= on creation, the OS would set flags in return when it is unblocking. Now instead of blocking the process, an =EWOULDBLOCK= (or =EAGAIN=) would be raised, resolving the block.
+
+** =recv()= data
+
+For each client that has sent, we may =recv()= some data to be put in a buffer, the length of the data is returned, and a closed connection would return 0. However, the total length of the incoming data may overfit the size of the buffer, thus it may require multiple reads until it blocks by raising =errno=.
 
 ** Sending Data
 
