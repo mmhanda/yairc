@@ -6,7 +6,7 @@
 /*   By: archid <archid-@1337.student.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 11:40:25 by archid            #+#    #+#             */
-/*   Updated: 2023/03/07 22:34:51 by archid           ###   ########.fr       */
+/*   Updated: 2023/03/10 01:17:57 by archid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,7 @@
 extern "C" {
 #endif
 
-  int socket_create(const char *host, int port, struct sockaddr *addr);
-	void socket_destroy();
+  int socket_create(const char *host, int port, struct sockaddr *addr, struct pollfd *pollfd);
 
   extern int sock_fd, session_fd;
 

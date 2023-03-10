@@ -39,8 +39,6 @@ At last, both the socket and the address are entangeled using =bind()=
 ** =recv()= Data
 
 
-
-
 ** Sending Data
 
 * Internet Relay Chat ([[https://www.rfc-editor.org/rfc/rfc1459][RFC1459]])
@@ -55,7 +53,10 @@ At last, both the socket and the address are entangeled using =bind()=
 
  - [[https://www.rfc-editor.org/rfc/rfc1459][IRC Standard]]
  - [[https://beej.us/guide/bgnet/html][Beej's Guide to Network Programming]]
+ - [[http://dwise1.net/pgm/sockets/][DWise1's Sockets Programming Pages]]
+ - [[http://www.kegel.com/c10k.html][Handling multiple users]]
 
 ** Stackoverflow
 
  - [[https://stackoverflow.com/questions/36985793/blocking-recv-vs-fcntl][disable =recv= blocking]]
+ - [[https://stackoverflow.com/questions/1543466/how-do-i-change-a-tcp-socket-to-be-non-blocking][How to change a tcp socket to be non blocking]]

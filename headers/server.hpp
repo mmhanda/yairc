@@ -6,7 +6,7 @@
 //   By: archid <archid-@1337.student.ma>           +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             //
-//   Updated: 2023/03/08 23:54:22 by archid           ###   ########.fr       //
+//   Updated: 2023/03/10 23:05:43 by archid           ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,96 +15,100 @@
 #include <assert.h>
 #include <errno.h>
 
+#include <unistd.h>
 #include <poll.h>
 #include <sys/socket.h>
+#include <fcntl.h>
 #include <arpa/inet.h>
 #include <string.h>
 
 #include <stdexcept>
 #include <vector>
+#include <string>
+#include <algorithm>
 
 #include "client.hpp"
 
 #define str_error() strerror(errno)
-#define NUM_CONNECTIONS 1
+
+#define NUM_CONNECTIONS 16
+#define BUFF_SIZE 256
+#define TIMEOUT 1								// seconds
+#define PORT 8881
 
 namespace yairc {
-	class server {
-		// FIXME(0x0584): make exception more explicit
-		void exception_handler() {
-			throw std::runtime_error(str_error());
 
-			// switch(errno) {
-			// case EAGAIN:			 // TODO(0x0584): list all possible errors
-			//	throw std::runtime_error(str_error());
-			//}
+	struct poll_fd {
+		poll_fd(int fd, short e) {
+			_.fd = fd, _.events = e, _.revents = 0;
 		}
 
-		struct sockaddr *setup_address(const char *host, int port) {
-			static struct sockaddr_in addr;
-			bzero(addr.sin_zero, sizeof(addr.sin_zero)); // set padding
+		bool operator==(const poll_fd &rhs) const {
+			return _.fd == rhs._.fd && _.events == rhs._.events
+				&& _.revents == rhs._.revents;
+		}
 
-			addr.sin_family = AF_INET;					 // address family
-			addr.sin_port = htons(port);					 // address port
-			addr.sin_addr.s_addr = host					 // host address
-				? inet_addr(host) : htonl(INADDR_ANY);
+		struct pollfd operator*() { return _; };
 
-			if (addr.sin_addr.s_addr < 0) {
-				exception_handler();
+		int fd() const { return _.fd; }
+		void fd(int fd) { _.fd = fd; }
+
+		int events() const { return _.events; }
+		void events(short e) { _.events = e; }
+
+		int revents() const { return _.revents; }
+		void revents(short re) { _.revents = re; }
+
+		struct inserter_ftor {
+			std::vector<struct pollfd> bar;
+
+			inserter_ftor(const std::vector<poll_fd> &foo) {
+				bar.reserve(foo.size());
 			}
 
-			return reinterpret_cast<struct sockaddr *>(&addr);
+			void operator()(poll_fd foo) { bar.push_back(foo._); }
+		};
+
+		static int fetch(const std::vector<poll_fd> &foo, int timeout) {
+			inserter_ftor inserter(foo);
+			std::for_each(foo.begin(), foo.end(), inserter);
+			return poll(inserter.bar.data(), inserter.bar.size(), timeout);
 		}
 
+	private:
+		struct pollfd _;
+	};
+
+	class server {
+		void														terminate_and_throw();
+		struct sockaddr									*setup_address(const char *host, int port);
+		template <typename T> ssize_t		send(int fd, T buff, size_t size) {
+			return ::send(fd, reinterpret_cast<void *>(buff), size, 0);
+		}
+
+		void														start();
+		void														terminate();
+		void														recieve_data(poll_fd pollfd);
+		void														server_banner(int client_fd);
+
+		bool														fetch();
 
 	public:
 
 		server(int port, const char *host = NULL);
-
 		server(const server &) {
 			assert(false && "Should not copy server");
 			throw std::runtime_error("Should not copy server");
 		}
 
-		void server_banner(int client_fd) {
-			char buff[] = "Welcome to YAIRC Server\n";
-			ssize_t n_bytes = send(client_fd, reinterpret_cast<void *>(buff), sizeof(buff), 0);
-
-		}
-
-		void listen() {
-
-			if ((::listen(sock_fd_, NUM_CONNECTIONS)) < 0) {
-				exception_handler();
-			}
-
-
-			socklen_t sock_len = sizeof(struct sockaddr);
-			int client_fd;
-			if ((client_fd = accept(sock_fd_, addr_, &sock_len)) < 0) {
-				exception_handler();
-			}
-
-			struct pollfd client;
-			client.fd = client_fd;
-			client.events = POLLIN;
-
-			clients_.push_back(client);
-		}
-
-		void recieve_data() {
-			for (poll_vector::iterator itr = clients_.begin(); itr != clients_.end(); ++itr) {
-				if (itr->events & POLL_IN) {
-					//recieve_data(itr->fd);
-				}
-			}
-		}
+		void														run();
 
 	private:
-		typedef std::vector<struct pollfd> poll_vector;
 
-		struct sockaddr *addr_;
-		int sock_fd_;
-		poll_vector clients_;
+		struct sockaddr									*addr_;
+		int															sock_fd_;
+		std::vector<poll_fd>						clients_;
+		bool														running_;
 	};
+
 } // namespace yairc
