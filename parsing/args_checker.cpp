@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:23:40 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/07 09:24:07 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/11 09:08:27 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,28 +34,25 @@ int	checker(int ac, char **av)
 				std::cerr << "ERROR: <port> must be numeric" << std::endl;
 				return (0);
 			}
-			// std::cout << port_checking[i] << std::endl;
 			i++;
 		}
 		port = std::atoi(av[1]);
-		// std::cout << " port  = " << port << std::endl;
+/*Port numbers from 0 to 1023 are reserved for common TCP/IP applications and are called well-known ports.*/
 		if (port < 0 || port > 65353)
 		{
 			std::cerr << "ERROR: <port> must be between 0  and 65353" << std::endl;
 			return (0);
 		}
-		std::string::iterator it = password_checking.begin();
-		it = std::remove_if(password_checking.begin(), password_checking.end(),
-				isspace);
-		// std::cout << "it = "<< *it<< std::endl;
-		// std::cout << "password   = " << password_checking << std::endl;
-		password_checking.erase(it, password_checking.end());
-		// std::cout << "it = "<< *it<< std::endl;
-		// std::cout << "password   = " << password_checking << std::endl;
+		if ( port >= 0 && port <= 1023)
+		{
+			std::cerr << "ERROR: Port numbers from 0 to 1023 are reserved for common TCP/IP applications" << std::endl;
+			return (0);
+		}
+		
 		if (password_checking.empty()
 			|| password_checking.find_first_of(" ") < password_checking.size())
 		{
-			std::cerr << "ERROR:<password> sould not be empty" << std::endl;
+			std::cerr << "ERROR:problem in the password : Please check again " << std::endl;
 			return (0);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/08 11:10:21 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/08 11:11:47 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,6 +241,11 @@ Operator privileges.
 						}
 
 					}
+				}
+				if(splited_line[0] == "MODE")
+				{
+					std::cout << "MODE COMMAND" << std::endl;
+							
 				}
 			}
 		}
