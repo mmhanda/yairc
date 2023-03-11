@@ -6,17 +6,13 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/08 11:11:47 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/11 09:21:18 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <string>
-#include <vector>
+#include "parser.hpp"
 
-int	parse_coommand(void)
+int	parse_command(void)
 {
 	size_t	i;
 	char	*str;
@@ -218,7 +214,9 @@ Operator privileges.
 				if (splited_line[0] == "PART")
 				{
 					std::cout << "PART COMMAND" << std::endl;
-					if (splited_line.size() <= 1 || splited_line.size() >= 3) /* why 3? to avoid : PART #oz-ops, &dsd   there is a space after ,*/
+					if (splited_line.size() <= 1 || splited_line.size() >= 3)
+					/* why 3? to avoid : PART #oz-ops,
+					&dsd   there is a space after ,*/
 					{
 						std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
 					}
@@ -239,13 +237,11 @@ Operator privileges.
 							std::cout << "channels [" << h << "] =" << channels[h] << std::endl;
 							h++;
 						}
-
 					}
 				}
-				if(splited_line[0] == "MODE")
+				if (splited_line[0] == "MODE")
 				{
 					std::cout << "MODE COMMAND" << std::endl;
-							
 				}
 			}
 		}

@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   parser.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/24 23:48:54 by mhanda            #+#    #+#             */
-/*   Updated: 2023/03/11 09:22:21 by atabiti          ###   ########.fr       */
+/*   Created: 2023/03/11 09:20:51 by atabiti           #+#    #+#             */
+/*   Updated: 2023/03/11 09:22:47 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing/parser.hpp"
+#pragma once
+#include <cstring>
+#include <iostream>
+#include <map>
+#include <string>
+#include <vector>
 
-int	main(int ac, char **av)
-{
-	if (checker(ac, av) == 0)
-		return (0);
-	parse_command();
-	//enter here : start exec
-	return (0);
-}
+
+int	parse_command(void);
+int	checker(int ac, char **av);
