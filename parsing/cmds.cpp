@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 09:17:29 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/11 09:46:15 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/11 09:53:26 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,109 @@ int	check_QUIT(char *str1, std::string const &back_up_input)
 	{
 		std::cerr << "ERROR :Closing link: [Client exited]" << std::endl;
 		// ERROR :Closing link: (atabiti@localhost) [Client exited]
+	}
+	return (0);
+}
+/*    Command: JOIN Parameters: <channel>{,<channel>} [<key>{,<key>}]
+					example JOIN #foo,#bar fubar,foobar
+*/
+
+int	check_JOIN(std::vector<std::string> &splited_line)
+{
+	size_t	x;
+	size_t	h;
+
+	x = 0;
+	h = 0;
+	if (splited_line.size() <= 1)
+	{
+		std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
+	}
+	else
+	{
+		/*use a map of channel name and a password */
+		std::map<std::string, std::string> channels_map;
+		std::cout << "JOIN COMMAND " << std::endl;
+		x = 0;
+		std::vector<std::string> channels;
+		std::vector<std::string> password;
+		while (splited_line[1].find(",") <= splited_line[1].size())
+		{
+			channels.push_back((splited_line[1].substr(0,
+														splited_line[1].find(","))));
+			splited_line[1].erase(0, splited_line[1].find(",") + 1);
+		}
+		channels.push_back((splited_line[1].substr(0)));
+		while (splited_line[2].find(",") <= splited_line[2].size())
+		{
+			password.push_back((splited_line[2].substr(0,
+														splited_line[2].find(","))));
+			splited_line[2].erase(0, splited_line[2].find(",") + 1);
+		}
+		password.push_back((splited_line[2].substr(0)));
+		h = 0;
+		while (h < channels.size())
+		{
+			channels_map.insert(std::pair<std::string,
+											std::string>(channels[h],
+														password[h]));
+			if (channels[h].empty())
+			{
+				return (0);
+			}
+			std::cout << "channels [" << h << "] =" << channels[h] << std::endl;
+			h++;
+		}
+		h = 0;
+		while (h < password.size())
+		{
+			std::cout << "password [" << h << "] =" << password[h] << std::endl;
+			h++;
+		}
+		/*map */
+		std::map<std::string, std::string>::iterator it;
+		it = channels_map.begin();
+		while (it != channels_map.end())
+		{
+			std::cout << it->first << "::" << it->second << std::endl;
+			++it;
+		}
+	}
+	return (0);
+}
+
+/*
+					Command: PART
+	Parameters: <channel>{,<channel>}
+	example   PART #oz-ops,&group5
+*/
+int	check_PART(std::vector<std::string> &splited_line)
+{
+	size_t	h;
+
+	h = 0;
+	std::cout << "PART COMMAND" << std::endl;
+	if (splited_line.size() <= 1 || splited_line.size() >= 3)
+	/* why 3? to avoid : PART #oz-ops,
+					&dsd   there is a space after ,*/
+	{
+		std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
+	}
+	else
+	{
+		std::vector<std::string> channels;
+		while (splited_line[1].find(",") <= splited_line[1].size())
+		{
+			channels.push_back((splited_line[1].substr(0,
+														splited_line[1].find(","))));
+			splited_line[1].erase(0, splited_line[1].find(",") + 1);
+		}
+		channels.push_back((splited_line[1].substr(0)));
+		while (h < channels.size())
+		{
+			std::cout << "channels [" << h << "] =" << channels[h] << std::endl;
+			h++;
+		}
 	}
 	return (0);
 }

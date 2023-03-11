@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/11 09:46:26 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/11 09:53:51 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 int	parse_command(void)
 {
 	size_t	i;
-	char	*str  =NULL;
-	char	*str1 = NULL;
-	size_t	x;
-	size_t	h;
+	char	*str;
+	char	*str1;
 
+	str = NULL;
+	str1 = NULL;
 	/*
   1235 642 TEXT 0-=+ aKU
 */
@@ -78,102 +78,15 @@ int	parse_command(void)
 				{
 					check_QUIT(str1, back_up_input);
 				}
-				/*    Command: JOIN Parameters: <channel>{,<channel>} [<key>{,<key>}]
-					example JOIN #foo,#bar fubar,foobar
-			*/
-				if (splited_line[0] == "JOIN")
+				else if (splited_line[0] == "JOIN")
 				{
-					if (splited_line.size() <= 1)
-					{
-						std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
-					}
-					else
-					{
-						/*use a map of channel name and a password */
-						std::map<std::string, std::string> channels_map;
-						std::cout << "JOIN COMMAND " << std::endl;
-						x = 0;
-						std::vector<std::string> channels;
-						std::vector<std::string> password;
-						while (splited_line[1].find(",") <= splited_line[1].size())
-						{
-							channels.push_back((splited_line[1].substr(0,
-																		splited_line[1].find(","))));
-							splited_line[1].erase(0, splited_line[1].find(",")
-									+ 1);
-						}
-						channels.push_back((splited_line[1].substr(0)));
-						while (splited_line[2].find(",") <= splited_line[2].size())
-						{
-							password.push_back((splited_line[2].substr(0,
-																		splited_line[2].find(","))));
-							splited_line[2].erase(0, splited_line[2].find(",")
-									+ 1);
-						}
-						password.push_back((splited_line[2].substr(0)));
-						h = 0;
-						while (h < channels.size())
-						{
-							channels_map.insert(std::pair<std::string,
-															std::string>(channels[h],
-																		password[h]));
-							if (channels[h].empty())
-							{
-								return (0);
-							}
-							std::cout << "channels [" << h << "] =" << channels[h] << std::endl;
-							h++;
-						}
-						h = 0;
-						while (h < password.size())
-						{
-							std::cout << "password [" << h << "] =" << password[h] << std::endl;
-							h++;
-						}
-						/*map */
-						std::map<std::string, std::string>::iterator it;
-						it = channels_map.begin();
-						while (it != channels_map.end())
-						{
-							std::cout << it->first << "::" << it->second << std::endl;
-							++it;
-						}
-					}
+					check_JOIN(splited_line);
 				}
-				/*
-					Command: PART
-								Parameters: <channel>{,<channel>}
-								example   PART #oz-ops,&group5
-				*/
-				if (splited_line[0] == "PART")
+				else if (splited_line[0] == "PART")
 				{
-					std::cout << "PART COMMAND" << std::endl;
-					if (splited_line.size() <= 1 || splited_line.size() >= 3)
-					/* why 3? to avoid : PART #oz-ops,
-					&dsd   there is a space after ,*/
-					{
-						std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
-					}
-					else
-					{
-						std::vector<std::string> channels;
-						while (splited_line[1].find(",") <= splited_line[1].size())
-						{
-							channels.push_back((splited_line[1].substr(0,
-																		splited_line[1].find(","))));
-							splited_line[1].erase(0, splited_line[1].find(",")
-									+ 1);
-						}
-						channels.push_back((splited_line[1].substr(0)));
-						h = 0;
-						while (h < channels.size())
-						{
-							std::cout << "channels [" << h << "] =" << channels[h] << std::endl;
-							h++;
-						}
-					}
+					check_PART(splited_line);
 				}
-				if (splited_line[0] == "MODE")
+				else if (splited_line[0] == "MODE")
 				{
 					std::cout << "MODE COMMAND" << std::endl;
 				}
@@ -182,12 +95,12 @@ int	parse_command(void)
 	}
 }
 
-				/*			Command: SERVER
+/*			Command: SERVER
    Parameters: <servername> <hopcount> <info>
 */
-				// if (splited_line[0] == "SERVER")
-				// {
-				// 	std::cout << "SERVER command" << std::endl;
-				// 	if (splited_line.size() != 1)
-				// 		std::cerr << "SERVER  parameters error " << std::endl;
-				// }
+// if (splited_line[0] == "SERVER")
+// {
+// 	std::cout << "SERVER command" << std::endl;
+// 	if (splited_line.size() != 1)
+// 		std::cerr << "SERVER  parameters error " << std::endl;
+// }
