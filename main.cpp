@@ -6,14 +6,14 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 23:48:54 by mhanda            #+#    #+#             */
-/*   Updated: 2023/03/11 09:22:21 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/11 14:44:05 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing/parser.hpp"
 #include <iostream>
-
-#include "command.hpp"
+/*
+#include "headers/command.hpp"
 
 namespace yairc {
   std::vector<command> cmds;
@@ -38,11 +38,11 @@ namespace yairc {
 
 
 }
-
+*/
 
 int	main(int ac, char **av)
 {
-  yairc::initialise_commands();
+  // yairc::initialise_commands();
 	if (checker(ac, av) == 0)
 		return (0);
 	parse_command();
