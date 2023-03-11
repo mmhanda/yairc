@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/11 09:21:18 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/11 09:46:26 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 int	parse_command(void)
 {
 	size_t	i;
-	char	*str;
-	char	*str1;
+	char	*str  =NULL;
+	char	*str1 = NULL;
 	size_t	x;
 	size_t	h;
 
@@ -58,91 +58,25 @@ int	parse_command(void)
 					std::cout << "splited_line [] = " << splited_line[i] << std::endl;
 					i++;
 				}
-				/*
-		Command: PASS
-	Parameters: <password> (RFC 1459)
-	ERRORS : ERR_ALREADYREGISTRED  ERR_NEEDMOREPARAMS
-*/
 				if (splited_line[0] == "PASS")
 				{
-					std::cout << "PASS Command" << std::endl;
-					if (splited_line.size() != 2)
-					{
-						std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
-					}
+					check_PASS(splited_line);
 				}
-				/*
-					Command: NICK
-	NICK <nickname> [<hopcount>] (RFC 1459)
-	NICK <nickname> (RFC 2812)
-	ERRORS : ERR_NONICKNAMEGIVEN   ERR_ERRONEUSNICKNAME   ERR_NICKNAMEINUSE        ERR_NICKCOLLISION
-*/
-				if (splited_line[0] == "NICK")
+				else if (splited_line[0] == "NICK")
 				{
-					std::cout << "NICK Command" << std::endl;
-					if (splited_line.size() != 2)
-					{
-						std::cerr << "431 " << splited_line[0] << " :No nickname given" << std::endl;
-					}
+					check_NICK(splited_line);
 				}
-				/*
-						Command: USER
-	USER <username> <hostname> <servername> <realname> (RFC 1459)
-	USER <user> <mode> <unused> <realname> (RFC 2812)
-*/
-				if (splited_line[0] == "USER")
+				else if (splited_line[0] == "USER")
 				{
-					std::cout << "PASS USER" << std::endl;
-					if (splited_line.size() > 5 || splited_line.size() < 5)
-					{
-						std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
-					}
-					std::cout << "USER is found" << std::endl;
+					check_USER(splited_line);
 				}
-				/*			Command: SERVER
-   Parameters: <servername> <hopcount> <info>
-*/
-				// if (splited_line[0] == "SERVER")
-				// {
-				// 	std::cout << "SERVER command" << std::endl;
-				// 	if (splited_line.size() != 1)
-				// 		std::cerr << "SERVER  parameters error " << std::endl;
-				// }
-				/*
-					Command: OPER   Parameters: <user> <password>
-	OPER message is used by a normal user to obtain operator privileges.
-The combination of <user> and <password> are required to gain
-Operator privileges.
-*/
-				if (splited_line[0] == "OPER")
+				else if (splited_line[0] == "OPER")
 				{
-					if (splited_line.size() != 2)
-					{
-						std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
-					}
+					check_OPER(splited_line);
 				}
-				/*
-			Command: QUIT
-				Parameters: [<Quit message>]
-	*/
-				if (splited_line[0] == "QUIT")
+				else if (splited_line[0] == "QUIT")
 				{
-					str1 = const_cast<char *>(back_up_input.c_str());
-					str1 = strtok(str1, ":");
-					str1 = strtok(NULL, ":");
-					if (str1 != NULL)
-					{
-						/*  If a "Quit Message" is given,
-							this will be sent instead of the default message,
-							the nickname. */
-						std::cerr << "ERROR :Closing link: [" << str1 << "]" << std::endl;
-						// str1 is the full message  without : ERROR :Closing link: (asd@localhost) [Gone to have lunch]
-					}
-					if (str1 == NULL)
-					{
-						std::cerr << "ERROR :Closing link: [Client exited]" << std::endl;
-						// ERROR :Closing link: (atabiti@localhost) [Client exited]
-					}
+					check_QUIT(str1, back_up_input);
 				}
 				/*    Command: JOIN Parameters: <channel>{,<channel>} [<key>{,<key>}]
 					example JOIN #foo,#bar fubar,foobar
@@ -247,3 +181,13 @@ Operator privileges.
 		}
 	}
 }
+
+				/*			Command: SERVER
+   Parameters: <servername> <hopcount> <info>
+*/
+				// if (splited_line[0] == "SERVER")
+				// {
+				// 	std::cout << "SERVER command" << std::endl;
+				// 	if (splited_line.size() != 1)
+				// 		std::cerr << "SERVER  parameters error " << std::endl;
+				// }
