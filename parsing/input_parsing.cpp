@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/12 10:51:34 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/12 17:55:08 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	parse_command(void)
 {
-	size_t	i;
 	char	*str;
 	char	*str1;
 
@@ -49,7 +48,6 @@ int	parse_command(void)
 					splited_line.push_back(str);
 					str = strtok(NULL, " ");
 				}
-				i = 0;
 				// while (i < splited_line.size())
 				// {
 				// 	std::cout << "splited_line [] = " << splited_line[i] << std::endl;

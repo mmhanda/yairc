@@ -6,25 +6,12 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 09:17:29 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/12 10:58:44 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/12 18:11:00 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.hpp"
 
-/*
-		Command: PASS
-	Parameters: <password> (RFC 1459)
-	ERRORS : ERR_ALREADYREGISTRED  ERR_NEEDMOREPARAMS
-*/
-int	check_PASS(std::vector<std::string> const &splited_line)
-{
-	if (splited_line.size() != 2)
-	{
-		std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
-	}
-	return (0);
-}
 /*
 					Command: NICK
 	NICK <nickname> [<hopcount>] (RFC 1459)
@@ -99,10 +86,8 @@ int	check_QUIT(char *str1, std::string const &back_up_input)
 
 int	check_JOIN(std::vector<std::string> &splited_line)
 {
-	size_t	x;
 	size_t	h;
 
-	x = 0;
 	h = 0;
 	if (splited_line.size() <= 1)
 	{
@@ -113,7 +98,6 @@ int	check_JOIN(std::vector<std::string> &splited_line)
 		/*use a map of channel name and a password */
 		std::map<std::string, std::string> channels_map;
 		std::cout << "JOIN COMMAND " << std::endl;
-		x = 0;
 		std::vector<std::string> channels;
 		std::vector<std::string> password;
 		while (splited_line[1].find(",") <= splited_line[1].size())
