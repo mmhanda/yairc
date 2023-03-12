@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/12 10:42:32 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/12 10:51:34 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ int	parse_command(void)
 					str = strtok(NULL, " ");
 				}
 				i = 0;
-				while (i < splited_line.size())
-				{
-					std::cout << "splited_line [] = " << splited_line[i] << std::endl;
-					i++;
-				}
+				// while (i < splited_line.size())
+				// {
+				// 	std::cout << "splited_line [] = " << splited_line[i] << std::endl;
+				// 	i++;
+				// }
 				if (splited_line[0] == "PASS")
 				{
 					check_PASS(splited_line);
@@ -108,5 +108,5 @@ int	parse_command(void)
 // 	std::cout << "SERVER command" << std::endl;
 // 	if (splited_line.size() != 1)
 // 		std::cerr << "SERVER  parameters error " << std::endl;
-// NOTICE anas        text messga eexample sjks asd
+// NOTICE anas text messga eexample sjks asd
 // }

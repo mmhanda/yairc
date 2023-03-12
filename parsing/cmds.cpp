@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 09:17:29 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/12 10:44:58 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/12 10:58:44 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,11 +247,11 @@ int	check_NOTICE(std::vector<std::string> &splited_line , std::string &back_up_i
 		std::string message;
 		std::string nickname;
 		nickname =splited_line[1];
-		std::cout << "nickname " << nickname << std::endl; // nickname				
 		back_up_input.erase(back_up_input.find("NOTICE") ,splited_line[0].length());
 		back_up_input.erase(back_up_input.find(splited_line[1]) ,splited_line[1].length());
-		std::cout << "back_up_input:" << back_up_input << std::endl; // nickname				
-		
+		std::cout << "nickname " << nickname << std::endl << std::endl << std::endl << std::endl; // nickname	
+		std::cout << "MESSAGE:" << back_up_input << std::endl; // ,message	
+		// exit(1);
 	}
 	else
 	{
