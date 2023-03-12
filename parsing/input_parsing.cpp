@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/11 09:53:51 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/12 10:42:32 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,6 @@ int	parse_command(void)
 
 	str = NULL;
 	str1 = NULL;
-	/*
-  1235 642 TEXT 0-=+ aKU
-*/
 	while (1)
 	{
 		std::vector<std::string> splited_line;
@@ -42,7 +39,7 @@ int	parse_command(void)
 	strtok() gets the pointer from the static variable .
 			If you provide the same string name ,
 	it again starts from beginning.
-	*/
+*/
 			str = strtok(str, " ");
 			// std::cout << "after input = " << input << std::endl << std::endl;
 			if (str != NULL)
@@ -90,6 +87,14 @@ int	parse_command(void)
 				{
 					std::cout << "MODE COMMAND" << std::endl;
 				}
+				else if (splited_line[0] == "PRIVMSG")
+				{
+					check_PRIVMSG(splited_line);
+				}
+				else if (splited_line[0] == "NOTICE")
+				{
+					check_NOTICE(splited_line, back_up_input);
+				}
 			}
 		}
 	}
@@ -103,4 +108,5 @@ int	parse_command(void)
 // 	std::cout << "SERVER command" << std::endl;
 // 	if (splited_line.size() != 1)
 // 		std::cerr << "SERVER  parameters error " << std::endl;
+// NOTICE anas        text messga eexample sjks asd
 // }

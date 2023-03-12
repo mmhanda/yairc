@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 09:17:29 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/11 09:53:26 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/12 10:44:58 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,6 +193,70 @@ int	check_PART(std::vector<std::string> &splited_line)
 			std::cout << "channels [" << h << "] =" << channels[h] << std::endl;
 			h++;
 		}
+	}
+	return (0);
+}
+
+/* 
+		Command: PRIVMSG
+		Parameters: <receiver>{,<receiver>} <text to be sent>
+*/
+
+int	check_PRIVMSG(std::vector<std::string> &splited_line)
+{
+	size_t	x;
+
+	x = 0;
+	if (splited_line.size() > 1)
+	{
+		std::vector<std::string> message_receivers; /*send message to this*/
+		while (splited_line[1].find(",") <= splited_line[1].size())
+		{
+			message_receivers.push_back((splited_line[1].substr(0,
+							splited_line[1].find(","))));
+			splited_line[1].erase(0, splited_line[1].find(",") + 1);
+		}
+		message_receivers.push_back((splited_line[1].substr(0)));
+		x = 0;
+		while (x < message_receivers.size())
+		{
+			std::cout << "message_receivers = " << message_receivers[x] << std::endl;
+			// if (message_receivers[x].empty())
+			// {
+			// 	exit(1);
+			// }
+			x++;
+		}
+	}
+	else
+	{
+		std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
+		return (0);
+	}
+	return (0);
+}
+/*
+      Command: NOTICE
+   Parameters: <nickname> <text>
+*/
+
+int	check_NOTICE(std::vector<std::string> &splited_line , std::string &back_up_input)
+{
+	if (splited_line.size() >= 3)
+	{
+		std::string message;
+		std::string nickname;
+		nickname =splited_line[1];
+		std::cout << "nickname " << nickname << std::endl; // nickname				
+		back_up_input.erase(back_up_input.find("NOTICE") ,splited_line[0].length());
+		back_up_input.erase(back_up_input.find(splited_line[1]) ,splited_line[1].length());
+		std::cout << "back_up_input:" << back_up_input << std::endl; // nickname				
+		
+	}
+	else
+	{
+		std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
+		return (0);
 	}
 	return (0);
 }
