@@ -6,7 +6,7 @@
 //   By: archid <archid-@1337.student.ma>           +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2023/02/25 00:59:52 by archid            #+#    #+#             //
-//   Updated: 2023/03/10 23:07:11 by archid           ###   ########.fr       //
+//   Updated: 2023/03/13 02:11:38 by archid           ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,7 +14,8 @@
 
 namespace yairc {
 
-	server::server(int port, const char *host) : addr_(setup_address(host, port)) {
+	server::server(int port, const char *host)
+		: addr_(setup_address(host, port)) {
 		start();
 	}
 
@@ -27,50 +28,42 @@ namespace yairc {
 			terminate_and_throw();
 		clients_.push_back(poll_fd(sock_fd_, POLLIN));
 
-		running_ = true;
 		if ((::listen(sock_fd_, NUM_CONNECTIONS)) < 0)
 			terminate_and_throw();
 	}
 
 	void server::terminate() {
-		if (running_) {
 			if (sock_fd_ != -1)
 				close(sock_fd_);
-
 			for (unsigned i = 0; i < clients_.size(); ++i)
 				close(clients_[i].fd());
-
 			clients_.clear();
-			running_ = false;
-		}
 	}
 
 	void server::server_banner(int client_fd) {
-		if (!running_)
-			throw std::runtime_error("Server is not running");
-
 		char buff[] = "Welcome to YAIRC Server\n";
 		ssize_t n_bytes = send(client_fd, buff, sizeof(buff));
 		if (n_bytes < 0)
 			terminate_and_throw();
-
 	}
 
 	void server::run() {
 		while (true) {
 			int status;
 			if ((status = poll_fd::fetch(clients_, TIMEOUT * 1000)) < 0) {
-				break;
+				terminate_and_throw();
 			} else if (status == 0) {
 				continue;
 			}
+
 			for (unsigned i = 0; i < clients_.size(); ++i) {
 				if (!(clients_[i].revents() & POLLIN)) {
 					continue;
 				} if (clients_[i].fd() == sock_fd_ && !fetch()) {
 					break;
 				} else {
-					recieve_data(clients_[i]);
+					std::string data = recieve_data(clients_[i]);
+					handle_command();
 				}
 			}
 		}
@@ -88,12 +81,9 @@ namespace yairc {
 		return true;
 	}
 
-	void server::recieve_data(poll_fd client) {
-		if (!running_)
-			throw std::runtime_error("Server is not running");
-
-		while (true) { // TODO: append to buffer after rblocking on recieve
-			std::string buff;
+	std::string server::recieve_data(poll_fd client) {
+		std::string buff;
+		while (true) {
 			int8_t tmp[BUFF_SIZE];
 			ssize_t n_bytes = recv(client.fd(), tmp, BUFF_SIZE, 0);
 			if (n_bytes == 0) {
@@ -106,6 +96,7 @@ namespace yairc {
 				buff += std::string(tmp, tmp + BUFF_SIZE);
 			}
 		}
+		return buff;
 	}
 
 	void server::terminate_and_throw() {
