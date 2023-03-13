@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/12 17:55:08 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/13 09:39:29 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	parse_command(void)
 				}
 				else if (splited_line[0] == "PRIVMSG")
 				{
-					check_PRIVMSG(splited_line);
+					check_PRIVMSG(splited_line, back_up_input);
 				}
 				else if (splited_line[0] == "NOTICE")
 				{
