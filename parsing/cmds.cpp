@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 09:17:29 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/13 10:01:15 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/13 10:37:45 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,7 @@ int	check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up)
 	char	*str1;
 
 	x = 0;
-	if (splited_line.size() > 1)
+	if (splited_line.size() > 2)
 	{
 		std::vector<std::string> message_receivers; /*send message to this*/
 		while (splited_line[1].find(",") <= splited_line[1].size())
@@ -218,16 +218,13 @@ int	check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up)
 		}
 		str1 = const_cast<char *>(back_up.c_str());
 		str1 = strtok(str1, ":");
-		// std::cout << "first split str1: " << str1 << std::endl;
-		str1 = strtok(NULL, "");
-		if (str1 == NULL) // no ":"" is provided
+		str1 = strtok(NULL, ":");
+		if (str1 == NULL ||strcmp(str1, "") == 0) // no ":"" is provided //PRIVMSG ff fff : 
 		{
 			std::cerr << splited_line[0] << " :Wrong input" << std::endl;
 			return (0);
 		}
-		
-		std::cout << "str1: " << str1 << std::endl;
-		std::cout << "back_up: " << back_up << std::endl;
+		std::cout << "str1: " << str1 << "||" <<std::endl; // message
 	}
 	else
 	{
