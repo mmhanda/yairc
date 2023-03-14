@@ -6,7 +6,7 @@
 //   By: archid <archid-@1337.student.ma>           +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             //
-//   Updated: 2023/03/14 01:30:32 by archid           ###   ########.fr       //
+//   Updated: 2023/03/14 11:20:56 by archid           ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -39,45 +39,9 @@
 
 namespace yairc {
 
-	struct poll_fd {
-		poll_fd(int fd, short e) { _.fd = fd, _.events = e, _.revents = 0; }
-
-		struct pollfd		operator*() { return _; };
-		bool						operator==(const poll_fd &rhs) const {
-			return _.fd == rhs._.fd && _.events == rhs._.events
-				&& _.revents == rhs._.revents;
-		}
-
-		int							fd() const { return _.fd; }
-		void						fd(int fd) { _.fd = fd; }
-
-		int							events() const { return _.events; }
-		void						events(short e) { _.events = e; }
-
-		int							revents() const { return _.revents; }
-		void						revents(short re) { _.revents = re; }
-
-		static int			fetch(const std::vector<poll_fd> &foo, int timeout) {
-			inserter_ftor inserter(foo);
-			std::for_each(foo.begin(), foo.end(), inserter);
-			return poll(inserter.bar.data(), inserter.bar.size(), timeout);
-		}
-
-	private:
-		struct inserter_ftor {
-			std::vector<struct pollfd> bar;
-
-			inserter_ftor(const std::vector<poll_fd> &foo) {
-				bar.reserve(foo.size());
-			}
-
-			void operator()(poll_fd foo) { bar.push_back(foo._); }
-		};
-
-		struct pollfd						_;
-	};
-
 	class server {
+		typedef std::vector<pollfd>::iterator pollfd_iter;
+
 		struct sockaddr									*setup_address(const char *host, int port);
 
 		void														start();
@@ -85,8 +49,7 @@ namespace yairc {
 		void														terminate_and_throw();
 		void														server_banner(int client_fd);
 
-		bool														fetch();
-		std::string											recieve_data(poll_fd pollfd);
+		std::string											recieve_data(pollfd_iter client);
 
 	public:
 
@@ -104,9 +67,9 @@ namespace yairc {
 
 	private:
 
-		struct sockaddr					*addr_;
-		int											sock_fd_;
-		std::vector<poll_fd>		clients_;
+		struct sockaddr								*addr_;
+		int														sock_fd_;
+		std::vector<pollfd>						clients_;
 	};
 
 	// user defined allocation

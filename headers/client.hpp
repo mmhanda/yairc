@@ -6,7 +6,7 @@
 //   By: archid <archid-@1337.student.ma>           +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2023/03/05 03:21:35 by archid            #+#    #+#             //
-//   Updated: 2023/03/08 23:52:21 by archid           ###   ########.fr       //
+//   Updated: 2023/03/14 11:17:17 by archid           ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -25,7 +25,6 @@ namespace yairc {
 		typedef client *client_ptr;
 
 		client(int client_fd);
-
 		client(const client &) {
 			assert(false && "Should not copy client");
 			throw std::runtime_error("Should not copy client");

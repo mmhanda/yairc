@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 09:20:51 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/13 09:39:18 by atabiti          ###   ########.fr       */
+//   Updated: 2023/03/14 02:18:42 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include <map>
 #include <string>
 #include <vector>
+
+#define CLIENT_MAX_NICKNAME 9
 
 int	parse_command(void);
 int	checker(int ac, char **av);
