@@ -6,7 +6,7 @@
 //   By: archid <archid-@1337.student.ma>           +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             //
-//   Updated: 2023/03/13 04:19:55 by archid           ###   ########.fr       //
+//   Updated: 2023/03/14 01:30:32 by archid           ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -40,9 +40,7 @@
 namespace yairc {
 
 	struct poll_fd {
-		poll_fd(int fd, short e) {
-			_.fd = fd, _.events = e, _.revents = 0;
-		}
+		poll_fd(int fd, short e) { _.fd = fd, _.events = e, _.revents = 0; }
 
 		struct pollfd		operator*() { return _; };
 		bool						operator==(const poll_fd &rhs) const {
@@ -76,7 +74,7 @@ namespace yairc {
 			void operator()(poll_fd foo) { bar.push_back(foo._); }
 		};
 
-		struct pollfd _;
+		struct pollfd						_;
 	};
 
 	class server {
@@ -92,7 +90,11 @@ namespace yairc {
 
 	public:
 
-		server(int port, const char *host = NULL);
+		server(int port, const char *host = NULL)
+			: addr_(setup_address(host, port)) {
+			start();
+		}
+
 		server(const server &) {
 			assert(false && "Should not copy server");
 			throw std::runtime_error("Should not copy server");
@@ -102,11 +104,10 @@ namespace yairc {
 
 	private:
 
-		struct sockaddr									*addr_;
-		int															sock_fd_;
-		std::vector<poll_fd>						clients_;
+		struct sockaddr					*addr_;
+		int											sock_fd_;
+		std::vector<poll_fd>		clients_;
 	};
-
 
 	// user defined allocation
 	// side-effect deallcoation
@@ -118,13 +119,15 @@ namespace yairc {
 
 		virtual std::vector<std::int8_t>	as_buffer() const = 0;
 		virtual size_t										size() const = 0;
+		ssize_t														send(int fd, int flags = 0) {
+			return ::send(fd, as_buffer().data(), size(), flags);
+		}
 
 	protected:
-		type *_;
+		type										*_;
 	};
 
-	template <typename T>
-	struct integral_data : data<T> {
+	template <typename T> struct integral_data : data<T> {
 		explicit integral_data(T *ptr) : data<T>(ptr) {}
 
 		virtual std::vector<std::int8_t>	as_buffer() const {
@@ -154,12 +157,12 @@ namespace yairc {
 		}
 
 	private:
-		size_t sz_;
+		size_t									sz_;
 	};
 
-	template <typename T> ssize_t	send_data(int client_fd, data<T> data, int flags = 0) {
-		return ::send(client_fd, data.as_buffer().data, data.size(), flags);
-	}
+	extern short	num_port;
+	extern char		*passwd;
 
+	void parse_args(int argc, const char *argv[]);
 
 } // namespace yairc

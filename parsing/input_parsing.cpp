@@ -6,11 +6,16 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/12 10:51:34 by atabiti          ###   ########.fr       */
+//   Updated: 2023/03/13 04:23:08 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.hpp"
+
+int parse_command(std::string cmd)
+{
+
+}
 
 int	parse_command(void)
 {
