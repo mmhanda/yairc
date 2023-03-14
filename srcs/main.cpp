@@ -6,10 +6,11 @@
 //   By: archid <archid-@1337.student.ma>           +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2023/03/05 03:13:39 by archid            #+#    #+#             //
-//   Updated: 2023/03/14 01:00:29 by archid           ###   ########.fr       //
+//   Updated: 2023/03/14 23:40:07 by archid           ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
+#include <signal.h>
 #include <climits>
 #include <iostream>
 #include "server.hpp"
@@ -52,10 +53,15 @@ namespace yairc {
 
 } // namespace yairc
 
+yairc::server server(yairc::num_port);
+
+void handler(int) { server.~server(); }
+
 int main(int argc, char *argv[]) {
+	signal(SIGSTOP, handler);
 	yairc::parse_args(argc, argv);
 	try {
-		yairc::server server(yairc::num_port);
+
 		server.run();
 		return EXIT_SUCCESS;
 	} catch (const std::runtime_error &e) {
