@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-//   Updated: 2023/03/13 04:23:08 by archid           ###   ########.fr       //
+//   Updated: 2023/03/14 01:51:07 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int parse_command(std::string cmd)
 
 int	parse_command(void)
 {
-	size_t	i;
 	char	*str;
 	char	*str1;
 
@@ -54,12 +53,12 @@ int	parse_command(void)
 					splited_line.push_back(str);
 					str = strtok(NULL, " ");
 				}
-				i = 0;
-				// while (i < splited_line.size())
-				// {
-				// 	std::cout << "splited_line [] = " << splited_line[i] << std::endl;
-				// 	i++;
-				// }
+				size_t i = 0;
+				while (i < splited_line.size())
+				{
+					std::cout << "splited_line [] = " << splited_line[i] << std::endl;
+					i++;
+				}
 				if (splited_line[0] == "PASS")
 				{
 					check_PASS(splited_line);
@@ -94,7 +93,7 @@ int	parse_command(void)
 				}
 				else if (splited_line[0] == "PRIVMSG")
 				{
-					check_PRIVMSG(splited_line);
+					check_PRIVMSG(splited_line, back_up_input);
 				}
 				else if (splited_line[0] == "NOTICE")
 				{
