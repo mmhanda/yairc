@@ -6,23 +6,24 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/11 09:53:51 by atabiti          ###   ########.fr       */
+//   Updated: 2023/03/14 01:51:07 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.hpp"
 
+int parse_command(std::string cmd)
+{
+
+}
+
 int	parse_command(void)
 {
-	size_t	i;
 	char	*str;
 	char	*str1;
 
 	str = NULL;
 	str1 = NULL;
-	/*
-  1235 642 TEXT 0-=+ aKU
-*/
 	while (1)
 	{
 		std::vector<std::string> splited_line;
@@ -42,7 +43,7 @@ int	parse_command(void)
 	strtok() gets the pointer from the static variable .
 			If you provide the same string name ,
 	it again starts from beginning.
-	*/
+*/
 			str = strtok(str, " ");
 			// std::cout << "after input = " << input << std::endl << std::endl;
 			if (str != NULL)
@@ -52,7 +53,7 @@ int	parse_command(void)
 					splited_line.push_back(str);
 					str = strtok(NULL, " ");
 				}
-				i = 0;
+				size_t i = 0;
 				while (i < splited_line.size())
 				{
 					std::cout << "splited_line [] = " << splited_line[i] << std::endl;
@@ -90,6 +91,14 @@ int	parse_command(void)
 				{
 					std::cout << "MODE COMMAND" << std::endl;
 				}
+				else if (splited_line[0] == "PRIVMSG")
+				{
+					check_PRIVMSG(splited_line, back_up_input);
+				}
+				else if (splited_line[0] == "NOTICE")
+				{
+					check_NOTICE(splited_line, back_up_input);
+				}
 			}
 		}
 	}
@@ -103,4 +112,5 @@ int	parse_command(void)
 // 	std::cout << "SERVER command" << std::endl;
 // 	if (splited_line.size() != 1)
 // 		std::cerr << "SERVER  parameters error " << std::endl;
+// NOTICE anas text messga eexample sjks asd
 // }

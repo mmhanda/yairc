@@ -6,25 +6,12 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 09:17:29 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/11 09:53:26 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/13 10:37:45 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.hpp"
 
-/*
-		Command: PASS
-	Parameters: <password> (RFC 1459)
-	ERRORS : ERR_ALREADYREGISTRED  ERR_NEEDMOREPARAMS
-*/
-int	check_PASS(std::vector<std::string> const &splited_line)
-{
-	if (splited_line.size() != 2)
-	{
-		std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
-	}
-	return (0);
-}
 /*
 					Command: NICK
 	NICK <nickname> [<hopcount>] (RFC 1459)
@@ -36,7 +23,10 @@ int	check_NICK(std::vector<std::string> const &splited_line)
 	if (splited_line.size() != 2)
 	{
 		std::cerr << "431 " << splited_line[0] << " :No nickname given" << std::endl;
+		// ERR_NONICKNAMEGIVEN
+		return (0);
 	}
+	std::cout << "NICKNAME IS : " << splited_line[1] << std::endl;
 	return (0);
 }
 /*
@@ -99,10 +89,8 @@ int	check_QUIT(char *str1, std::string const &back_up_input)
 
 int	check_JOIN(std::vector<std::string> &splited_line)
 {
-	size_t	x;
 	size_t	h;
 
-	x = 0;
 	h = 0;
 	if (splited_line.size() <= 1)
 	{
@@ -113,7 +101,6 @@ int	check_JOIN(std::vector<std::string> &splited_line)
 		/*use a map of channel name and a password */
 		std::map<std::string, std::string> channels_map;
 		std::cout << "JOIN COMMAND " << std::endl;
-		x = 0;
 		std::vector<std::string> channels;
 		std::vector<std::string> password;
 		while (splited_line[1].find(",") <= splited_line[1].size())
@@ -193,6 +180,88 @@ int	check_PART(std::vector<std::string> &splited_line)
 			std::cout << "channels [" << h << "] =" << channels[h] << std::endl;
 			h++;
 		}
+	}
+	return (0);
+}
+
+/* 
+		Command: PRIVMSG
+		Parameters: <receiver>{,<receiver>} <text to be sent>
+*/
+
+int	check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up)
+{
+	size_t	x;
+	char	*str1;
+
+	x = 0;
+	if (splited_line.size() > 2)
+	{
+		std::vector<std::string> message_receivers; /*send message to this*/
+		while (splited_line[1].find(",") <= splited_line[1].size())
+		{
+			message_receivers.push_back((splited_line[1].substr(0,
+																splited_line[1].find(","))));
+			splited_line[1].erase(0, splited_line[1].find(",") + 1);
+		}
+		message_receivers.push_back((splited_line[1].substr(0)));
+		x = 0;
+		while (x < message_receivers.size())
+		{
+			std::cout << "message_receivers = " << message_receivers[x] << std::endl;
+			if (message_receivers[x].empty())
+			{
+				std::cerr << splited_line[0] << " :Wrong input" << std::endl;
+				return (0);
+			}
+			x++;
+		}
+		str1 = const_cast<char *>(back_up.c_str());
+		str1 = strtok(str1, ":");
+		str1 = strtok(NULL, ":");
+		if (str1 == NULL ||strcmp(str1, "") == 0) // no ":"" is provided //PRIVMSG ff fff : 
+		{
+			std::cerr << splited_line[0] << " :Wrong input" << std::endl;
+			return (0);
+		}
+		std::cout << "str1: " << str1 << "||" <<std::endl; // message
+	}
+	else
+	{
+		std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
+		return (0);
+	}
+	return (0);
+}
+
+/*
+      Command: NOTICE
+   Parameters: <nickname> <text>
+*/
+
+int	check_NOTICE(std::vector<std::string> &splited_line,
+					std::string &back_up_input)
+{
+	if (splited_line.size() >= 3)
+	{
+		std::string message;
+		std::string nickname;
+		nickname = splited_line[1];
+		back_up_input.erase(back_up_input.find("NOTICE"),
+							splited_line[0].length());
+		back_up_input.erase(back_up_input.find(splited_line[1]),
+							splited_line[1].length());
+		std::cout << "nickname " << nickname << std::endl
+					<< std::endl
+					<< std::endl
+					<< std::endl;                                // nickname
+		std::cout << "MESSAGE:" << back_up_input << std::endl; // ,message
+																// exit(1);
+	}
+	else
+	{
+		std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
+		return (0);
 	}
 	return (0);
 }
