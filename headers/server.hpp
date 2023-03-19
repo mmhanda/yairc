@@ -6,7 +6,7 @@
 //   By: archid <archid-@1337.student.ma>           +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             //
-//   Updated: 2023/03/19 22:00:09 by archid           ###   ########.fr       //
+//   Updated: 2023/03/19 22:25:31 by archid           ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -40,7 +40,8 @@
 class server {
 	typedef std::vector<struct pollfd>::iterator pollfd_iter;
 
-	struct sockaddr *setup_address(const char *host, int port);
+	struct sockaddr *init_socket_address(const char *host, int port);
+	int set_socket_options(int fd);
 
 	void start();
 	void terminate();
@@ -51,7 +52,7 @@ class server {
 
 public:
 	server(int port, const char *host = NULL)
-		: addr_(setup_address(host, port)) {
+		: addr_(init_socket_address(host, port)) {
 		start();
 	}
 
@@ -60,6 +61,7 @@ public:
 private:
 	struct sockaddr *addr_;
 	int sock_fd_;
+
 	std::vector<struct pollfd> clients_;
 };
 
