@@ -6,7 +6,7 @@
 //   By: archid <archid-@1337.student.ma>           +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2023/03/05 03:13:39 by archid            #+#    #+#             //
-//   Updated: 2023/03/18 04:51:43 by archid           ###   ########.fr       //
+//   Updated: 2023/03/19 22:27:13 by archid           ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -50,7 +50,6 @@ void parse_args(int argc, char *argv[]) {
 	passwd = argv[2];
 }
 
-
 server server(num_port);
 
 void handler(int) { server.~server(); }
@@ -59,7 +58,6 @@ int main(int argc, char *argv[]) {
 	signal(SIGSTOP, handler);
 	parse_args(argc, argv);
 	try {
-
 		server.run();
 		return EXIT_SUCCESS;
 	} catch (const std::runtime_error &e) {
