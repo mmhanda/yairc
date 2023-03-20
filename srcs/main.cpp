@@ -1,19 +1,19 @@
-// ************************************************************************** //
-//                                                                            //
-//                                                        :::      ::::::::   //
-//   main.cpp                                           :+:      :+:    :+:   //
-//                                                    +:+ +:+         +:+     //
-//   By: archid <archid-@1337.student.ma>           +#+  +:+       +#+        //
-//                                                +#+#+#+#+#+   +#+           //
-//   Created: 2023/03/05 03:13:39 by archid            #+#    #+#             //
-//   Updated: 2023/03/19 22:27:13 by archid           ###   ########.fr       //
-//                                                                            //
-// ************************************************************************** //
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/05 03:13:39 by archid            #+#    #+#             */
+/*   Updated: 2023/03/20 18:50:05 by mhanda           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include <signal.h>
 #include <climits>
 #include <iostream>
-#include "server.hpp"
+#include "../headers/server.hpp"
 
 #define NUM_DIGITS 5
 #define PASSWD_SIZE 32
@@ -50,18 +50,26 @@ void parse_args(int argc, char *argv[]) {
 	passwd = argv[2];
 }
 
-server server(num_port);
+server serv;
 
-void handler(int) { server.~server(); }
+void handler(int) { 
+	std::cerr << "Handler:\n";	
+	serv.~server();
+	exit(EXIT_FAILURE);
+}
 
 int main(int argc, char *argv[]) {
 	signal(SIGSTOP, handler);
+	signal(SIGINT, handler);
+	signal(SIGKILL, handler);
+
 	parse_args(argc, argv);
+ 	serv = server(num_port);
 	try {
-		server.run();
+		serv.run();
 		return EXIT_SUCCESS;
 	} catch (const std::runtime_error &e) {
-		std::cerr << e.what() << '\n';
+		std::cerr << "FATAL: " << e.what() << '\n';
 		return EXIT_FAILURE;
 	}
 }

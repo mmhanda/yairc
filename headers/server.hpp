@@ -1,14 +1,14 @@
-// ************************************************************************** //
-//                                                                            //
-//                                                        :::      ::::::::   //
-//   server.hpp                                         :+:      :+:    :+:   //
-//                                                    +:+ +:+         +:+     //
-//   By: archid <archid-@1337.student.ma>           +#+  +:+       +#+        //
-//                                                +#+#+#+#+#+   +#+           //
-//   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             //
-//   Updated: 2023/03/19 22:25:31 by archid           ###   ########.fr       //
-//                                                                            //
-// ************************************************************************** //
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.hpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             */
+/*   Updated: 2023/03/20 18:56:59 by mhanda           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #pragma once
 
@@ -40,10 +40,10 @@
 class server {
 	typedef std::vector<struct pollfd>::iterator pollfd_iter;
 
-	struct sockaddr *init_socket_address(const char *host, int port);
+	struct sockaddr *init_socket_address(const short port);
+	
 	int set_socket_options(int fd);
-
-	void start();
+	
 	void terminate();
 	void terminate_and_throw();
 	void server_banner(int client_fd);
@@ -51,11 +51,9 @@ class server {
 	std::string recieve_data(pollfd_iter client);
 
 public:
-	server(int port, const char *host = NULL)
-		: addr_(init_socket_address(host, port)) {
-		start();
-	}
-
+	server() {}
+	server(const short port);
+	~server() { terminate(); }
 	void run();
 
 private:

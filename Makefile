@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+         #
+#    By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/24 23:57:31 by mhanda            #+#    #+#              #
-#    Updated: 2023/03/19 22:15:08 by archid           ###   ########.fr        #
+#    Updated: 2023/03/20 17:31:50 by mhanda           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ INC_DIR = headers
 HEADERS = $(shell find $(INC_DIR) -name '*.hpp')
 
 CXX = c++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98
+CXXFLAGS = -Wall -Wextra  -std=c++98
 CXXFLAGS += -I$(INC_DIR)
 
 $(NAME) : $(OBJF) $(HEADERS)
