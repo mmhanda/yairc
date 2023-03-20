@@ -1,14 +1,14 @@
-// ************************************************************************** //
-//                                                                            //
-//                                                        :::      ::::::::   //
-//   server.cpp                                         :+:      :+:    :+:   //
-//                                                    +:+ +:+         +:+     //
-//   By: archid <archid-@1337.student.ma>           +#+  +:+       +#+        //
-//                                                +#+#+#+#+#+   +#+           //
-//   Created: 2023/02/25 00:59:52 by archid            #+#    #+#             //
-//   Updated: 2023/03/18 04:51:25 by archid           ###   ########.fr       //
-//                                                                            //
-// ************************************************************************** //
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/25 00:59:52 by archid            #+#    #+#             */
+/*   Updated: 2023/03/20 20:04:06 by mhanda           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include <iostream>
 #include "server.hpp"
@@ -95,19 +95,18 @@ std::string server::recieve_data(pollfd_iter client) {
 void server::run() {
 	while (true) {
 		int status;
-		std::cerr << "polling\n";
+		// std::cerr << "polling\n";
 		if ((status = poll(clients_.data(), clients_.size(), TIMEOUT * 1000)) < 0) {
 			terminate_and_throw();
 		} else if (status == 0) {
-			std::cerr << "here\n";
+			// std::cerr << "here\n";
 			continue;
 		}
 
 		std::cerr << "ready\n";
 		for (unsigned i = 0; i < clients_.size(); ++i) {
-			const pollfd &client = clients_[i];
-			if (client.revents & POLLIN) {
-				if (client.fd == sock_fd_) {
+			if (clients_[i].revents & POLLIN) {
+				if (clients_[i].fd == sock_fd_) {
 					while (true) {
 						std::cerr << "server accept\n";
 						socklen_t sock_len = sizeof(struct sockaddr);
