@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             */
-//   Updated: 2023/03/21 02:30:45 by archid           ###   ########.fr       //
+//   Updated: 2023/03/21 02:43:18 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ class server {
 		void							start();
 		void							terminate_and_throw();
 		void							server_banner(int client_fd);
-		std::string						recieve_data(pollfd_iter client);
+		std::vector<std::string>						recieve_data(pollfd_iter client);
 
 	public:
 		server(int port) : addr_(setup_address(port)) { start(); }

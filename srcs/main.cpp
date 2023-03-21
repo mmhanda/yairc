@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 03:13:39 by archid            #+#    #+#             */
-/*   Updated: 2023/03/21 01:30:06 by mhanda           ###   ########.fr       */
+//   Updated: 2023/03/21 03:07:40 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,18 +53,15 @@ void parse_args(int argc, char *argv[]) {
 server serve;
 
 void handler(int) {
-	// serve.~server();
 	serve.terminate();
 	exit(0);
 }
 
 int main(int argc, char *argv[]) {
 	signal(SIGINT, handler);
-	
 	parse_args(argc, argv);
-	serve = server(num_port);
-
 	try {
+		serve = server(num_port);
 		serve.run();
 		return EXIT_SUCCESS;
 	} catch (const std::runtime_error &e) {
