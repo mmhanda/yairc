@@ -1,16 +1,17 @@
-// ************************************************************************** //
-//                                                                            //
-//                                                        :::      ::::::::   //
-//   client.hpp                                         :+:      :+:    :+:   //
-//                                                    +:+ +:+         +:+     //
-//   By: archid <archid-@1337.student.ma>           +#+  +:+       +#+        //
-//                                                +#+#+#+#+#+   +#+           //
-//   Created: 2023/03/05 03:21:35 by archid            #+#    #+#             //
-//   Updated: 2023/03/14 11:17:17 by archid           ###   ########.fr       //
-//                                                                            //
-// ************************************************************************** //
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client.hpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/05 03:21:35 by archid            #+#    #+#             */
+/*   Updated: 2023/03/21 00:51:26 by mhanda           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#pragma once
+#ifndef CLIENT_HPP
+# define CLIENT_HPP
 
 #include <string>
 
@@ -25,11 +26,6 @@ namespace yairc {
 		typedef client *client_ptr;
 
 		client(int client_fd);
-		client(const client &) {
-			assert(false && "Should not copy client");
-			throw std::runtime_error("Should not copy client");
-		}
-
 		const std::string &nickname() const { return nickname_; }
 		void nickname(std::string nickname) {
 			nickname_ = nickname;
@@ -44,3 +40,4 @@ namespace yairc {
 
 	typedef client::client_ptr client_ptr;
 } // namespace yairc
+#endif

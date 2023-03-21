@@ -6,21 +6,20 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 00:59:52 by archid            #+#    #+#             */
-/*   Updated: 2023/03/20 20:04:06 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/21 01:28:23 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include "server.hpp"
 
-struct sockaddr *server::setup_address(const char *host, int port) {
+struct sockaddr *server::setup_address(const short port) {
 	static struct sockaddr_in addr;
 	bzero(addr.sin_zero, sizeof(addr.sin_zero)); // set padding
 
 	addr.sin_family = AF_INET;					 // address family
 	addr.sin_port = htons(port);				 // address port
-	addr.sin_addr.s_addr = host					 // host address
-		? inet_addr(host) : htonl(INADDR_ANY);
+	addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
 	if (addr.sin_addr.s_addr < 0)
 		terminate_and_throw();
@@ -54,8 +53,6 @@ void server::start() {
 }
 
 void server::terminate() {
-	if (sock_fd_ != -1)
-		close(sock_fd_);
 	for (unsigned i = 0; i < clients_.size(); ++i)
 		close(clients_[i].fd);
 	clients_.clear();
@@ -116,10 +113,6 @@ void server::run() {
 								terminate_and_throw();
 							break;
 						}
-
-						// if (fcntl(sock_fd_, F_SETFL, O_NONBLOCK) < 0)
-						//	terminate_and_throw();
-
 						clients_.push_back(client_pollfd(client_fd));
 					}
 				} else {
