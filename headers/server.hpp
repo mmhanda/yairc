@@ -1,14 +1,14 @@
-// ************************************************************************** //
-//                                                                            //
-//                                                        :::      ::::::::   //
-//   server.hpp                                         :+:      :+:    :+:   //
-//                                                    +:+ +:+         +:+     //
-//   By: archid <archid-@1337.student.ma>           +#+  +:+       +#+        //
-//                                                +#+#+#+#+#+   +#+           //
-//   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             //
-//   Updated: 2023/03/21 01:16:00 by archid           ###   ########.fr       //
-//                                                                            //
-// ************************************************************************** //
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.hpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             */
+//   Updated: 2023/03/21 02:30:45 by archid           ###   ########.fr       //
+/*                                                                            */
+/* ************************************************************************** */
 
 #pragma once
 
@@ -39,31 +39,26 @@
 
 
 class server {
-	typedef std::vector<pollfd>::iterator pollfd_iter;
+	private:
+		typedef std::vector<pollfd>::iterator pollfd_iter;
+		struct sockaddr					*setup_address(const short port);
+		struct sockaddr 				*addr_;
 
-	struct sockaddr									*setup_address(const char *host, int port);
+		int								sock_fd_;
+		std::vector<pollfd> 			clients_;
 
-	void														start();
-	void														terminate();
-	void														terminate_and_throw();
-	void														server_banner(int client_fd);
+		void							start();
+		void							terminate_and_throw();
+		void							server_banner(int client_fd);
+		std::string						recieve_data(pollfd_iter client);
 
-	std::string											recieve_data(pollfd_iter client);
+	public:
+		server(int port) : addr_(setup_address(port)) { start(); }
 
-public:
-
-	server(int port, const char *host = NULL)
-		: addr_(setup_address(host, port)) {
-		start();
-	}
-
-	void														run();
-
-private:
-
-	struct sockaddr								*addr_;
-	int														sock_fd_;
-	std::vector<pollfd>						clients_;
+		void							terminate();
+		void run();
+		server() {};
+		// ~server() { terminate(); }
 };
 
 // user defined allocation
