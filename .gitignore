@@ -1,4 +1,6 @@
-*.o
 *~
 \#*\#
+*.o
 bin
+ircserv
+yairc

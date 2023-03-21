@@ -3,37 +3,34 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+         #
+#    By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/24 23:57:31 by mhanda            #+#    #+#              #
-#    Updated: 2023/03/20 17:31:50 by mhanda           ###   ########.fr        #
+#    Updated: 2023/03/21 01:23:02 by archid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+SRC = srcs/main.cpp srcs/server.cpp #./parsing/args_checker.cpp ./parsing/input_parsing.cpp ./parsing/cmds.cpp
+
+OBJF = $(SRC:.cpp=.o)
+
 NAME = ircserv
 
-SRC_DIR = srcs
-SRCS = $(SRC_DIR)/server.cpp $(SRC_DIR)/main.cpp
-BIN_DIR = bin
-OBJF = $(patsubst $(SRC_DIR)/%.cpp,$(BIN_DIR)/%.o,$(SRCS))
-INC_DIR = headers
-HEADERS = $(shell find $(INC_DIR) -name '*.hpp')
-
 CXX = c++
-CXXFLAGS = -Wall -Wextra  -std=c++98
-CXXFLAGS += -I$(INC_DIR)
 
-$(NAME) : $(OBJF) $(HEADERS)
-	$(CXX) $(CXXFLAGS)  $(OBJF) -o $(NAME)
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -Iheaders
 
-$(BIN_DIR)/%.o: $(SRC_DIR)/%.cpp $(HEADERS)
-	@mkdir -p $(@D) # create directory
-	$(CXX) $(CXXFLAGS) -o $@ -c $<
+# $(NAME) : $(OBJF) ./headers/irc.hpp
+$(NAME) : $(OBJF) headers/server.hpp
+		$(CXX) $(CXXFLAGS) $(OBJF) -o $(NAME)
+
+%.o: %.cpp
+		$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 all : $(NAME)
 
 clean :
-	rm -f $(OBJF)
+		rm -f $(OBJF)
 fclean : clean
-	rm -f $(NAME)
+		rm -f $(NAME)
 re : fclean all

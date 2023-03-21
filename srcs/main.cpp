@@ -6,14 +6,14 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 03:13:39 by archid            #+#    #+#             */
-/*   Updated: 2023/03/20 18:50:05 by mhanda           ###   ########.fr       */
+//   Updated: 2023/03/21 03:07:40 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
 #include <climits>
 #include <iostream>
-#include "../headers/server.hpp"
+#include "server.hpp"
 
 #define NUM_DIGITS 5
 #define PASSWD_SIZE 32
@@ -50,26 +50,22 @@ void parse_args(int argc, char *argv[]) {
 	passwd = argv[2];
 }
 
-server serv;
+server serve;
 
-void handler(int) { 
-	std::cerr << "Handler:\n";	
-	serv.~server();
-	exit(EXIT_FAILURE);
+void handler(int) {
+	serve.terminate();
+	exit(0);
 }
 
 int main(int argc, char *argv[]) {
-	signal(SIGSTOP, handler);
 	signal(SIGINT, handler);
-	signal(SIGKILL, handler);
-
 	parse_args(argc, argv);
- 	serv = server(num_port);
 	try {
-		serv.run();
+		serve = server(num_port);
+		serve.run();
 		return EXIT_SUCCESS;
 	} catch (const std::runtime_error &e) {
-		std::cerr << "FATAL: " << e.what() << '\n';
+		std::cerr << e.what() << '\n';
 		return EXIT_FAILURE;
 	}
 }
