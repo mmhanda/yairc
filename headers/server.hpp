@@ -6,7 +6,7 @@
 //   By: archid <archid-@1337.student.ma>           +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             //
-//   Updated: 2023/03/18 04:51:01 by archid           ###   ########.fr       //
+//   Updated: 2023/03/21 01:16:00 by archid           ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -55,11 +55,6 @@ public:
 	server(int port, const char *host = NULL)
 		: addr_(setup_address(host, port)) {
 		start();
-	}
-
-	server(const server &) {
-		assert(false && "Should not copy server");
-		throw std::runtime_error("Should not copy server");
 	}
 
 	void														run();

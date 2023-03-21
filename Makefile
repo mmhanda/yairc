@@ -6,27 +6,26 @@
 #    By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/24 23:57:31 by mhanda            #+#    #+#              #
-#    Updated: 2023/03/11 14:44:18 by atabiti          ###   ########.fr        #
+#    Updated: 2023/03/21 01:23:02 by archid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# SRC = main.cpp ./srcs/irc.cpp
-SRC = main.cpp ./parsing/args_checker.cpp ./parsing/input_parsing.cpp ./parsing/cmds.cpp
+SRC = srcs/main.cpp srcs/server.cpp #./parsing/args_checker.cpp ./parsing/input_parsing.cpp ./parsing/cmds.cpp
 
 OBJF = $(SRC:.cpp=.o)
 
 NAME = ircserv
 
-CLANG = c++
+CXX = c++
 
-FLAGS = -Wall -Wextra -Werror -std=c++98
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -Iheaders
 
-# $(NAME) : $(OBJF) ./headers/irc.hpp 
-$(NAME) : $(OBJF) ./parsing/parser.hpp
-		$(CLANG) $(FLAGS)  $(OBJF) -o $(NAME)
+# $(NAME) : $(OBJF) ./headers/irc.hpp
+$(NAME) : $(OBJF) headers/server.hpp
+		$(CXX) $(CXXFLAGS) $(OBJF) -o $(NAME)
 
 %.o: %.cpp
-		$(CLANG) $(FLAGS) -o $@ -c $<
+		$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 all : $(NAME)
 
