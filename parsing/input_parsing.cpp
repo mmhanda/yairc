@@ -33,7 +33,7 @@ int	parse_command(std::string &input , const int fd)
 				* and input.c_str() return const char* */
 			input.erase(std::remove(input.begin(), input.end(), '\n'), input.end());
 			input.erase(std::remove(input.begin(), input.end(), '\r'), input.end());  /*IRC messages are always lines of characters terminated with a CR-LF (Carriage Return - Line Feed)*/
-									std::cerr <<	"input :: " << input  << "|||||||||";
+									// std::cerr <<	"input :: " << input  << "|||||||||";
 
 			str = const_cast<char *>(input.c_str());
 			/*
@@ -69,7 +69,7 @@ int	parse_command(std::string &input , const int fd)
 				else if (splited_line[0] == "NICK")
 				{
 					check_NICK(splited_line, tmp);
-					std::cout<< "tmp nick name is "<<tmp->nickname() <<std::endl;
+					// std::cout<< "tmp nick name is "<<tmp->nickname() <<std::endl;
 				}
 				else if (splited_line[0] == "USER")
 				{

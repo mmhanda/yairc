@@ -92,7 +92,7 @@ int	checker(int ac, char **av, int		&port)
 			return (0);
 		}
 		PASSWORD = password_checking;
-		std::cerr << "PASSWORD " << PASSWORD << std::endl;
+		// std::cerr << "PASSWORD " << PASSWORD << std::endl;
 		// if (password_checking.empty()
 		// 	|| password_checking.find_first_of(" ") < password_checking.size())
 		// {
