@@ -61,6 +61,7 @@ For each client that has sent, we may =recv()= some data to be put in a buffer, 
 * References
 
  - [[https://www.rfc-editor.org/rfc/rfc1459][IRC Standard]]
+ - [[https://unicorn-utterances.com/posts/joining-freenode-irc][Using Freenode IRC Server]]
  - [[https://beej.us/guide/bgnet/html][Beej's Guide to Network Programming]]
  - [[http://dwise1.net/pgm/sockets/][DWise1's Sockets Programming Pages]]
  - [[http://www.kegel.com/c10k.html][Handling multiple users]]

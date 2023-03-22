@@ -6,7 +6,7 @@
 //   By: archid <archid-@1337.student.ma>           +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2023/03/06 17:10:03 by archid            #+#    #+#             //
-//   Updated: 2023/03/07 02:55:27 by archid           ###   ########.fr       //
+//   Updated: 2023/03/21 23:39:18 by archid           ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,38 +15,47 @@
 #include <vector>
 #include <string>
 
-namespace yairc {
-  namespace detail {
-	std::string tolower(std::)
-  }
+// class command {
+// public:
+// 	typedef command *pointer;
 
-  struct command {
-	typedef command *command_ptr;
+// 	command(std::string cmd);
 
-	command(std::string cmd);
+// 	void set_args(std::vector<std::string> args) { args_ = args; }
 
-	void set_args(std::vector<std::string> args) { args_ = args; }
+// 	virtual void exec(std::vector<std::string> params) = 0;
 
-	virtual void exec(std::vector<std::string> params) = 0;
+// 	virtual  bool is_command(std::string cmd) = 	0;
 
-	virtual  bool is_command(std::string cmd) = 	0;
+// protected:
+// 	std::vector<std::string> args_;
+// };
 
-  protected:
-	std::vector<std::string> args_;
-  };
+// class user_command : public command {
+// public:
+// 	user_command() : command("user") {}
 
-  class user_command : public command {
-	user_command() : command("user") {
-	}
+// 	virtual void exec(std::vector<std::string> params) {}
+
+// 	virtual bool is_command(std::string cmd) {}
+// };
+
+// extern std::vector<command::pointer> cmds;
+
+class command {
+public:
+	typedef command *pointer;
+
+	command(std::vector<std::string> parts) : parts_(parts) {}
+
+	virtual int exec() const = 0;
+
+	const std::vector<std::string> &parts() const { return parts_; }
+
+protected:
+	std::vector<std::string> parts_;
+};
 
 
-	virtual void exec(std::vector<std::string> params) {
-
-	}
-
-	virtual bool is_command(std::string cmd) {std::to_lower()
-	}
-  };
-
-  extern std::vector<command::command_ptr> cmds;
-} // namespace yairc
+command::pointer parse_command(const std::string &msgs);
+int exec_command(const std::string &msgs);
