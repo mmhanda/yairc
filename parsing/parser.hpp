@@ -16,13 +16,15 @@
 #include <map>
 #include <string>
 #include <vector>
+#include "../headers/client.hpp"
 
 #define CLIENT_MAX_NICKNAME 9
 
-int	parse_command(void);
+int	parse_command(std::string &input , const int fd);
 int	checker(int ac, char **av);
-int check_PASS(std::vector<std::string> const & splited_line);
-int check_NICK(std::vector<std::string> const & splited_line);
+int	check_PASS(std::vector<std::string> const &splited_line , client *tmp);
+// int check_NICK(std::vector<std::string> const & splited_line);
+int	check_NICK(std::vector<std::string> const &splited_line, client *tmp);
 int check_USER(std::vector<std::string> const & splited_line);
 int check_OPER(std::vector<std::string> const & splited_line);
 int check_QUIT(char	*str1, std::string const & back_up_input);

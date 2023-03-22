@@ -11,31 +11,30 @@
 /* ************************************************************************** */
 
 #include "parser.hpp"
-
+#include "../headers/server.hpp"
+#include "../headers/client.hpp"
 int parse_command(std::string cmd)
 {
 
 }
 
-int	parse_command(void)
+int	parse_command(std::string &input , const int fd)
 {
 	char	*str;
 	char	*str1;
 
 	str = NULL;
 	str1 = NULL;
-	while (1)
-	{
+
 		std::vector<std::string> splited_line;
-		std::string input;
 		std::string back_up_input;
-		std::getline(std::cin, input); // read a line
 		back_up_input = input;
 		// std::cout << "before input = " << input << std::endl << std::endl;
 		if (!input.empty())
 		{
 			/*const_cast <new_type> (expression) why? strtok uses char
 				* and input.c_str() return const char* */
+			input.erase(std::remove_if(input.begin(), input.end(), isspace), input.end());
 			str = const_cast<char *>(input.c_str());
 			/*
 			strtok() stores the pointer in static variable where did you last time left off ,
@@ -53,19 +52,24 @@ int	parse_command(void)
 					splited_line.push_back(str);
 					str = strtok(NULL, " ");
 				}
-				size_t i = 0;
-				while (i < splited_line.size())
-				{
-					std::cout << "splited_line [] = " << splited_line[i] << std::endl;
-					i++;
-				}
+				
+				// size_t i = 0;
+				// while (i < splited_line.size())
+				// {
+				// 	std::cout << "splited_line [] = " << splited_line[i] << std::endl;
+				// 	i++;
+				// }
+	 			client *tmp = NULL;
+				tmp = map_clients.at(fd);
+
 				if (splited_line[0] == "PASS")
 				{
-					check_PASS(splited_line);
+					check_PASS(splited_line , tmp);
 				}
 				else if (splited_line[0] == "NICK")
 				{
-					check_NICK(splited_line);
+					check_NICK(splited_line, tmp);
+					std::cout<< "tmp nick name is "<<tmp->nickname() <<std::endl;
 				}
 				else if (splited_line[0] == "USER")
 				{
@@ -101,7 +105,7 @@ int	parse_command(void)
 				}
 			}
 		}
-	}
+	// }
 }
 
 /*			Command: SERVER

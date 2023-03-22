@@ -13,14 +13,14 @@
 #include "parser.hpp"
 #include <iostream>
 #include <stdlib.h> //for atoi
-std::string PASSWORD;
+std::string PASSWORD("ANAS");
 
 /*
 		Command: PASS
 	Parameters: <password> (RFC 1459)
 	ERRORS : ERR_ALREADYREGISTRED  ERR_NEEDMOREPARAMS
 */
-int	check_PASS(std::vector<std::string> const &splited_line)
+int	check_PASS(std::vector<std::string> const &splited_line , client *tmp)
 {
 	if (splited_line.size() != 2)
 	{

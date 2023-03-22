@@ -13,6 +13,7 @@
 #include <iostream>
 #include "server.hpp"
 #include "command.hpp"
+#include "../parsing/parser.hpp"
 
 struct sockaddr *server::setup_address(const short port) {
 	static struct sockaddr_in addr;
@@ -118,7 +119,8 @@ void server::run() {
 			continue;
 		}
 
-		for (unsigned i = 0; i < clients_.size(); ++i) {
+		for (unsigned i = 0; i < clients_.size(); ++i) 
+		{
 			if (clients_[i].revents & POLLIN) {
 				if (clients_[i].fd == sock_fd_) {
 					accept_clients();
@@ -127,8 +129,11 @@ void server::run() {
 						continue;
 
 					std::string &msg = map_msgs.at(clients_[i].fd);
-					if (msg.find(delimiter) != std::string::npos) {
-						authenthic(msg, clients_[i].fd);
+					if (msg.find(delimiter) != std::string::npos) 
+					{
+						std::cout << msg <<std::endl;
+						parse_command(msg ,  clients_[i].fd);
+						// authenthic(msg, clients_[i].fd);
 						msg.erase();
 						// std::cout << msg ;
 						// command::pointer irc_cmd = parse_command(msg);
