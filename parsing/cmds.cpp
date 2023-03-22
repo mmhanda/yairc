@@ -38,13 +38,15 @@ int	check_NICK(std::vector<std::string> const &splited_line, client *tmp)
 */
 int	check_USER(std::vector<std::string> const &splited_line, client *tmp)
 {
-	std::cout << "PASS USER" << std::endl;
-	if (splited_line.size() != 5)
+	// std::cout << "PASS USER" << std::endl;
+	// if (splited_line.size() != 5)
+	if (splited_line.size() != 2)
 	{
 		std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
 		return 0;
 	}
-	std::cout << "USER is found" << std::endl;
+	tmp->username(splited_line[1]);
+	// std::cout << "USER is found" << std::endl;
 	return (0);
 }
 
