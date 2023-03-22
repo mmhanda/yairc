@@ -38,7 +38,8 @@ void authenthic(const std::string &msg, const int fd)
         }
     }
 
-    if (msg.find("PASS ") != std::string::npos) {
+    if (msg.find("PASS ") != std::string::npos)
+    {
         if (msg.length() > 6){
             std::string tmp1 = msg.substr(5);
             if (tmp1 == "123")

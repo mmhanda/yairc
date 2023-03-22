@@ -34,7 +34,7 @@ int	parse_command(std::string &input , const int fd)
 		{
 			/*const_cast <new_type> (expression) why? strtok uses char
 				* and input.c_str() return const char* */
-			input.erase(std::remove_if(input.begin(), input.end(), isspace), input.end());
+			input.erase(std::remove(input.begin(), input.end(), '\n'), input.end());
 			str = const_cast<char *>(input.c_str());
 			/*
 			strtok() stores the pointer in static variable where did you last time left off ,
@@ -73,7 +73,7 @@ int	parse_command(std::string &input , const int fd)
 				}
 				else if (splited_line[0] == "USER")
 				{
-					check_USER(splited_line);
+					check_USER(splited_line, tmp);
 				}
 				else if (splited_line[0] == "OPER")
 				{
