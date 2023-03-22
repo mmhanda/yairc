@@ -131,11 +131,9 @@ void server::run() {
 					std::string &msg = map_msgs.at(clients_[i].fd);
 					if (msg.find(delimiter) != std::string::npos) 
 					{
-						std::cout << msg <<std::endl;
 						parse_command(msg ,  clients_[i].fd);
 						// authenthic(msg, clients_[i].fd);
 						msg.erase();
-						// std::cout << msg ;
 						// command::pointer irc_cmd = parse_command(msg);
 						// if (irc_cmd->exec() < 0)
 						// 	terminate_and_throw();

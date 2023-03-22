@@ -13,10 +13,7 @@
 #include "parser.hpp"
 #include "../headers/server.hpp"
 #include "../headers/client.hpp"
-int parse_command(std::string cmd)
-{
 
-}
 
 int	parse_command(std::string &input , const int fd)
 {
@@ -35,6 +32,9 @@ int	parse_command(std::string &input , const int fd)
 			/*const_cast <new_type> (expression) why? strtok uses char
 				* and input.c_str() return const char* */
 			input.erase(std::remove(input.begin(), input.end(), '\n'), input.end());
+			input.erase(std::remove(input.begin(), input.end(), '\r'), input.end());  /*IRC messages are always lines of characters terminated with a CR-LF (Carriage Return - Line Feed)*/
+									std::cerr <<	"input :: " << input  << "|||||||||";
+
 			str = const_cast<char *>(input.c_str());
 			/*
 			strtok() stores the pointer in static variable where did you last time left off ,
@@ -105,16 +105,5 @@ int	parse_command(std::string &input , const int fd)
 				}
 			}
 		}
-	// }
+		return 0;
 }
-
-/*			Command: SERVER
-   Parameters: <servername> <hopcount> <info>
-*/
-// if (splited_line[0] == "SERVER")
-// {
-// 	std::cout << "SERVER command" << std::endl;
-// 	if (splited_line.size() != 1)
-// 		std::cerr << "SERVER  parameters error " << std::endl;
-// NOTICE anas text messga eexample sjks asd
-// }

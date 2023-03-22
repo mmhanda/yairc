@@ -22,6 +22,9 @@ std::string PASSWORD;
 */
 int	check_PASS(std::vector<std::string> const &splited_line , client *tmp)
 {
+				std::cout << splited_line[1] <<std::endl;
+				std::cout << splited_line[1].size() <<std::endl;
+
 	if(tmp->PASS_authenticated == true)
 	{
 		std::cerr << "462 " << splited_line[0] << " :ERR_ALREADYREGISTRED" << std::endl;
@@ -37,7 +40,7 @@ int	check_PASS(std::vector<std::string> const &splited_line , client *tmp)
 	{
 		if (splited_line[1] != PASSWORD)
 		{
-			std::cerr << "464 " << splited_line[0] << " :Password incorrect" << std::endl;
+			std::cerr << "464 " << splited_line[0] << " :Password incorrect "  << std::endl;
 			return (0);
 		}
 		tmp->PASS_authenticated = true;
