@@ -66,9 +66,8 @@ For each client that has sent, we may =recv()= some data to be put in a buffer, 
  - [[http://dwise1.net/pgm/sockets/][DWise1's Sockets Programming Pages]]
  - [[http://www.kegel.com/c10k.html][Handling multiple users]]
  
- visual referenc
-
-
+ **visual reference
+   ![alt text](http://url/to/img.png) 
 ** Stackoverflow
 
  - [[https://stackoverflow.com/questions/36985793/blocking-recv-vs-fcntl][disable =recv= blocking]]
