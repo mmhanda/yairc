@@ -6,7 +6,7 @@
 #    By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/24 23:57:31 by mhanda            #+#    #+#              #
-#    Updated: 2023/03/21 01:23:02 by archid           ###   ########.fr        #
+#    Updated: 2023/03/21 23:00:30 by archid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,9 @@ $(NAME) : $(OBJF) headers/server.hpp
 		$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 all : $(NAME)
+
+run: all
+	./ircserv 1 1
 
 clean :
 		rm -f $(OBJF)

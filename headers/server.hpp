@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             */
-//   Updated: 2023/03/21 02:43:18 by archid           ###   ########.fr       //
+//   Updated: 2023/03/21 23:30:45 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,14 @@
 #include <arpa/inet.h>
 #include <string.h>
 
-#include <stdexcept>
-#include <vector>
-#include <string>
-#include <algorithm>
 #include <utility>
+#include <stdexcept>
+
+#include <algorithm>
+#include <vector>
+#include <map>
+
+#include <string>
 
 #include "client.hpp"
 
@@ -44,19 +47,20 @@ class server {
 		struct sockaddr					*setup_address(const short port);
 		struct sockaddr 				*addr_;
 
-		int								sock_fd_;
-		std::vector<pollfd> 			clients_;
+		int											sock_fd_;
+		std::vector<pollfd> 		clients_;
 
-		void							start();
-		void							terminate_and_throw();
-		void							server_banner(int client_fd);
-		std::vector<std::string>						recieve_data(pollfd_iter client);
+		void				      			start();
+		void				      			terminate_and_throw();
+		void				      			server_banner(int client_fd);
+		ssize_t			      			recieve_message(pollfd_iter client);
+	  void				      			accept_clients();
 
 	public:
 		server(int port) : addr_(setup_address(port)) { start(); }
 
-		void							terminate();
-		void run();
+		void										terminate();
+		void										run();
 		server() {};
 		// ~server() { terminate(); }
 };
