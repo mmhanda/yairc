@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             */
-//   Updated: 2023/03/21 23:30:45 by archid           ###   ########.fr       //
+/*   Updated: 2023/03/22 00:34:49 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,3 +120,6 @@ extern short	num_port;
 extern char		*passwd;
 
 void parse_args(int argc, const char *argv[]);
+
+extern const char *delimiter;
+extern std::map<int, std::string> msgs;

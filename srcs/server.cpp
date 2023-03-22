@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 00:59:52 by archid            #+#    #+#             */
-//   Updated: 2023/03/21 23:40:49 by archid           ###   ########.fr       //
+/*   Updated: 2023/03/22 00:40:24 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "server.hpp"
 #include "command.hpp"
 
-static const char *delimiter = "\n";
+
 
 struct sockaddr *server::setup_address(const short port) {
 	static struct sockaddr_in addr;
@@ -74,14 +74,13 @@ void server::server_banner(int client_fd) {
 		terminate_and_throw();
 }
 
-std::map<int, std::string> msgs;
 ssize_t server::recieve_message(pollfd_iter client) {
-	std::int8_t tmp[BUFF_SIZE];
-	ssize_t n_bytes = recv(client->fd, tmp, sizeof(tmp), 0);
+	std::int8_t buffer[BUFF_SIZE];
+	ssize_t n_bytes = recv(client->fd, buffer, sizeof(buffer), 0);
 
 	if (n_bytes > 0) {
-		std::cerr << "recieved from client " << client->fd << "\n";
-		msgs[client->fd] += std::string(tmp, tmp + n_bytes);
+		std::cerr << "recieved from " << n_bytes << " from client " << client->fd << "\n";
+		msgs[client->fd].append(buffer, buffer + n_bytes);
 	} else if (n_bytes == 0) {
 		std::cerr << "client " << client->fd << " has left\n";
 		close(client->fd);
@@ -132,3 +131,6 @@ void server::run() {
 		}
 	}
 }
+
+const char *delimiter = "\n";
+std::map<int, std::string> msgs;
