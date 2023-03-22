@@ -13,8 +13,8 @@
 #include "parser.hpp"
 #include <iostream>
 #include <stdlib.h> //for atoi
-std::string PASSWORD("ANAS");
-
+std::string PASSWORD;
+ 
 /*
 		Command: PASS
 	Parameters: <password> (RFC 1459)
@@ -28,9 +28,7 @@ int	check_PASS(std::vector<std::string> const &splited_line , client *tmp)
 		return 0;
 	}
 	else
-	{
-
-	
+	{	
 	if (splited_line.size() != 2)
 	{
 		std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
@@ -45,7 +43,7 @@ int	check_PASS(std::vector<std::string> const &splited_line , client *tmp)
 		tmp->PASS_authenticated = true;
 		if(	tmp->PASS_authenticated && 	tmp->NICK_authenticated && 	tmp->USER_authenticated)
 		{
-					std::cout << "Welcome to IRC " << std::endl;
+					std::cout << "\e[1m"<< "🅆 🄴 🄻 🄲 🄾 🄼 🄴   🅃 🄾     🅈 🄰 🄸 🅁 🄲    🅂 🄴 🅁 🅅 🄴 🅁 " << std::endl;
 
 		}
 	}
@@ -54,10 +52,10 @@ int	check_PASS(std::vector<std::string> const &splited_line , client *tmp)
 	return (0);
 }
 
-int	checker(int ac, char **av)
+
+int	checker(int ac, char **av, int		&port)
 {
 	size_t	i;
-	int		port;
 
 	if (ac != 3)
 	{
@@ -92,12 +90,12 @@ int	checker(int ac, char **av)
 		}
 		PASSWORD = password_checking;
 		std::cerr << "PASSWORD " << PASSWORD << std::endl;
-		if (password_checking.empty()
-			|| password_checking.find_first_of(" ") < password_checking.size())
-		{
-			std::cerr << "ERROR:problem in the password : Please check again " << std::endl;
-			return (0);
-		}
+		// if (password_checking.empty()
+		// 	|| password_checking.find_first_of(" ") < password_checking.size())
+		// {
+		// 	std::cerr << "ERROR:problem in the password : Please check again " << std::endl;
+		// 	return (0);
+		// }
 	}
 	return (1);
 }
