@@ -6,13 +6,14 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 00:59:52 by archid            #+#    #+#             */
-//   Updated: 2023/03/22 18:38:01 by archid           ###   ########.fr       //
+//   Updated: 2023/03/22 19:14:16 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include "server.hpp"
 #include "command.hpp"
+#include "../parsing/parser.hpp"
 
 struct sockaddr *server::setup_address(const short port) {
 	static struct sockaddr_in addr;
@@ -64,7 +65,7 @@ void server::terminate_and_throw() {
 	throw std::runtime_error(str_error());
 }
 
-void server::message(int client_fd, const std::string &msg, int flags = 0) {
+void server::message(int client_fd, const std::string &msg, int flags) {
 	ssize_t n_bytes = ::send(client_fd, msg.c_str(), msg.size(), flags);
 	if (n_bytes < 0)
 		terminate_and_throw();
@@ -78,9 +79,9 @@ ssize_t server::recieve_message(pollfd_iter client) {
 		std::cerr << "recieved from " << n_bytes << " from client " << client->fd << "\n";
 		map_msgs[client->fd].append(buffer, buffer + n_bytes);
 	} else if (n_bytes == 0) {
-		std::cerr << "client " << client->fd << " has left\n";
-		// map_msgs.erase(clients_) // need to be ereased
+		std::cerr << *map_users.at(client->fd) << client->fd << " has disconnected\n";
 		close(client->fd);
+		map_msgs.erase(client->fd);
 		clients_.erase(client);
 	} else if (errno != EWOULDBLOCK) {
 		std::cout << "catch\n" ;
@@ -116,7 +117,8 @@ void server::run() {
 			continue;
 		}
 
-		for (unsigned i = 0; i < clients_.size(); ++i) {
+		for (unsigned i = 0; i < clients_.size(); ++i)
+		{
 			if (clients_[i].revents & POLLIN) {
 				if (clients_[i].fd == sock_fd_) {
 					accept_clients();
@@ -124,15 +126,19 @@ void server::run() {
 					if(!recieve_message(clients_.begin() + i))
 						continue;
 
-					std::string &msg = map_msgs.at(clients_[i].fd);
-					if (msg.find(delimiter) != std::string::npos) {
-						authenthic(msg, clients_[i].fd);
+					if (map_msgs.at(clients_[i].fd).find(msg_delim) != std::string::npos)
+					{
+						std::string msg = map_msgs.at(clients_[i].fd);
+						map_msgs.erase(clients_[i].fd);
+
+						parse_command(msg ,  clients_[i].fd);
+						// authenticate(msg, clients_[i].fd);
 						msg.erase();
-						// std::cout << msg ;
 						// command::pointer irc_cmd = parse_command(msg);
 
 						// if (irc_cmd->exec() < 0)
 						// 	terminate_and_throw();
+
 					}
 				}
 			}
@@ -141,7 +147,6 @@ void server::run() {
 }
 
 void server::mode(user *user, channel *chan, user_roles role) {
-
 
 }
 

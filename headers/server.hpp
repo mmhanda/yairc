@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             */
-//   Updated: 2023/03/22 18:00:09 by archid           ###   ########.fr       //
+//   Updated: 2023/03/22 19:14:05 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ private:
 
   int sock_fd_;
   std::vector<pollfd> clients_;
+	std::string passwd_;
 
   void start();
   void terminate_and_throw();
@@ -58,21 +59,21 @@ private:
 
 public:
   server() {};
-  server(int port) : addr_(setup_address(port)) { start(); }
+  server(int port, std::string passwd) : addr_(setup_address(port)), passwd_(passwd) { start(); }
 
 	void message(int client_fd, const std::string &msg, int flags = 0);
-  void mode(class user *user, user_roles role);
-  void mode(class channel *chan, channel_properties prop);
+  void mode(user *user, channel *chan, user_roles role);
+  void mode(channel *chan, channel_properties prop);
 
   void terminate();
   void run();
 };
 
-void authenthic(const std::string &msg, const int fd);
-void parse_args(int argc, const char *argv[]);
+void authenticate(const std::string &msg, const int fd);
+// void parse_args(int argc, const char *argv[]);
 
-extern short num_port;
-extern char *passwd;
+// extern short num_port;
+// extern char *passwd;
 
 extern const char *msg_delim;
 extern std::map<int, std::string> map_msgs;

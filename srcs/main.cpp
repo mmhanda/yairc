@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 03:13:39 by archid            #+#    #+#             */
-//   Updated: 2023/03/22 18:00:15 by archid           ###   ########.fr       //
+//   Updated: 2023/03/22 19:11:57 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 #include <climits>
 #include <iostream>
 #include "server.hpp"
+#include "../parsing/parser.hpp"
 
 #define NUM_DIGITS 5
 #define PASSWD_SIZE 32
-
+/*
 short num_port;
 char *passwd;
 
@@ -49,6 +50,7 @@ void parse_args(int argc, char *argv[]) {
 	}
 	passwd = argv[2];
 }
+*/
 
 void handler(int) {
 	serve.terminate();
@@ -56,10 +58,15 @@ void handler(int) {
 }
 
 int main(int argc, char *argv[]) {
+	int port = 1;
+	std::string passwd = "1";
+
 	signal(SIGINT, handler);
-	parse_args(argc, argv);
+	// parse_args(argc, argv);
+	if (checker(argc, argv , port) == 0)
+		return (0);
 	try {
-		serve = server(num_port);
+		serve = server(port, passwd.c_str());
 		serve.run();
 		return EXIT_SUCCESS;
 	} catch (const std::runtime_error &e) {

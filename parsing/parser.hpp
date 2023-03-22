@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 09:20:51 by atabiti           #+#    #+#             */
-//   Updated: 2023/03/14 02:18:42 by archid           ###   ########.fr       //
+//   Updated: 2023/03/22 19:15:51 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,17 @@
 #include <map>
 #include <string>
 #include <vector>
+#include "user.hpp"
 
 #define CLIENT_MAX_NICKNAME 9
 
-int	parse_command(void);
-int	checker(int ac, char **av);
-int check_PASS(std::vector<std::string> const & splited_line);
-int check_NICK(std::vector<std::string> const & splited_line);
-int check_USER(std::vector<std::string> const & splited_line);
+int	parse_command(std::string &input , const int fd);
+int	checker(int ac, char **av,int		&port);
+int	check_PASS(std::vector<std::string> const &splited_line , user *tmp);
+// int check_NICK(std::vector<std::string> const & splited_line);
+int	check_NICK(std::vector<std::string> const &splited_line, user *tmp);
+// int check_USER(std::vector<std::string> const & splited_line);
+int	check_USER(std::vector<std::string> const &splited_line, user *tmp);
 int check_OPER(std::vector<std::string> const & splited_line);
 int check_QUIT(char	*str1, std::string const & back_up_input);
 int check_JOIN(std::vector<std::string>  & splited_line);

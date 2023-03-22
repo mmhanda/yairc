@@ -6,7 +6,7 @@
 //   By: archid <archid-@1337.student.ma>           +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2023/02/25 04:55:12 by archid            #+#    #+#             //
-//   Updated: 2023/03/22 18:48:31 by archid           ###   ########.fr       //
+//   Updated: 2023/03/22 19:20:53 by archid           ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -31,7 +31,6 @@ void channel::activate(user *user, bool is_active) {
 	}
 	std::cerr << *user << " is " << (is_active ? "in" : "")
 						<< "active on " << *this << '\n';
-	return is_active;
 }
 
 void channel::join(user *user) {

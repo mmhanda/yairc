@@ -74,7 +74,8 @@ IRC messages are always lines of characters terminated with a CR-LF (Carriage Re
  - [[https://beej.us/guide/bgnet/html][Beej's Guide to Network Programming]]
  - [[http://dwise1.net/pgm/sockets/][DWise1's Sockets Programming Pages]]
  - [[http://www.kegel.com/c10k.html][Handling multiple users]]
-
+ 
+![alt text](https://user-images.githubusercontent.com/94152392/226868617-2b778553-9795-42b7-aa1d-ba27ec688cbd.png)
 ** Stackoverflow
 
  - [[https://stackoverflow.com/questions/36985793/blocking-recv-vs-fcntl][disable =recv= blocking]]

@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:23:40 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/13 09:13:14 by atabiti          ###   ########.fr       */
+//   Updated: 2023/03/22 19:21:03 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,18 @@ std::string PASSWORD;
 	Parameters: <password> (RFC 1459)
 	ERRORS : ERR_ALREADYREGISTRED  ERR_NEEDMOREPARAMS
 */
-int	check_PASS(std::vector<std::string> const &splited_line)
+int	check_PASS(std::vector<std::string> const &splited_line , user *tmp)
 {
+				std::cout << splited_line[1] <<std::endl;
+				std::cout << splited_line[1].size() <<std::endl;
+
+	if(tmp->PASS_authenticated == true)
+	{
+		std::cerr << "462 " << splited_line[0] << " :ERR_ALREADYREGISTRED" << std::endl;
+		return 0;
+	}
+	else
+	{
 	if (splited_line.size() != 2)
 	{
 		std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
@@ -30,17 +40,25 @@ int	check_PASS(std::vector<std::string> const &splited_line)
 	{
 		if (splited_line[1] != PASSWORD)
 		{
-			std::cerr << "464 " << splited_line[0] << " :Password incorrect" << std::endl;
+			std::cerr << "464 " << splited_line[0] << " :Password incorrect "  << std::endl;
 			return (0);
 		}
+		tmp->PASS_authenticated = true;
+		if(	tmp->PASS_authenticated && 	tmp->NICK_authenticated && 	tmp->USER_authenticated)
+		{
+					std::cout << "\e[1m"<< "🅆 🄴 🄻 🄲 🄾 🄼 🄴   🅃 🄾     🅈 🄰 🄸 🅁 🄲    🅂 🄴 🅁 🅅 🄴 🅁 " << std::endl;
+
+		}
 	}
+	}
+
 	return (0);
 }
 
-int	checker(int ac, char **av)
+
+int	checker(int ac, char **av, int &port)
 {
 	size_t	i;
-	int		port;
 
 	if (ac != 3)
 	{
@@ -74,13 +92,13 @@ int	checker(int ac, char **av)
 			return (0);
 		}
 		PASSWORD = password_checking;
-		std::cerr << "PASSWORD " << PASSWORD << std::endl;
-		if (password_checking.empty()
-			|| password_checking.find_first_of(" ") < password_checking.size())
-		{
-			std::cerr << "ERROR:problem in the password : Please check again " << std::endl;
-			return (0);
-		}
+		// std::cerr << "PASSWORD " << PASSWORD << std::endl;
+		// if (password_checking.empty()
+		// 	|| password_checking.find_first_of(" ") < password_checking.size())
+		// {
+		// 	std::cerr << "ERROR:problem in the password : Please check again " << std::endl;
+		// 	return (0);
+		// }
 	}
 	return (1);
 }

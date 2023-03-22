@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 01:13:18 by archid            #+#    #+#             */
-//   Updated: 2023/03/22 18:50:57 by archid           ###   ########.fr       //
+//   Updated: 2023/03/22 19:19:12 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,11 @@
 #include "channel.hpp"
 #include <iostream>
 
-user::user(int client_fd) { client_fd_ = client_fd; }
+user::user(int client_fd) : PASS_authenticated(false),
+														NICK_authenticated(false),
+														USER_authenticated(false) {
+	client_fd_ = client_fd;
+}
 
 const std::string &user::nickname() const { return nickname_; }
 

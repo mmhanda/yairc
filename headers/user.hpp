@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 03:21:35 by archid            #+#    #+#             */
-//   Updated: 2023/03/22 18:45:25 by archid           ###   ########.fr       //
+//   Updated: 2023/03/22 19:21:27 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,16 @@ public:
 	bool private_message(const user *user, const std::string &msg);
 	void leave_channel(class channel *chan);
 
+
+	bool PASS_authenticated;
+	bool NICK_authenticated;
+	bool USER_authenticated;
+
 protected:
 	int client_fd_;
 	std::map<class channel *, user_roles> roles_;
 	std::string nickname_, username_;
+
 };
 
 std::ostream &operator<<(std::ostream &oss, const class user u);
