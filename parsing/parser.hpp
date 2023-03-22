@@ -21,7 +21,7 @@
 #define CLIENT_MAX_NICKNAME 9
 
 int	parse_command(std::string &input , const int fd);
-int	checker(int ac, char **av);
+int	checker(int ac, char **av,int		&port);
 int	check_PASS(std::vector<std::string> const &splited_line , client *tmp);
 // int check_NICK(std::vector<std::string> const & splited_line);
 int	check_NICK(std::vector<std::string> const &splited_line, client *tmp);
