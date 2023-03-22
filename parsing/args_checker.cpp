@@ -22,6 +22,15 @@ std::string PASSWORD("ANAS");
 */
 int	check_PASS(std::vector<std::string> const &splited_line , client *tmp)
 {
+	if(tmp->PASS_authenticated == true)
+	{
+		std::cerr << "462 " << splited_line[0] << " :ERR_ALREADYREGISTRED" << std::endl;
+		return 0;
+	}
+	else
+	{
+
+	
 	if (splited_line.size() != 2)
 	{
 		std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
@@ -33,7 +42,15 @@ int	check_PASS(std::vector<std::string> const &splited_line , client *tmp)
 			std::cerr << "464 " << splited_line[0] << " :Password incorrect" << std::endl;
 			return (0);
 		}
+		tmp->PASS_authenticated = true;
+		if(	tmp->PASS_authenticated && 	tmp->NICK_authenticated && 	tmp->USER_authenticated)
+		{
+					std::cout << "Welcome to IRC " << std::endl;
+
+		}
 	}
+	}
+	
 	return (0);
 }
 

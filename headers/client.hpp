@@ -20,8 +20,10 @@ class client {
 	private:
 		int client_fd_;
 		std::string nickname_, username_;
-
 	public:
+		bool PASS_authenticated;
+		bool NICK_authenticated;
+		bool USER_authenticated;
 		typedef client *client_ptr;
 
 		client(int client_fd);
