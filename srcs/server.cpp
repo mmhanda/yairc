@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 00:59:52 by archid            #+#    #+#             */
-/*   Updated: 2023/03/22 09:20:25 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/22 09:26:45 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,6 @@ void server::run() {
 						msg.erase();
 						// std::cout << msg ;
 						// command::pointer irc_cmd = parse_command(msg);
-						
 						// if (irc_cmd->exec() < 0)
 						// 	terminate_and_throw();
 					}
