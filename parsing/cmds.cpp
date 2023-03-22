@@ -18,7 +18,7 @@
 	NICK <nickname> (RFC 2812)
 	ERRORS : ERR_NONICKNAMEGIVEN   ERR_ERRONEUSNICKNAME   ERR_NICKNAMEINUSE        ERR_NICKCOLLISION
 */
-int	check_NICK(std::vector<std::string> const &splited_line)
+int	check_NICK(std::vector<std::string> const &splited_line, client *tmp)
 {
 	if (splited_line.size() != 2)
 	{
@@ -26,7 +26,9 @@ int	check_NICK(std::vector<std::string> const &splited_line)
 		// ERR_NONICKNAMEGIVEN
 		return (0);
 	}
-	std::cout << "NICKNAME IS : " << splited_line[1] << std::endl;
+	// std::cout << "NICKNAME IS : " << splited_line[1] << std::endl;
+	tmp->nickname(splited_line[1]);
+    std::cout << "nick name set\n";
 	return (0);
 }
 /*
@@ -34,14 +36,17 @@ int	check_NICK(std::vector<std::string> const &splited_line)
 	USER <username> <hostname> <servername> <realname> (RFC 1459)
 	USER <user> <mode> <unused> <realname> (RFC 2812)
 */
-int	check_USER(std::vector<std::string> const &splited_line)
+int	check_USER(std::vector<std::string> const &splited_line, client *tmp)
 {
-	std::cout << "PASS USER" << std::endl;
-	if (splited_line.size() != 5)
+	// std::cout << "PASS USER" << std::endl;
+	// if (splited_line.size() != 5)
+	if (splited_line.size() != 2)
 	{
 		std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
+		return 0;
 	}
-	std::cout << "USER is found" << std::endl;
+	tmp->username(splited_line[1]);
+	// std::cout << "USER is found" << std::endl;
 	return (0);
 }
 
@@ -61,7 +66,7 @@ int	check_OPER(std::vector<std::string> const &splited_line)
 }
 
 /*
-			Command: QUIT
+			Command: QUIT:
 				Parameters: [<Quit message>]
 */
 int	check_QUIT(char *str1, std::string const &back_up_input)

@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRC = srcs/main.cpp srcs/server.cpp srcs/command.cpp srcs/client.cpp #./parsing/args_checker.cpp ./parsing/input_parsing.cpp ./parsing/cmds.cpp
+SRC = srcs/main.cpp srcs/server.cpp srcs/command.cpp srcs/client.cpp ./parsing/args_checker.cpp ./parsing/input_parsing.cpp ./parsing/cmds.cpp
 
 OBJF = $(SRC:.cpp=.o)
 
