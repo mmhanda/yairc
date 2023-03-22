@@ -20,19 +20,16 @@
 */
 int	check_NICK(std::vector<std::string> const &splited_line, client *tmp)
 {
-		
-
 	if (splited_line.size() != 2)
 	{
 		std::cerr << "431 " << splited_line[0] << " :No nickname given" << std::endl;
-		// ERR_NONICKNAMEGIVEN
 		return (0);
 	}
-	// std::cout << "NICKNAME IS : " << splited_line[1] << std::endl;
 	tmp->nickname(splited_line[1]);
 	tmp->NICK_authenticated = true;
 	return (0);
 }
+
 /*
 						Command: USER
 	USER <username> <hostname> <servername> <realname> (RFC 1459)
@@ -40,15 +37,20 @@ int	check_NICK(std::vector<std::string> const &splited_line, client *tmp)
 */
 int	check_USER(std::vector<std::string> const &splited_line, client *tmp)
 {
-	// std::cout << "PASS USER" << std::endl;
-	// if (splited_line.size() != 5)
-	if (splited_line.size() != 2)
+	// std::cout << "PASS USER" << s td::endl;
+	if (splited_line.size() != 5)
+	// if (splited_line.size() != 2)
 	{
 		std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
 		return 0;
 	}
 	tmp->username(splited_line[1]);
 	tmp->USER_authenticated = true;
+	if(	tmp->PASS_authenticated && 	tmp->NICK_authenticated && 	tmp->USER_authenticated)
+		{
+					std::cout << "\e[1m"<< "🅆 🄴 🄻 🄲 🄾 🄼 🄴   🅃 🄾     🅈 🄰 🄸 🅁 🄲    🅂 🄴 🅁 🅅 🄴 🅁 " << std::endl;
+
+		}
 	// std::cout << "USER is found" << std::endl;
 	return (0);
 }
