@@ -17,16 +17,26 @@
 	NICK <nickname> [<hopcount>] (RFC 1459)
 	NICK <nickname> (RFC 2812)
 	ERRORS : ERR_NONICKNAMEGIVEN   ERR_ERRONEUSNICKNAME   ERR_NICKNAMEINUSE        ERR_NICKCOLLISION
+	 NICK message is used to give user a nickname or change the previous one.
 */
-int	check_NICK(std::vector<std::string> const &splited_line, client *tmp)
+int check_NICK(std::vector<std::string> const &splited_line, client *tmp)
 {
 	if (splited_line.size() != 2)
 	{
 		std::cerr << "431 " << splited_line[0] << " :No nickname given" << std::endl;
 		return (0);
 	}
-	tmp->nickname(splited_line[1]);
-	tmp->NICK_authenticated = true;
+	// if (tmp->PASS_authenticated && tmp->NICK_authenticated && tmp->USER_authenticated)
+	// {
+	// 	std::cerr << "NICK :ERROR NICK NAME IN USE" << std::endl;
+	// 	return (0);
+	// }
+	// else
+
+	// {
+		tmp->nickname(splited_line[1]);
+		tmp->NICK_authenticated = true;
+	// }
 	return (0);
 }
 
@@ -35,7 +45,7 @@ int	check_NICK(std::vector<std::string> const &splited_line, client *tmp)
 	USER <username> <hostname> <servername> <realname> (RFC 1459)
 	USER <user> <mode> <unused> <realname> (RFC 2812)
 */
-int	check_USER(std::vector<std::string> const &splited_line, client *tmp)
+int check_USER(std::vector<std::string> const &splited_line, client *tmp)
 {
 	// std::cout << "PASS USER" << s td::endl;
 	if (splited_line.size() != 5)
@@ -46,22 +56,22 @@ int	check_USER(std::vector<std::string> const &splited_line, client *tmp)
 	}
 	tmp->username(splited_line[1]);
 	tmp->USER_authenticated = true;
-	if(	tmp->PASS_authenticated && 	tmp->NICK_authenticated && 	tmp->USER_authenticated)
-		{
-					std::cout << "\e[1m"<< "🅆 🄴 🄻 🄲 🄾 🄼 🄴   🅃 🄾     🅈 🄰 🄸 🅁 🄲    🅂 🄴 🅁 🅅 🄴 🅁 " << std::endl;
-
-		}
+	if (tmp->PASS_authenticated && tmp->NICK_authenticated && tmp->USER_authenticated)
+	{
+		std::cout << "\e[1m"
+				  << "🅆 🄴 🄻 🄲 🄾 🄼 🄴   🅃 🄾     🅈 🄰 🄸 🅁 🄲    🅂 🄴 🅁 🅅 🄴 🅁 " << std::endl;
+	}
 	// std::cout << "USER is found" << std::endl;
 	return (0);
 }
 
 /*
 				Command: OPER   Parameters: <user> <password>
-    OPER message is used by a normal user to obtain operator privileges.
-    The combination of <user> and <password> are required to gain
-    Operator privileges.
+	OPER message is used by a normal user to obtain operator privileges.
+	The combination of <user> and <password> are required to gain
+	Operator privileges.
 */
-int	check_OPER(std::vector<std::string> const &splited_line)
+int check_OPER(std::vector<std::string> const &splited_line)
 {
 	if (splited_line.size() != 2)
 	{
@@ -74,7 +84,7 @@ int	check_OPER(std::vector<std::string> const &splited_line)
 			Command: QUIT:
 				Parameters: [<Quit message>]
 */
-int	check_QUIT(char *str1, std::string const &back_up_input)
+int check_QUIT(char *str1, std::string const &back_up_input)
 {
 	str1 = const_cast<char *>(back_up_input.c_str());
 	str1 = strtok(str1, ":");
@@ -97,9 +107,9 @@ int	check_QUIT(char *str1, std::string const &back_up_input)
 					example JOIN #foo,#bar fubar,foobar
 */
 
-int	check_JOIN(std::vector<std::string> &splited_line)
+int check_JOIN(std::vector<std::string> &splited_line)
 {
-	size_t	h;
+	size_t h;
 
 	h = 0;
 	if (splited_line.size() <= 1)
@@ -116,14 +126,14 @@ int	check_JOIN(std::vector<std::string> &splited_line)
 		while (splited_line[1].find(",") <= splited_line[1].size())
 		{
 			channels.push_back((splited_line[1].substr(0,
-														splited_line[1].find(","))));
+													   splited_line[1].find(","))));
 			splited_line[1].erase(0, splited_line[1].find(",") + 1);
 		}
 		channels.push_back((splited_line[1].substr(0)));
 		while (splited_line[2].find(",") <= splited_line[2].size())
 		{
 			password.push_back((splited_line[2].substr(0,
-														splited_line[2].find(","))));
+													   splited_line[2].find(","))));
 			splited_line[2].erase(0, splited_line[2].find(",") + 1);
 		}
 		password.push_back((splited_line[2].substr(0)));
@@ -131,8 +141,8 @@ int	check_JOIN(std::vector<std::string> &splited_line)
 		while (h < channels.size())
 		{
 			channels_map.insert(std::pair<std::string,
-											std::string>(channels[h],
-														password[h]));
+										  std::string>(channels[h],
+													   password[h]));
 			if (channels[h].empty())
 			{
 				return (0);
@@ -163,9 +173,9 @@ int	check_JOIN(std::vector<std::string> &splited_line)
 	Parameters: <channel>{,<channel>}
 	example   PART #oz-ops,&group5
 */
-int	check_PART(std::vector<std::string> &splited_line)
+int check_PART(std::vector<std::string> &splited_line)
 {
-	size_t	h;
+	size_t h;
 
 	h = 0;
 	std::cout << "PART COMMAND" << std::endl;
@@ -181,7 +191,7 @@ int	check_PART(std::vector<std::string> &splited_line)
 		while (splited_line[1].find(",") <= splited_line[1].size())
 		{
 			channels.push_back((splited_line[1].substr(0,
-														splited_line[1].find(","))));
+													   splited_line[1].find(","))));
 			splited_line[1].erase(0, splited_line[1].find(",") + 1);
 		}
 		channels.push_back((splited_line[1].substr(0)));
@@ -194,15 +204,15 @@ int	check_PART(std::vector<std::string> &splited_line)
 	return (0);
 }
 
-/* 
+/*
 		Command: PRIVMSG
 		Parameters: <receiver>{,<receiver>} <text to be sent>
 */
 
-int	check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up)
+int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up)
 {
-	size_t	x;
-	char	*str1;
+	size_t x;
+	char *str1;
 
 	x = 0;
 	if (splited_line.size() > 2)
@@ -229,12 +239,12 @@ int	check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up)
 		str1 = const_cast<char *>(back_up.c_str());
 		str1 = strtok(str1, ":");
 		str1 = strtok(NULL, ":");
-		if (str1 == NULL ||strcmp(str1, "") == 0) // no ":"" is provided //PRIVMSG ff fff : 
+		if (str1 == NULL || strcmp(str1, "") == 0) // no ":"" is provided //PRIVMSG ff fff :
 		{
 			std::cerr << splited_line[0] << " :Wrong input" << std::endl;
 			return (0);
 		}
-		std::cout << "str1: " << str1 << "||" <<std::endl; // message
+		std::cout << "str1: " << str1 << "||" << std::endl; // message
 	}
 	else
 	{
@@ -245,12 +255,12 @@ int	check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up)
 }
 
 /*
-      Command: NOTICE
+	  Command: NOTICE
    Parameters: <nickname> <text>
 */
 
-int	check_NOTICE(std::vector<std::string> &splited_line,
-					std::string &back_up_input)
+int check_NOTICE(std::vector<std::string> &splited_line,
+				 std::string &back_up_input)
 {
 	if (splited_line.size() >= 3)
 	{
@@ -262,11 +272,11 @@ int	check_NOTICE(std::vector<std::string> &splited_line,
 		back_up_input.erase(back_up_input.find(splited_line[1]),
 							splited_line[1].length());
 		std::cout << "nickname " << nickname << std::endl
-					<< std::endl
-					<< std::endl
-					<< std::endl;                                // nickname
+				  << std::endl
+				  << std::endl
+				  << std::endl;								   // nickname
 		std::cout << "MESSAGE:" << back_up_input << std::endl; // ,message
-																// exit(1);
+															   // exit(1);
 	}
 	else
 	{
