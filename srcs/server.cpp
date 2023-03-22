@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 00:59:52 by archid            #+#    #+#             */
-/*   Updated: 2023/03/22 09:20:25 by mhanda           ###   ########.fr       */
+//   Updated: 2023/03/22 18:38:01 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,8 @@ void server::terminate_and_throw() {
 	throw std::runtime_error(str_error());
 }
 
-void server::server_banner(int client_fd) {
-	char buff[] = "Welcome to YAIRC Server\n";
-	string_data tmp(buff, sizeof(buff));
-	ssize_t n_bytes = tmp.send(client_fd);
+void server::message(int client_fd, const std::string &msg, int flags = 0) {
+	ssize_t n_bytes = ::send(client_fd, msg.c_str(), msg.size(), flags);
 	if (n_bytes < 0)
 		terminate_and_throw();
 }
@@ -94,13 +92,13 @@ ssize_t server::recieve_message(pollfd_iter client) {
 void server::accept_clients() {
 	socklen_t sock_len = sizeof(struct sockaddr);
 	int client_fd;
-	client *tmp;
+	user *tmp;
 
 	while ((client_fd = ::accept(sock_fd_, addr_, &sock_len)) >= 0) {
 		std::cerr << "new client joined number " << client_fd << '\n';
-		send(client_fd, "Welcom to yairc server\n", 23, 0);
-		tmp = new client(client_fd);
-		map_clients.insert(std::pair<int, client*>(client_fd, tmp));
+		message(client_fd, "Welcome to yairc server\n");
+		tmp = new user(client_fd);
+		map_users.insert(std::pair<int, user *>(client_fd, tmp));
 		clients_.push_back(client_pollfd(client_fd));
 	}
 
@@ -132,7 +130,7 @@ void server::run() {
 						msg.erase();
 						// std::cout << msg ;
 						// command::pointer irc_cmd = parse_command(msg);
-						
+
 						// if (irc_cmd->exec() < 0)
 						// 	terminate_and_throw();
 					}
@@ -142,6 +140,14 @@ void server::run() {
 	}
 }
 
-const char *delimiter = "\n";
+void server::mode(user *user, channel *chan, user_roles role) {
+
+
+}
+
+void server::mode(channel *chan, channel_properties prop) {
+}
+
+const char *msg_delim = "\n";
 std::map<int, std::string> map_msgs;
-std::map<int, client*> map_clients;
+std::map<int, class user *> map_users;

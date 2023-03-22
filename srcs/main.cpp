@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 03:13:39 by archid            #+#    #+#             */
-//   Updated: 2023/03/21 03:07:40 by archid           ###   ########.fr       //
+//   Updated: 2023/03/22 18:00:15 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ short num_port;
 char *passwd;
 
 void parse_args(int argc, char *argv[]) {
-	if (argc != 3) {
+	if (argc != 3 || std::strlen(argv[1]) == 0 || std::strlen(argv[2]) == 0) {
 		std::cerr << "run as " << argv[0] << " <PORT> <PASSWD>\n";
 		exit(EXIT_FAILURE);
 	}
@@ -35,7 +35,7 @@ void parse_args(int argc, char *argv[]) {
 	}
 
 	int tmp = std::atoi(argv[1]);
-	if ((int)SHRT_MAX < tmp) {
+	if (tmp < 1026 || tmp > (int)SHRT_MAX) {
 		std::cerr << argv[1] << " is invalid\n";
 		exit(EXIT_FAILURE);
 	}
@@ -49,8 +49,6 @@ void parse_args(int argc, char *argv[]) {
 	}
 	passwd = argv[2];
 }
-
-server serve;
 
 void handler(int) {
 	serve.terminate();
@@ -69,3 +67,5 @@ int main(int argc, char *argv[]) {
 		return EXIT_FAILURE;
 	}
 }
+
+server serve;

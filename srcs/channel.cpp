@@ -6,13 +6,51 @@
 //   By: archid <archid-@1337.student.ma>           +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2023/02/25 04:55:12 by archid            #+#    #+#             //
-//   Updated: 2023/03/08 23:53:14 by archid           ###   ########.fr       //
+//   Updated: 2023/03/22 18:48:31 by archid           ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#include "channel.hpp"
+#include "server.hpp"
+#include <iostream>
+#include <sstream>
 
-namespace yairc {
-	channel::channel() {}
+channel::channel(std::string name, std::string topic)
+	: name_(name), topic_(topic) {}
 
-} // namespace yairc
+void channel::first_greet(user *user) {
+	std::ostringstream oss;
+	oss << "You have just joined " <<  *this << '\n';
+	serve.message(user->client_fd(), oss.str());
+}
+
+void channel::activate(user *user, bool is_active) {
+	if (is_active) {
+		active_users_.insert(user);
+	} else {
+		active_users_.erase(user);
+	}
+	std::cerr << *user << " is " << (is_active ? "in" : "")
+						<< "active on " << *this << '\n';
+	return is_active;
+}
+
+void channel::join(user *user) {
+	if (active_users_.insert(user).second) {
+		if (users_.insert(user).second) {
+			first_greet(user);
+		}
+		std::cerr << *user << " has joined " << *this << "\n";
+	}
+}
+
+void channel::kick(user *user) {
+	user->leave_channel(this);
+	active_users_.erase(user);
+	users_.erase(user);
+}
+
+std::ostream &operator<<(std::ostream &oss, const channel chan) {
+	return oss << "#" << chan.name() << " [" << chan.topic() << "]";
+}
+
+channel_map channels;
