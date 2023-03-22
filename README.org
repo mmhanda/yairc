@@ -65,6 +65,9 @@ For each client that has sent, we may =recv()= some data to be put in a buffer, 
  - [[https://beej.us/guide/bgnet/html][Beej's Guide to Network Programming]]
  - [[http://dwise1.net/pgm/sockets/][DWise1's Sockets Programming Pages]]
  - [[http://www.kegel.com/c10k.html][Handling multiple users]]
+ 
+ visual referenc
+
 
 ** Stackoverflow
 
