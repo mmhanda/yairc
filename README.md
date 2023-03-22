@@ -94,8 +94,7 @@ reads until it blocks by raising `errno`{.verbatim}.
     Pages](http://dwise1.net/pgm/sockets/)
 -   [Handling multiple users](http://www.kegel.com/c10k.html)
 
-![alt
-text](https://user-images.githubusercontent.com/94152392/226868617-2b778553-9795-42b7-aa1d-ba27ec688cbd.png)
+![visual_reference](https://user-images.githubusercontent.com/94152392/226868617-2b778553-9795-42b7-aa1d-ba27ec688cbd.png)
 
 ## Stackoverflow
 
