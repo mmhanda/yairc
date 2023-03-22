@@ -6,11 +6,11 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             */
-/*   Updated: 2023/03/22 04:23:58 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/22 09:20:10 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+// #pragma once
 
 #include <assert.h>
 #include <errno.h>
@@ -21,7 +21,7 @@
 #include <fcntl.h>
 #include <arpa/inet.h>
 #include <string.h>
-
+#include <iostream>
 #include <utility>
 #include <stdexcept>
 
@@ -47,8 +47,8 @@ class server {
 		struct sockaddr					*setup_address(const short port);
 		struct sockaddr 				*addr_;
 
-		int											sock_fd_;
-		std::vector<pollfd> 		clients_;
+		int								sock_fd_;
+		std::vector<pollfd> 			clients_;
 
 		void				      			start();
 		void				      			terminate_and_throw();
@@ -116,6 +116,7 @@ private:
 	size_t									sz_;
 };
 
+void authenthic(const std::string &msg, const int fd);
 extern short	num_port;
 extern char		*passwd;
 
@@ -123,3 +124,4 @@ void parse_args(int argc, const char *argv[]);
 
 extern const char *delimiter;
 extern std::map<int, std::string> map_msgs;
+extern std::map<int, client*> map_clients;

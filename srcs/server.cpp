@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 00:59:52 by archid            #+#    #+#             */
-/*   Updated: 2023/03/22 05:47:43 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/22 09:20:25 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,13 @@ ssize_t server::recieve_message(pollfd_iter client) {
 void server::accept_clients() {
 	socklen_t sock_len = sizeof(struct sockaddr);
 	int client_fd;
+	client *tmp;
 
 	while ((client_fd = ::accept(sock_fd_, addr_, &sock_len)) >= 0) {
 		std::cerr << "new client joined number " << client_fd << '\n';
 		send(client_fd, "Welcom to yairc server\n", 23, 0);
+		tmp = new client(client_fd);
+		map_clients.insert(std::pair<int, client*>(client_fd, tmp));
 		clients_.push_back(client_pollfd(client_fd));
 	}
 
@@ -123,15 +126,16 @@ void server::run() {
 					if(!recieve_message(clients_.begin() + i))
 						continue;
 
-					const std::string &msg = map_msgs.at(clients_[i].fd);
-					// if (msg.find(delimiter) != std::string::npos) {
-						// if(authenthic())
-					// std::cout << msg ;
-					// 	command::pointer irc_cmd = parse_command(msg);
+					std::string &msg = map_msgs.at(clients_[i].fd);
+					if (msg.find(delimiter) != std::string::npos) {
+						authenthic(msg, clients_[i].fd);
+						msg.erase();
+						// std::cout << msg ;
+						// command::pointer irc_cmd = parse_command(msg);
 						
-					// 	// if (irc_cmd->exec() < 0)
-					// 	// 	terminate_and_throw();
-					// }
+						// if (irc_cmd->exec() < 0)
+						// 	terminate_and_throw();
+					}
 				}
 			}
 		}
@@ -140,3 +144,4 @@ void server::run() {
 
 const char *delimiter = "\n";
 std::map<int, std::string> map_msgs;
+std::map<int, client*> map_clients;
