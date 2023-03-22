@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             */
-/*   Updated: 2023/03/22 01:19:18 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/22 04:23:58 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,4 +122,4 @@ extern char		*passwd;
 void parse_args(int argc, const char *argv[]);
 
 extern const char *delimiter;
-extern std::map<int, std::string> msgs;
+extern std::map<int, std::string> map_msgs;

@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 03:21:35 by archid            #+#    #+#             */
-/*   Updated: 2023/03/21 00:51:26 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/22 05:29:11 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,11 @@
 
 #include <string>
 
-namespace yairc {
-	class client {
+class client {
 
+	private:
 		int client_fd_;
 		std::string nickname_, username_;
-		//std::vector<channel_ptr> channels_;
 
 	public:
 		typedef client *client_ptr;
@@ -35,9 +34,7 @@ namespace yairc {
 		void username(std::string username) {
 			username_ = username;
 		}
+};
 
-	};
-
-	typedef client::client_ptr client_ptr;
-} // namespace yairc
+typedef client::client_ptr client_ptr;
 #endif

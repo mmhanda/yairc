@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+         #
+#    By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/24 23:57:31 by mhanda            #+#    #+#              #
-#    Updated: 2023/03/21 23:00:30 by archid           ###   ########.fr        #
+#    Updated: 2023/03/22 04:25:38 by mhanda           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ NAME = ircserv
 
 CXX = c++
 
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -Iheaders
+CXXFLAGS = -Wall -Wextra  -std=c++98 -Iheaders
 
 # $(NAME) : $(OBJF) ./headers/irc.hpp
 $(NAME) : $(OBJF) headers/server.hpp

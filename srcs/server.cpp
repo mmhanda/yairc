@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 00:59:52 by archid            #+#    #+#             */
-/*   Updated: 2023/03/22 01:19:05 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/22 05:47:43 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,12 @@
 #include "server.hpp"
 #include "command.hpp"
 
-static const char *delimiter = "\n";
-
 struct sockaddr *server::setup_address(const short port) {
 	static struct sockaddr_in addr;
-	bzero(addr.sin_zero, sizeof(addr.sin_zero)); // set padding
+	bzero(addr.sin_zero, sizeof(addr.sin_zero));
 
-	addr.sin_family = AF_INET;					 // address family
-	addr.sin_port = htons(port);				 // address port
+	addr.sin_family = AF_INET;
+	addr.sin_port = htons(port);
 	addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
 	if (addr.sin_addr.s_addr < 0)
@@ -80,12 +78,14 @@ ssize_t server::recieve_message(pollfd_iter client) {
 
 	if (n_bytes > 0) {
 		std::cerr << "recieved from " << n_bytes << " from client " << client->fd << "\n";
-		msgs[client->fd].append(buffer, buffer + n_bytes);
+		map_msgs[client->fd].append(buffer, buffer + n_bytes);
 	} else if (n_bytes == 0) {
 		std::cerr << "client " << client->fd << " has left\n";
+		// map_msgs.erase(clients_) // need to be ereased
 		close(client->fd);
 		clients_.erase(client);
 	} else if (errno != EWOULDBLOCK) {
+		std::cout << "catch\n" ;
 		terminate_and_throw();
 	}
 	return n_bytes;
@@ -96,7 +96,8 @@ void server::accept_clients() {
 	int client_fd;
 
 	while ((client_fd = ::accept(sock_fd_, addr_, &sock_len)) >= 0) {
-		std::cerr << "server accept adding new client " << client_fd << '\n';
+		std::cerr << "new client joined number " << client_fd << '\n';
+		send(client_fd, "Welcom to yairc server\n", 23, 0);
 		clients_.push_back(client_pollfd(client_fd));
 	}
 
@@ -119,13 +120,18 @@ void server::run() {
 				if (clients_[i].fd == sock_fd_) {
 					accept_clients();
 				} else {
-					recieve_message(clients_.begin() + i);
-					const std::string &msg = msgs.at(clients_[i].fd);
-					if (msg.find(delimiter) != std::string::npos) {
-						command::pointer irc_cmd = parse_command(msg);
-						if (irc_cmd->exec() < 0)
-							terminate_and_throw();
-					}
+					if(!recieve_message(clients_.begin() + i))
+						continue;
+
+					const std::string &msg = map_msgs.at(clients_[i].fd);
+					// if (msg.find(delimiter) != std::string::npos) {
+						// if(authenthic())
+					// std::cout << msg ;
+					// 	command::pointer irc_cmd = parse_command(msg);
+						
+					// 	// if (irc_cmd->exec() < 0)
+					// 	// 	terminate_and_throw();
+					// }
 				}
 			}
 		}
@@ -133,4 +139,4 @@ void server::run() {
 }
 
 const char *delimiter = "\n";
-std::map<int, std::string> msgs;
+std::map<int, std::string> map_msgs;
