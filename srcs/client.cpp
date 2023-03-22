@@ -12,6 +12,7 @@
 
 #include "../headers/client.hpp"
 
-client::client(int client_fd) {
+client::client(int client_fd) :PASS_authenticated(false) ,NICK_authenticated(false), USER_authenticated(false)
+{
 	this->client_fd_ = client_fd;
 }

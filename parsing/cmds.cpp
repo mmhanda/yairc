@@ -20,6 +20,8 @@
 */
 int	check_NICK(std::vector<std::string> const &splited_line, client *tmp)
 {
+		
+
 	if (splited_line.size() != 2)
 	{
 		std::cerr << "431 " << splited_line[0] << " :No nickname given" << std::endl;
@@ -28,7 +30,7 @@ int	check_NICK(std::vector<std::string> const &splited_line, client *tmp)
 	}
 	// std::cout << "NICKNAME IS : " << splited_line[1] << std::endl;
 	tmp->nickname(splited_line[1]);
-    std::cout << "nick name set\n";
+	tmp->NICK_authenticated = true;
 	return (0);
 }
 /*
@@ -46,6 +48,7 @@ int	check_USER(std::vector<std::string> const &splited_line, client *tmp)
 		return 0;
 	}
 	tmp->username(splited_line[1]);
+	tmp->USER_authenticated = true;
 	// std::cout << "USER is found" << std::endl;
 	return (0);
 }
