@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 00:59:52 by archid            #+#    #+#             */
-/*   Updated: 2023/03/22 00:40:24 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/22 01:19:05 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "server.hpp"
 #include "command.hpp"
 
-
+static const char *delimiter = "\n";
 
 struct sockaddr *server::setup_address(const short port) {
 	static struct sockaddr_in addr;
