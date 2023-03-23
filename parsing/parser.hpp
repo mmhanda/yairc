@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 09:20:51 by atabiti           #+#    #+#             */
-//   Updated: 2023/03/22 19:15:51 by archid           ###   ########.fr       //
+//   Updated: 2023/03/23 21:08:21 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,12 @@
 #include "user.hpp"
 
 #define CLIENT_MAX_NICKNAME 9
+#define NUM_DIGITS 5
+#define PASSWD_SIZE 32
 
-int	parse_command(std::string &input , const int fd);
-int	checker(int ac, char **av,int		&port);
+int parse_command(std::string &input , const int fd);
+void parse_args(int argc, char *argv[], int &num_port, std::string &passwd);
+
 int	check_PASS(std::vector<std::string> const &splited_line , user *tmp);
 // int check_NICK(std::vector<std::string> const & splited_line);
 int	check_NICK(std::vector<std::string> const &splited_line, user *tmp);

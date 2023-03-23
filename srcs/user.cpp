@@ -6,18 +6,25 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 01:13:18 by archid            #+#    #+#             */
-//   Updated: 2023/03/22 19:19:12 by archid           ###   ########.fr       //
+//   Updated: 2023/03/23 20:14:36 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "user.hpp"
 #include "channel.hpp"
-#include <iostream>
 
 user::user(int client_fd) : PASS_authenticated(false),
 														NICK_authenticated(false),
 														USER_authenticated(false) {
 	client_fd_ = client_fd;
+}
+
+user::~user() {
+	for (user::role_map::iterator role = roles_.begin(); role != roles_.end();) {
+		channel *chan = role->first;
+		role++;
+		chan->kick(this);
+	}
 }
 
 const std::string &user::nickname() const { return nickname_; }
@@ -32,6 +39,7 @@ bool user::join_or_create_channel(const std::string &chan_name) {
 	channel *&chan = channels[chan_name];
 	if (chan != nullptr) {
 		chan = new channel(chan_name);
+		channels.insert(std::make_pair<std::string, channel *>(chan_name, chan));
 		std::cerr << *this << " created " << *chan << "\n";
 		chan->join(this);
 		roles_[chan] = role_operator;
@@ -47,7 +55,7 @@ bool user::private_message(const user *user, const std::string &msg) {
 	// serve.message(user->)
 }
 
-void user::leave_channel(class channel *chan) {
+void user::part_channel(class channel *chan) {
 	roles_.erase(chan);
 }
 

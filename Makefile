@@ -6,7 +6,7 @@
 #    By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/24 23:57:31 by mhanda            #+#    #+#              #
-#    Updated: 2023/03/22 19:23:32 by archid           ###   ########.fr        #
+#    Updated: 2023/03/22 22:35:59 by archid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ NAME = ircserv
 
 CXX = c++
 
-CXXFLAGS = -Wall -Wextra  -std=c++98 -Iheaders
+CXXFLAGS = -Wall -Wextra  -std=c++98 -Iheaders -Iparsing
 
 $(NAME) : $(OBJF) headers/server.hpp headers/user.hpp headers/channel.hpp parsing/parser.hpp
 		$(CXX) $(CXXFLAGS) $(OBJF) -o $(NAME)

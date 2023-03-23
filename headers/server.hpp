@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             */
-//   Updated: 2023/03/22 19:14:05 by archid           ###   ########.fr       //
+//   Updated: 2023/03/23 20:44:05 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@
 #include <sys/socket.h>
 #include <fcntl.h>
 #include <arpa/inet.h>
-#include <string.h>
+
+#include <string>
 #include <iostream>
 #include <utility>
 #include <stdexcept>
@@ -28,8 +29,6 @@
 #include <algorithm>
 #include <vector>
 #include <map>
-
-#include <string>
 
 #include "user.hpp"
 #include "channel.hpp"
@@ -43,23 +42,30 @@
 
 class server {
 private:
-  typedef std::vector<pollfd>::iterator pollfd_iter;
-  struct sockaddr *setup_address(const short port);
-  struct sockaddr *addr_;
+  typedef std::vector<struct pollfd> pollfd_vector;
+	typedef std::map<int, std::string> message_map;
+	typedef std::map<int, class user *> user_map;
 
-  int sock_fd_;
-  std::vector<pollfd> clients_;
+	message_map map_msgs_;
+	user_map map_users_;
+  pollfd_vector clients_;
+
+	int sock_fd_;
+	struct sockaddr *addr_;
+	short port_;
 	std::string passwd_;
 
-  void start();
+	struct sockaddr *setup_address(const short port);
   void terminate_and_throw();
-  void server_banner(int client_fd);
-  ssize_t recieve_message(pollfd_iter client);
+  ssize_t recieve_message(pollfd_vector::iterator client);
   void accept_clients();
 
 public:
-  server() {};
-  server(int port, std::string passwd) : addr_(setup_address(port)), passwd_(passwd) { start(); }
+  server();
+	~server();
+  server(int port, std::string passwd);
+
+	user *get_user(int client_fd) const;
 
 	void message(int client_fd, const std::string &msg, int flags = 0);
   void mode(user *user, channel *chan, user_roles role);
@@ -70,13 +76,7 @@ public:
 };
 
 void authenticate(const std::string &msg, const int fd);
-// void parse_args(int argc, const char *argv[]);
-
-// extern short num_port;
-// extern char *passwd;
 
 extern const char *msg_delim;
-extern std::map<int, std::string> map_msgs;
-extern std::map<int, class user *> map_users;
 
-extern server serve;
+extern server ircserv;

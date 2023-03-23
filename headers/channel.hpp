@@ -6,7 +6,7 @@
 //   By: archid <archid-@1337.student.ma>           +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2023/03/08 23:43:25 by archid            #+#    #+#             //
-//   Updated: 2023/03/22 18:47:33 by archid           ###   ########.fr       //
+//   Updated: 2023/03/23 21:06:32 by archid           ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,6 +15,7 @@
 #include <set>
 #include <map>
 #include <string>
+#include <iostream>
 
 enum channel_properties { chan_public, chan_invite, chan_private };
 
@@ -31,12 +32,14 @@ public:
 	const std::string &name() const { return name_; }
 	const std::string &topic() const { return topic_; }
 
+	static void update();
+
 private:
 	std::string name_, topic_;
 	std::set<class user *> active_users_, users_;
 };
 
-std::ostream &operator<<(std::ostream &oss, const class channel chan);
+std::ostream &operator<<(std::ostream &oss, const channel chan);
 
-typedef std::map<std::string, class channel *> channel_map;
+typedef std::map<std::string, channel *> channel_map;
 extern channel_map channels;

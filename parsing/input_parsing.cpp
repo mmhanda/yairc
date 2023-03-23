@@ -6,17 +6,14 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-//   Updated: 2023/03/22 19:22:02 by archid           ###   ########.fr       //
+//   Updated: 2023/03/23 21:09:06 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.hpp"
 #include "server.hpp"
-#include "user.hpp"
+#include "parser.hpp"
 
-
-int	parse_command(std::string &input , const int fd)
-{
+int	parse_command(std::string &input , const int fd) {
 	char	*str;
 	char	*str1;
 
@@ -26,25 +23,12 @@ int	parse_command(std::string &input , const int fd)
 		std::vector<std::string> splited_line;
 		std::string back_up_input;
 		back_up_input = input;
-		// std::cout << "before input = " << input << std::endl << std::endl;
 		if (!input.empty())
 		{
-			/*const_cast <new_type> (expression) why? strtok uses char
-				* and input.c_str() return const char* */
 			input.erase(std::remove(input.begin(), input.end(), '\n'), input.end());
-			input.erase(std::remove(input.begin(), input.end(), '\r'), input.end());  /*IRC messages are always lines of characters terminated with a CR-LF (Carriage Return - Line Feed)*/
-									// std::cerr <<	"input :: " << input  << "|||||||||";
-
+			input.erase(std::remove(input.begin(), input.end(), '\r'), input.end());
 			str = const_cast<char *>(input.c_str());
-			/*
-			strtok() stores the pointer in static variable where did you last time left off ,
-			so on its 2nd call , when we pass the null ,
-	strtok() gets the pointer from the static variable .
-			If you provide the same string name ,
-	it again starts from beginning.
-*/
 			str = strtok(str, " ");
-			// std::cout << "after input = " << input << std::endl << std::endl;
 			if (str != NULL)
 			{
 				while (str != NULL)
@@ -52,15 +36,8 @@ int	parse_command(std::string &input , const int fd)
 					splited_line.push_back(str);
 					str = strtok(NULL, " ");
 				}
-
-				// size_t i = 0;
-				// while (i < splited_line.size())
-				// {
-				// 	std::cout << "splited_line [] = " << splited_line[i] << std::endl;
-				// 	i++;
-				// }
 				user *tmp = NULL;
-				tmp = map_users.at(fd);
+				tmp = ircserv.get_user(fd);
 
 				if (splited_line[0] == "PASS")
 				{
@@ -69,7 +46,6 @@ int	parse_command(std::string &input , const int fd)
 				else if (splited_line[0] == "NICK")
 				{
 					check_NICK(splited_line, tmp);
-					// std::cout<< "tmp nick name is "<<tmp->nickname() <<std::endl;
 				}
 				else if (splited_line[0] == "USER")
 				{
