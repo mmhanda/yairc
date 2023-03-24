@@ -103,7 +103,6 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 	{
 		/*use a map of channel name and a password */
 		std::map<std::string, std::string> channels_map;
-		std::cout << "JOIN COMMAND " << std::endl;
 		std::vector<std::string> channels;
 		std::vector<std::string> password;
 		while (splited_line[1].find(",") <= splited_line[1].size())
@@ -141,20 +140,25 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 
 		std::map<std::string, std::string>::iterator it;
 		it = channels_map.begin();
+		while (it != channels_map.end())
+		{
+		
 		if (map_channels.find(it->first) != map_channels.end()) {
 			if (map_channels.at(it->first)->passwrd() == it->second) {
-				channel *tmp = map_channels.at(splited_line[1]);
+				channel *tmp = map_channels.at(it->first);
 				tmp->insert_users(user);
-				std::string sen = "you have joined channel \n" + splited_line[1];
+				std::string sen = "you have joined channel " + it->first + "\n";
 				send(user->client_fd(), sen.c_str(), sen.size(), 0);
 			}
 		}
 		else {
-			channel *tmp = new channel(splited_line[1], it->second);
+			channel *tmp = new channel(it->first, it->second);
 			map_channels.insert(
-				std::pair<std::string, channel *>(splited_line[1], tmp));
+				std::pair<std::string, channel *>(it->first, tmp));
 
 			tmp->insert_users(user);
+		}
+		it++;
 		}
 	}
 	return (0);
