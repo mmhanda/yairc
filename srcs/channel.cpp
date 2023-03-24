@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 04:55:12 by archid            #+#    #+#             */
-/*   Updated: 2023/03/24 13:54:51 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/24 20:50:28 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void channel::broadcast(std::string msg, user *sender) {
 
 		if (sender->client_fd() != user_fd)
 			send(user_fd, msg.c_str(), msg.size(), 0);
-			// std::cout << user_fd << std::endl;
 	}
 }
 
