@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
 #include "server.hpp"
 
 struct sockaddr *server::setup_address(const short port) {
@@ -82,9 +81,7 @@ ssize_t server::recieve_message(pollfd_iter client) {
 		std::cerr << "recieved from " << n_bytes << " from client " << client->fd << "\n";
 		map_msgs[client->fd].append(buffer, buffer + n_bytes);
 	} else if (n_bytes == 0) {
-		
-		std::cerr << "client " << client->fd << " has disconnected\n";
-		// std::cerr << *map_users.at(client->fd) << client->fd << " has disconnected\n";
+		std::cerr << map_users.at(client->fd)->username() << " " << client->fd << " has disconnected\n";
 		close(client->fd);
 		map_msgs.erase(client->fd);
 		clients_.erase(client);
@@ -98,13 +95,11 @@ ssize_t server::recieve_message(pollfd_iter client) {
 void server::accept_clients() {
 	socklen_t sock_len = sizeof(struct sockaddr);
 	int client_fd;
-	user *tmp;
 
 	while ((client_fd = ::accept(sock_fd_, addr_, &sock_len)) >= 0) {
 		std::cerr << "new client joined number " << client_fd << '\n';
 		message(client_fd, "Welcome to yairc server\n");
-		tmp = new user(client_fd);
-		map_users.insert(std::pair<int, user *>(client_fd, tmp));
+		map_users.insert(std::pair<int, user *>(client_fd, new user(client_fd)));
 		clients_.push_back(client_pollfd(client_fd));
 	}
 
