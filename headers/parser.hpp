@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 09:20:51 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/24 09:41:39 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/24 10:39:05 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 #define CLIENT_MAX_NICKNAME 9
 
-void    authenticate(std::string &msg , const int fd);
+bool    authenticate(std::string &msg , const int fd);
 int	parse_command(std::string &input , const int fd);
 int	checker(int ac, char **av,int		&port);
 int	check_PASS(std::vector<std::string> const &splited_line , user *tmp);

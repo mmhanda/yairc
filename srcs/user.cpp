@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 01:13:18 by archid            #+#    #+#             */
-/*   Updated: 2023/03/24 08:21:57 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/24 12:00:42 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ void user::username(std::string username) { username_ = username; }
 // 	}
 // }
 
-bool private_message(const user *user, const std::string &msg) {
-	// serve.message(user->)
-}
+// bool private_message(const user *user, const std::string &msg) {
+// 	// serve.message(user->)
+// }
 
-void leave_channel(class channel *chan, class user *usr){
-}
+// void leave_channel(class channel *chan, class user *usr){
+// }
 
 std::ostream &operator<<(std::ostream &oss, const class user u) {
 	return oss << u.username() << " (" << u.nickname() << ")";

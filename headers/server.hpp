@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             */
-/*   Updated: 2023/03/24 09:34:49 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/24 13:52:40 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,13 +93,14 @@ class server {
       server(int port, std::string passwd);
 
       void message(int client_fd, const std::string &msg, int flags = 0);
-      void mode(user *user, channel *chan, user_roles role);
-      void mode(channel *chan, channel_properties prop);
+      // void mode(user *user, channel *chan, user_roles role);
+      // void mode(channel *chan, channel_properties prop);
 
       void terminate();
       void run();
 };
 
+void join_channel(std::string msg, user *user);
 void authenticate(const std::string &msg, const int fd);
 // void parse_args(int argc, const char *argv[]);
 
@@ -121,6 +122,5 @@ void leave_channel(class channel *chan, class user *usr);
 extern const char *msg_delim;
 extern std::map<int, std::string> map_msgs;
 extern std::map<int, class user *> map_users;
-// extern std::map<std::string, class channel *> map_channels;
-
+extern std::map<std::string, class channel *> map_channels;
 extern server ircserv;

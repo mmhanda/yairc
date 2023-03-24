@@ -108,7 +108,10 @@ void server::accept_clients() {
 	}
 }
 
+int count;
+
 void server::run() {
+	count =  0;
 	while (true) {
 		int status;
 		if ((status = poll(clients_.data(), clients_.size(), TIMEOUT * 1000)) < 0) {
@@ -129,11 +132,21 @@ void server::run() {
 					if (map_msgs.at(clients_[i].fd).find(msg_delim) != std::string::npos)
 					{
 						std::string msg = map_msgs.at(clients_[i].fd);
-						map_msgs.erase(clients_[i].fd);
-						authenticate(msg, clients_[i].fd);
+						if (authenticate(msg, clients_[i].fd)){
+							count ++;
+							join_channel(msg, map_users.at(clients_[i].fd));}
+							// if (join_channel(msg, map_users.at(clients_[i].fd)));{
+								// send_msg(msg, map_users.at(clients_[i].fd));}}
+							if (count == 4)
+							{
+								channel *tmp = map_channels.at(msg);
+								std::string to_send = "arrived\n";
+								tmp->broadcast(to_send, map_users.at(clients_[i].fd));
+							}
 
-						// parse_command(msg ,  clients_[i].fd);
+						map_msgs.erase(clients_[i].fd);
 						msg.erase();
+						// parse_command(msg ,  clients_[i].fd);
 						// command::pointer irc_cmd = parse_command(msg);
 
 						// if (irc_cmd->exec() < 0)
@@ -146,14 +159,14 @@ void server::run() {
 	}
 }
 
-void server::mode(user *user, channel *chan, user_roles role) {
+// void server::mode(user *user, channel *chan, user_roles role) {
 
-}
+// }
 
-void server::mode(channel *chan, channel_properties prop) {
-}
+// void server::mode(channel *chan, channel_properties prop) {
+// }
 
 const char *msg_delim = "\n";
 std::map<int, std::string> map_msgs;
 std::map<int, class user *> map_users;
-extern std::map<std::string, class channel *> map_channels;
+std::map<std::string, class channel *> map_channels;
