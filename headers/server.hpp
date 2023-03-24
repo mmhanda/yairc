@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             */
-/*   Updated: 2023/03/24 13:52:40 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/24 21:34:01 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,9 @@ class server {
 
     public:
       server() {};
-      ~server();
+      ~server() {
+        std::cout << "des called" << std::endl;
+        terminate(); };
       server(int port, std::string passwd);
 
       void message(int client_fd, const std::string &msg, int flags = 0);

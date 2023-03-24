@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 03:13:39 by archid            #+#    #+#             */
-/*   Updated: 2023/03/24 09:43:04 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/24 21:35:41 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void handler(int) {
 	ircserv.terminate();
 	exit(0);
 }
+server ircserv;
 
 int main(int argc, char *argv[]) {
 
@@ -36,5 +37,3 @@ int main(int argc, char *argv[]) {
 		return EXIT_FAILURE;
 	}
 }
-
-server ircserv;
