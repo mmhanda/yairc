@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cmds.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 09:17:29 by atabiti           #+#    #+#             */
-//   Updated: 2023/03/22 19:22:12 by archid           ###   ########.fr       //
+/*   Updated: 2023/03/24 10:04:13 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.hpp"
+#include "server.hpp"
 
 /*
 					Command: NICK
@@ -22,22 +22,10 @@
 int check_NICK(std::vector<std::string> const &splited_line, user *tmp)
 {
 	if (splited_line.size() != 2)
-	{
-		std::cerr << "431 " << splited_line[0] << " :No nickname given" << std::endl;
 		return (0);
-	}
-	// if (tmp->PASS_authenticated && tmp->NICK_authenticated && tmp->USER_authenticated)
-	// {
-	// 	std::cerr << "NICK :ERROR NICK NAME IN USE" << std::endl;
-	// 	return (0);
-	// }
-	// else
-
-	// {
 		tmp->nickname(splited_line[1]);
 		tmp->NICK_authenticated = true;
-	// }
-	return (0);
+	return (1);
 }
 
 /*
@@ -47,9 +35,7 @@ int check_NICK(std::vector<std::string> const &splited_line, user *tmp)
 */
 int check_USER(std::vector<std::string> const &splited_line, user *tmp)
 {
-	// std::cout << "PASS USER" << s td::endl;
 	if (splited_line.size() != 5)
-	// if (splited_line.size() != 2)
 	{
 		std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
 		return 0;
@@ -61,8 +47,7 @@ int check_USER(std::vector<std::string> const &splited_line, user *tmp)
 		std::cout << "\e[1m"
 				  << "🅆 🄴 🄻 🄲 🄾 🄼 🄴   🅃 🄾     🅈 🄰 🄸 🅁 🄲    🅂 🄴 🅁 🅅 🄴 🅁 " << std::endl;
 	}
-	// std::cout << "USER is found" << std::endl;
-	return (0);
+	return (1);
 }
 
 /*

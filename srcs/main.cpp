@@ -6,15 +6,12 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 03:13:39 by archid            #+#    #+#             */
-/*   Updated: 2023/03/24 09:02:40 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/24 09:43:04 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
-#include <climits>
-#include <iostream>
 #include "server.hpp"
-#include "parser.hpp"
 
 void handler(int) {
 	ircserv.terminate();

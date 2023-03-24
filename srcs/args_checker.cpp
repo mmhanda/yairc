@@ -6,13 +6,11 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:23:40 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/24 06:02:04 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/24 09:45:54 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.hpp"
-#include <iostream>
-#include <stdlib.h> //for atoi
+#include "server.hpp"
 std::string PASSWORD;
 
 /*
@@ -22,37 +20,38 @@ std::string PASSWORD;
 */
 int	check_PASS(std::vector<std::string> const &splited_line , user *tmp)
 {
-				std::cout << splited_line[1] <<std::endl;
-				std::cout << splited_line[1].size() <<std::endl;
+	std::cout << splited_line[1] <<std::endl;
+	std::cout << splited_line[1].size() <<std::endl;
 
 	if(tmp->PASS_authenticated == true)
 	{
 		std::cerr << "462 " << splited_line[0] << " :ERR_ALREADYREGISTRED" << std::endl;
-		return 0;
+		return (0);
 	}
 	else
 	{
-	if (splited_line.size() != 2)
-	{
-		std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
-	}
-	else
-	{
-		if (splited_line[1] != PASSWORD)
+		if (splited_line.size() != 2)
 		{
-			std::cerr << "464 " << splited_line[0] << " :Password incorrect "  << std::endl;
+			std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
 			return (0);
 		}
-		tmp->PASS_authenticated = true;
-		if(	tmp->PASS_authenticated && 	tmp->NICK_authenticated && 	tmp->USER_authenticated)
+		else
 		{
-					std::cout << "\e[1m"<< "🅆 🄴 🄻 🄲 🄾 🄼 🄴   🅃 🄾     🅈 🄰 🄸 🅁 🄲    🅂 🄴 🅁 🅅 🄴 🅁 " << std::endl;
+			if (splited_line[1] != PASSWORD)
+			{
+				std::cerr << "464 " << splited_line[0] << " :Password incorrect "  << std::endl;
+				return (0);
+			}
+			tmp->PASS_authenticated = true;
+			if(	tmp->PASS_authenticated && 	tmp->NICK_authenticated && 	tmp->USER_authenticated)
+			{
+						std::cout << "\e[1m"<< "🅆 🄴 🄻 🄲 🄾 🄼 🄴   🅃 🄾     🅈 🄰 🄸 🅁 🄲    🅂 🄴 🅁 🅅 🄴 🅁 " << std::endl;
 
-		}
+			}
 		}
 	}
 
-	return (0);
+	return (1);
 }
 
 

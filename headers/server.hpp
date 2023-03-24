@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             */
-/*   Updated: 2023/03/24 09:01:00 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/24 09:34:49 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 
 #include "user.hpp"
 #include "channel.hpp"
+#include "parser.hpp"
 
 #define str_error() strerror(errno)
 

@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+	/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
@@ -6,13 +6,12 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 00:59:52 by archid            #+#    #+#             */
-/*   Updated: 2023/03/24 09:01:24 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/24 09:22:23 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include "server.hpp"
-#include "parser.hpp"
 
 struct sockaddr *server::setup_address(const short port) {
 	static struct sockaddr_in addr;
@@ -83,7 +82,9 @@ ssize_t server::recieve_message(pollfd_iter client) {
 		std::cerr << "recieved from " << n_bytes << " from client " << client->fd << "\n";
 		map_msgs[client->fd].append(buffer, buffer + n_bytes);
 	} else if (n_bytes == 0) {
-		std::cerr << *map_users.at(client->fd) << client->fd << " has disconnected\n";
+		
+		std::cerr << "client " << client->fd << " has disconnected\n";
+		// std::cerr << *map_users.at(client->fd) << client->fd << " has disconnected\n";
 		close(client->fd);
 		map_msgs.erase(client->fd);
 		clients_.erase(client);
@@ -134,9 +135,9 @@ void server::run() {
 					{
 						std::string msg = map_msgs.at(clients_[i].fd);
 						map_msgs.erase(clients_[i].fd);
+						authenticate(msg, clients_[i].fd);
 
-						parse_command(msg ,  clients_[i].fd);
-						// authenticate(msg, clients_[i].fd);
+						// parse_command(msg ,  clients_[i].fd);
 						msg.erase();
 						// command::pointer irc_cmd = parse_command(msg);
 
@@ -160,4 +161,4 @@ void server::mode(channel *chan, channel_properties prop) {
 const char *msg_delim = "\n";
 std::map<int, std::string> map_msgs;
 std::map<int, class user *> map_users;
-// extern std::map<std::string, class channel *> map_channels;
+extern std::map<std::string, class channel *> map_channels;

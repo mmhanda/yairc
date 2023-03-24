@@ -39,7 +39,6 @@ class user {
 	protected:
 		int client_fd_;
 		std::string nickname_, username_;
-
 };
 
 std::ostream &operator<<(std::ostream &oss, const class user u);
