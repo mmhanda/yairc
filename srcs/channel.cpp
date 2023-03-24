@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 04:55:12 by archid            #+#    #+#             */
-/*   Updated: 2023/03/24 20:50:28 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/24 21:23:23 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 #include <iostream>
 #include <sstream>
 
-channel::channel(std::string name, std::string topic)
-	: name_(name), topic_(topic) {}
+channel::channel(std::string name, std::string passwd, std::string topic)
+	: name_(name), passwd(passwd), topic_(topic) {}
 
 void channel::insert_users(user *user) {
 	// need to check priviliges first

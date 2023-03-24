@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_parsing.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-//   Updated: 2023/03/22 19:22:02 by archid           ###   ########.fr       //
+/*   Updated: 2023/03/24 21:07:46 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "user.hpp"
 
 
-int	parse_command(std::string &input , const int fd)
+int	parse_command(std::string &input , const int fd, user *user_)
 {
 	char	*str;
 	char	*str1;
@@ -85,7 +85,7 @@ int	parse_command(std::string &input , const int fd)
 				}
 				else if (splited_line[0] == "JOIN")
 				{
-					check_JOIN(splited_line);
+					check_JOIN(splited_line, user_);
 				}
 				else if (splited_line[0] == "PART")
 				{

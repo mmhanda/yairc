@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 23:43:25 by archid            #+#    #+#             */
-/*   Updated: 2023/03/24 13:54:13 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/24 21:24:17 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ enum channel_properties { chan_public, chan_invite, chan_private };
 
 class channel {
 	public:
-		channel(std::string name, std::string topic = "");
+		channel(std::string name, std::string passwd = "", std::string topic = "");
 		void insert_users(user *user);
 		void broadcast(std::string msg, user *sender);
 
@@ -28,7 +28,7 @@ class channel {
 
 	private:
 		std::vector<int> users_fd;
-		std::string name_, topic_;
+		std::string name_, topic_, passwd;
 };
 
 void	send_msg(std::string, user *user);

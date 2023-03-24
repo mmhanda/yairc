@@ -37,6 +37,7 @@ struct pollfd client_pollfd(int client_fd) {
 server::server(int port, std::string passwd)  : addr_(setup_address(port)), passwd_(passwd) { start(); }
 
 server::~server(){
+	terminate();
 }
 
 void server::start() {
@@ -134,6 +135,7 @@ void server::run() {
 						std::string msg = map_msgs.at(clients_[i].fd);
 						if (authenticate(msg, clients_[i].fd)){
 							count ++;
+							parse_command(msg, clients_[i].fd, map_users.at(clients_[i].fd));
 							join_channel(msg, map_users.at(clients_[i].fd));}
 							// if (join_channel(msg, map_users.at(clients_[i].fd)));{
 								// send_msg(msg, map_users.at(clients_[i].fd));}}
@@ -169,4 +171,4 @@ void server::run() {
 const char *msg_delim = "\n";
 std::map<int, std::string> map_msgs;
 std::map<int, class user *> map_users;
-std::map<std::string, class channel *> map_channels;
+std::map<std::string, std::string, class channel *> map_channels;
