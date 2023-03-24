@@ -6,28 +6,19 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 00:59:52 by archid            #+#    #+#             */
-<<<<<<< Updated upstream
-//   Updated: 2023/03/23 21:18:48 by archid           ###   ########.fr       //
+/*   Updated: 2023/03/24 05:05:58 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
 #include "command.hpp"
-=======
-/*   Updated: 2023/03/18 05:43:51 by mhanda           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
-#include <iostream>
-#include "../headers/server.hpp"
->>>>>>> Stashed changes
-
-struct sockaddr *server::setup_address(const short port) {
+struct sockaddr *server::setup_address() {
 	static struct sockaddr_in addr;
 	bzero(addr.sin_zero, sizeof(addr.sin_zero));
 
 	addr.sin_family = AF_INET;
-	addr.sin_port = htons(port);
+	addr.sin_port = htons(port_);
 	addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
 	if (addr.sin_addr.s_addr < 0)
@@ -49,7 +40,7 @@ server::server() {}
 server::~server() { terminate(); }
 
 server::server(int port, std::string passwd)
-	: sock_fd_(socket(PF_INET, SOCK_STREAM, 0)), addr_(setup_address(port)),
+	: sock_fd_(socket(PF_INET, SOCK_STREAM, 0)), addr_(setup_address()),
 		port_(port), passwd_(passwd) {
 	if (sock_fd_ < 0 || bind(sock_fd_, addr_, sizeof(struct sockaddr)) < 0)
 		terminate_and_throw();
@@ -128,12 +119,7 @@ void server::accept_clients() {
 void server::run() {
 	while (true) {
 		int status;
-<<<<<<< Updated upstream
 		if ((status = poll(clients_.data(), clients_.size(), TIMEOUT * 1000)) < 0) {
-=======
-		std::cerr << "polling\n";
-		if ((status = as_buffer(clients_.data(), clients_.size(), TIMEOUT * 1000)) < 0) {
->>>>>>> Stashed changes
 			terminate_and_throw();
 		} else if (status == 0) {
 			continue;
@@ -150,20 +136,20 @@ void server::run() {
 						std::string msg = map_msgs_.at(clients_[i].fd);
 						map_msgs_.erase(clients_[i].fd);
 
-						command *cmd = parse_command(msg, clients_[i].fd);
-						if () {
+						// command *cmd = parse_command(msg, clients_[i].fd);
+						// if () {
 
-							// authenticate(msg, clients_[i].fd);
+							authenticate(msg, clients_[i].fd);
 
 							// command::pointer irc_cmd = parse_command(msg);
 
 							// if (irc_cmd->exec() < 0)
 							// 	terminate_and_throw();
 
-						} else {
-							std::cerr << "Invalid message: " << *map_users_.at(clients_[i].fd)
-												<< msg;
-						}
+						// } else {
+						// 	std::cerr << "Invalid message: " << *map_users_.at(clients_[i].fd)
+						// 						<< msg;
+						// }
 					}
 				}
 			}

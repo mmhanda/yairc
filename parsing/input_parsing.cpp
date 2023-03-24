@@ -6,14 +6,13 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/24 02:24:42 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/24 04:58:11 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.hpp"
 #include "server.hpp"
 #include "user.hpp"
-
 
 int	parse_command(std::string &input , const int fd)
 {
@@ -60,7 +59,7 @@ int	parse_command(std::string &input , const int fd)
 				// 	i++;
 				// }
 				user *tmp = NULL;
-				tmp = map_users.at(fd);
+				tmp = ircserv.get_user(fd);
 
 				if (splited_line[0] == "PASS")
 				{

@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 01:13:18 by archid            #+#    #+#             */
-//   Updated: 2023/03/23 20:14:36 by archid           ###   ########.fr       //
+/*   Updated: 2023/03/24 05:03:59 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,15 @@ bool user::join_or_create_channel(const std::string &chan_name) {
 
 bool user::private_message(const user *user, const std::string &msg) {
 	// serve.message(user->)
+	return (false);
 }
 
 void user::part_channel(class channel *chan) {
 	roles_.erase(chan);
+}
+
+bool user::is_operator(class channel *chan) {
+	return roles_.at(chan) == role_operator;
 }
 
 std::ostream &operator<<(std::ostream &oss, const class user u) {

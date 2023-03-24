@@ -21,33 +21,34 @@
 enum user_roles { role_user, role_operator };
 
 class user {
-public:
-	typedef std::map<class channel *, user_roles> role_map;
+	public:
+		typedef std::map<class channel *, user_roles> role_map;
 
-	user(int client_fd);
-	~user();
+		user(int client_fd);
+		~user();
 
-	int client_fd() const { return client_fd_; }
+		int client_fd() const { return client_fd_; }
 
-	const std::string &nickname() const;
-	void nickname(std::string nickname);
+		const std::string &nickname() const;
+		void nickname(std::string nickname);
 
-	const std::string &username() const;
-	void username(std::string username);
+		const std::string &username() const;
+		void username(std::string username);
 
-	bool join_or_create_channel(const std::string &chan_name);
-	bool private_message(const user *user, const std::string &msg);
-	void part_channel(class channel *chan);
+		bool join_or_create_channel(const std::string &chan_name);
+		bool private_message(const user *user, const std::string &msg);
+		void part_channel(class channel *chan);
 
-	bool PASS_authenticated;
-	bool NICK_authenticated;
-	bool USER_authenticated;
+		bool is_operator(class channel *chan);
+		
+		bool PASS_authenticated;
+		bool NICK_authenticated;
+		bool USER_authenticated;
 
-protected:
-	int client_fd_;
-	role_map roles_;
-	std::string nickname_, username_;
-
+	protected:
+		int client_fd_;
+		role_map roles_;
+		std::string nickname_, username_;
 };
 
 std::ostream &operator<<(std::ostream &oss, const user u);

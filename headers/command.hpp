@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 17:10:03 by archid            #+#    #+#             */
-//   Updated: 2023/03/23 21:14:49 by archid           ###   ########.fr       //
+/*   Updated: 2023/03/24 04:04:29 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 class command {
 	public:
 
-		command(std::vector<std::string> parts) : parts_(parts) {}
+		command(std::vector<std::string> params) : params_(params) {}
 
 		virtual int exec() const = 0;
 
@@ -28,8 +28,8 @@ protected:
 	std::vector<std::string> params_;
 };
 
-class user : public command {
-};
+// class user : public command {
+// };
 
 class nick : public command {
 };
