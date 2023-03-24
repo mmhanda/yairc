@@ -89,7 +89,7 @@ int	parse_command(std::string &input , const int fd, user *user_)
 				}
 				else if (splited_line[0] == "PART")
 				{
-					check_PART(splited_line);
+					check_PART(splited_line,user_);
 				}
 				else if (splited_line[0] == "MODE")
 				{

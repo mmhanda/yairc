@@ -29,6 +29,7 @@ int	check_USER(std::vector<std::string> const &splited_line, user *tmp);
 int check_OPER(std::vector<std::string> const & splited_line);
 int check_QUIT(char	*str1, std::string const & back_up_input);
 int check_JOIN(std::vector<std::string>  & splited_line, user *user);
-int check_PART(std::vector<std::string>  & splited_line);
+int check_PART(std::vector<std::string>  & splited_line, user *user);
+
 int	check_PRIVMSG(std::vector<std::string> &splited_line , std::string &back_up);
 int	check_NOTICE(std::vector<std::string> &splited_line, std::string &back_up_input);
