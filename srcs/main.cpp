@@ -6,14 +6,15 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 03:13:39 by archid            #+#    #+#             */
-/*   Updated: 2023/03/24 04:57:44 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/24 09:02:40 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
 #include <climits>
 #include <iostream>
-#include "../headers/server.hpp"
+#include "server.hpp"
+#include "parser.hpp"
 
 void handler(int) {
 	ircserv.terminate();
@@ -21,12 +22,14 @@ void handler(int) {
 }
 
 int main(int argc, char *argv[]) {
-	int port = 1;
-	std::string passwd = "1";
+
+	int port;
+	std::string passwd = "abc";
 
 	signal(SIGINT, handler);
-	// parse_args(argc, argv);
 
+	if (checker(argc, argv , port) == 0)
+		return (0);
 	try {
 		ircserv = server(port, passwd.c_str());
 		ircserv.run();

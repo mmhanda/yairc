@@ -81,15 +81,7 @@ reads until it blocks by raising `errno`{.verbatim}.
 
 ## Client
 
-## Messages
-
-Each IRC message may consist of up to three main parts that are separated by one or more spaces (`0x20`):
-
-- prefix (optional) :: indicated with prefix colon `:` (`0x3b`), attached to the message
-- command :: either be a valid IRC command or a 3 digits number as ASCII, and may have parameters
-- command parameters :: (of which there may be up to 15)
-
-IRC messages are always lines of characters terminated with a CR-LF (Carriage Return - Line Feed) pair, in ASCII (`0x0a 0x0d`). However, current implementation treats the appearance of either as the end of the message.
+## Commands
 
 # References
 

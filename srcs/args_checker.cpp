@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   args_checker.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:23:40 by atabiti           #+#    #+#             */
-//   Updated: 2023/03/22 22:35:59 by archid           ###   ########.fr       //
+/*   Updated: 2023/03/24 06:02:04 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,37 +49,48 @@ int	check_PASS(std::vector<std::string> const &splited_line , user *tmp)
 					std::cout << "\e[1m"<< "🅆 🄴 🄻 🄲 🄾 🄼 🄴   🅃 🄾     🅈 🄰 🄸 🅁 🄲    🅂 🄴 🅁 🅅 🄴 🅁 " << std::endl;
 
 		}
-	}
+		}
 	}
 
 	return (0);
 }
 
-void parse_args(int argc, char *argv[], int &num_port, std::string &passwd) {
-	if (argc != 3 || std::strlen(argv[1]) == 0 || std::strlen(argv[2]) == 0) {
-		std::cerr << "run as " << argv[0] << " <PORT> <PASSWD>\n";
-		exit(EXIT_FAILURE);
-	}
 
-	for (const char *port = argv[1]; *port != '\0'; ++port) {
-		if (!std::isdigit(*port) || port - argv[1] > NUM_DIGITS) {
-			std::cerr << argv[1] << " is not correct\n";
-			exit(EXIT_FAILURE);
+int	checker(int ac, char **av, int &port)
+{
+	size_t	i;
+
+	if (ac != 3)
+	{
+		std::cerr << "ERROR: Your executable should be run as follows: \t./ircserv <port> <password>" << std::endl;
+		return (0);
+	}
+	else
+	{
+		std::string port_checking(av[1]);
+		std::string password_checking(av[2]);
+		i = 0;
+		while (i < port_checking.size())
+		{
+			if (!(std::isdigit(port_checking[i])))
+			{
+				std::cerr << "ERROR: <port> must be numeric" << std::endl;
+				return (0);
+			}
+			i++;
 		}
-	}
-
-	int tmp = std::atoi(argv[1]);
-	if (tmp < 1026 || tmp > (int)SHRT_MAX) {
-		std::cerr << argv[1] << " is invalid\n";
-		exit(EXIT_FAILURE);
-	}
-	num_port = tmp;
-
-	for (const char *passwd = argv[2]; *passwd != '\0'; ++passwd) {
-		if (!std::isprint(*passwd) || passwd - argv[2] > PASSWD_SIZE) {
-			std::cerr << argv[2] << " is invalid\n";
-			exit(EXIT_FAILURE);
+		port = atoi(av[1]);
+		if (port < 0 || port > 65353)
+		{
+			std::cerr << "ERROR: <port> must be between 0  and 65353" << std::endl;
+			return (0);
 		}
+		if (port >= 0 && port <= 1023)
+		{
+			std::cerr << "ERROR: Port numbers from 0 to 1023 are reserved for common TCP/IP applications" << std::endl;
+			return (0);
+		}
+		PASSWORD = password_checking;
 	}
-	passwd = argv[2];
+	return (1);
 }

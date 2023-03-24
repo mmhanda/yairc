@@ -64,7 +64,7 @@ Each IRC message may consist of up to three main parts that are separated by one
 - command :: either be a valid IRC command or a 3 digits number as ASCII, and may have parameters
 - command parameters :: (of which there may be up to 15)
 
-IRC messages are always lines of characters terminated with a CR-LF (Carriage Return - Line Feed) pair, in ASCII (=0x0a 0x0d=). However, current implementation treats the appearance of either as the end of the message.
+IRC messages are always lines of characters terminated with a CR-LF (Carriage Return - Line Feed) pair, in ASCII (=0x0a 0x0d=)
 
 
 * References
@@ -74,7 +74,8 @@ IRC messages are always lines of characters terminated with a CR-LF (Carriage Re
  - [[https://beej.us/guide/bgnet/html][Beej's Guide to Network Programming]]
  - [[http://dwise1.net/pgm/sockets/][DWise1's Sockets Programming Pages]]
  - [[http://www.kegel.com/c10k.html][Handling multiple users]]
-
+ 
+![alt text](https://user-images.githubusercontent.com/94152392/226868617-2b778553-9795-42b7-aa1d-ba27ec688cbd.png)
 ** Stackoverflow
 
  - [[https://stackoverflow.com/questions/36985793/blocking-recv-vs-fcntl][disable =recv= blocking]]

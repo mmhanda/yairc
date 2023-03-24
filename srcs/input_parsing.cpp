@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   input_parsing.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/24 04:58:11 by mhanda           ###   ########.fr       */
+//   Updated: 2023/03/22 19:22:02 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.hpp"
 #include "server.hpp"
 #include "user.hpp"
+
 
 int	parse_command(std::string &input , const int fd)
 {
@@ -59,7 +60,7 @@ int	parse_command(std::string &input , const int fd)
 				// 	i++;
 				// }
 				user *tmp = NULL;
-				tmp = ircserv.get_user(fd);
+				tmp = map_users.at(fd);
 
 				if (splited_line[0] == "PASS")
 				{
@@ -78,21 +79,12 @@ int	parse_command(std::string &input , const int fd)
 				{
 					check_OPER(splited_line);
 				}
-				// else if (splited_line[0] == "QUIT")
-				// {
-				// 	check_QUIT(str1, back_up_input);
-				// }
+				else if (splited_line[0] == "QUIT")
+				{
+					check_QUIT(str1, back_up_input);
+				}
 				else if (splited_line[0] == "JOIN")
 				{
-					// char join_message[256];
-					// snprintf(join_message, sizeof(join_message), "JOIN tty\r\n");
-
-					// char str[] = "JOIN #chain\r\n";
-					// send(fd, str , strlen(str) , 0);
-					char str[] = "JOIN tty\r\n";
-					send(fd, str, strlen(str), 0);
-					char str_[] = ":abc JOIN #tyy\r\n";
-					send(fd, str_ , strlen(str_) , 0);
 					check_JOIN(splited_line);
 				}
 				else if (splited_line[0] == "PART")
