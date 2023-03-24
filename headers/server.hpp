@@ -6,11 +6,19 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             */
+<<<<<<< Updated upstream
 //   Updated: 2023/03/23 20:44:05 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
 // #pragma once
+=======
+/*   Updated: 2023/03/18 05:51:00 by mhanda           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#pragma once
+>>>>>>> Stashed changes
 
 #include <assert.h>
 #include <errno.h>
@@ -79,4 +87,8 @@ void authenticate(const std::string &msg, const int fd);
 
 extern const char *msg_delim;
 
+<<<<<<< Updated upstream
 extern server ircserv;
+=======
+void parse_args(int argc, const char *argv[]);
+>>>>>>> Stashed changes

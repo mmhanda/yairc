@@ -6,12 +6,21 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 00:59:52 by archid            #+#    #+#             */
+<<<<<<< Updated upstream
 //   Updated: 2023/03/23 21:18:48 by archid           ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
 #include "command.hpp"
+=======
+/*   Updated: 2023/03/18 05:43:51 by mhanda           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <iostream>
+#include "../headers/server.hpp"
+>>>>>>> Stashed changes
 
 struct sockaddr *server::setup_address(const short port) {
 	static struct sockaddr_in addr;
@@ -119,7 +128,12 @@ void server::accept_clients() {
 void server::run() {
 	while (true) {
 		int status;
+<<<<<<< Updated upstream
 		if ((status = poll(clients_.data(), clients_.size(), TIMEOUT * 1000)) < 0) {
+=======
+		std::cerr << "polling\n";
+		if ((status = as_buffer(clients_.data(), clients_.size(), TIMEOUT * 1000)) < 0) {
+>>>>>>> Stashed changes
 			terminate_and_throw();
 		} else if (status == 0) {
 			continue;
