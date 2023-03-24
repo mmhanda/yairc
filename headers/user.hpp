@@ -32,6 +32,8 @@ class user {
 		const std::string &username() const;
 		void username(std::string username);
 
+		class channel *chan = nullptr;
+
 		bool PASS_authenticated;
 		bool NICK_authenticated;
 		bool USER_authenticated;

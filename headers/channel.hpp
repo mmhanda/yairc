@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 23:43:25 by archid            #+#    #+#             */
-/*   Updated: 2023/03/24 21:24:17 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/24 21:49:49 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ class channel {
 	public:
 		channel(std::string name, std::string passwd = "", std::string topic = "");
 		void insert_users(user *user);
+		std::string passwrd(void);
 		void broadcast(std::string msg, user *sender);
 
 		const std::string &name() const { return name_; }

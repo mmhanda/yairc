@@ -131,17 +131,7 @@ void server::run() {
 					{
 						std::string msg = map_msgs.at(clients_[i].fd);
 						if (authenticate(msg, clients_[i].fd)){
-							count ++;}
-							// parse_command(msg, clients_[i].fd, map_users.at(clients_[i].fd));
-							// join_channel(msg, map_users.at(clients_[i].fd));}
-							// if (join_channel(msg, map_users.at(clients_[i].fd)));{
-								// send_msg(msg, map_users.at(clients_[i].fd));}}
-							if (count == 4)
-							{
-								channel *tmp = map_channels.at(msg);
-								std::string to_send = "arrived\n";
-								tmp->broadcast(to_send, map_users.at(clients_[i].fd));
-							}
+							parse_command(msg, clients_[i].fd, map_users.at(clients_[i].fd));}
 
 						map_msgs.erase(clients_[i].fd);
 						msg.erase();

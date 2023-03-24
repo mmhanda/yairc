@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 09:17:29 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/24 21:18:48 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/24 22:08:11 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,9 +123,8 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 		h = 0;
 		while (h < channels.size())
 		{
-			channels_map.insert(std::pair<std::string,
-										  std::string>(channels[h],
-													   password[h]));
+			channels_map.insert(
+				std::pair<std::string, std::string>(channels[h], password[h]));
 			if (channels[h].empty())
 			{
 				return (0);
@@ -139,32 +138,24 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 			std::cout << "password [" << h << "] =" << password[h] << std::endl;
 			h++;
 		}
-		/*map */
+
 		std::map<std::string, std::string>::iterator it;
 		it = channels_map.begin();
-		// while (it != channels_map.end())
-		// {
-			if (map_channels.find(it->first) != map_channels.end()) {
-				if (map_channels.find(it->second) != map_channels.end()) {
-                    channel *tmp = map_channels.at(splited_line[1]);
-                    //     std::cout << "user 1 \n";
-                    // if (tmp->check_if_user_in()){
-                    //     std::cout << "user 2 \n";
-                    //     return ;}
-                    // else {
-                    tmp->insert_users(user);
-                    std::string sen = "you have joined channel \n" + splited_line[1];
-                    send(user->client_fd(), sen.c_str(), sen.size(), 0); }
-                }
-                else {
-                    channel *tmp = new channel(splited_line[1]);
-                        map_channels.insert(std::pair<std::string, channel *>\
-                                (splited_line[1], tmp));
-                    tmp->insert_users(user);
-                }
-			// std::cout << it->first << "::" << it->second << std::endl;
-			++it;
-		// }
+		if (map_channels.find(it->first) != map_channels.end()) {
+			if (map_channels.at(it->first)->passwrd() == it->second) {
+				channel *tmp = map_channels.at(splited_line[1]);
+				tmp->insert_users(user);
+				std::string sen = "you have joined channel \n" + splited_line[1];
+				send(user->client_fd(), sen.c_str(), sen.size(), 0);
+			}
+		}
+		else {
+			channel *tmp = new channel(splited_line[1], it->second);
+			map_channels.insert(
+				std::pair<std::string, channel *>(splited_line[1], tmp));
+
+			tmp->insert_users(user);
+		}
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/24 21:07:46 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/24 22:19:15 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,9 @@ int	parse_command(std::string &input , const int fd, user *user_)
 				else if (splited_line[0] == "NOTICE")
 				{
 					check_NOTICE(splited_line, back_up_input);
+				}
+				else if (user_->chan != nullptr) {
+					user_->chan->broadcast(back_up_input, user_);
 				}
 			}
 		}
