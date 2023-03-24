@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 08:30:49 by mhanda            #+#    #+#             */
-/*   Updated: 2023/03/24 10:06:54 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/24 10:14:35 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void    authenticate(std::string &msg , const int fd)
 
             if (splited_line[0] == "PASS"){
                 if (!check_PASS(splited_line , tmp)){
-                    ::send(fd, "INCORECT PASS\n", 14, 0);}}
+                    ::send(fd, "461 PASS :Not enough parameters\n", 14, 0);}}
             else if (splited_line[0] == "NICK"){
                 if (!check_NICK(splited_line, tmp)){
                     ::send(fd, "431 NICK  :No nickname given\n", 29, 0);}}
