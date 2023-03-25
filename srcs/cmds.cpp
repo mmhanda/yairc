@@ -69,8 +69,10 @@ int check_OPER(std::vector<std::string> const &splited_line)
 			Command: QUIT:
 				Parameters: [<Quit message>]
 */
-int check_QUIT(char *str1, std::string const &back_up_input, user *user)
+int check_QUIT(char *str1, std::string  &back_up_input, user *user)
 {
+	back_up_input.erase(std::remove(back_up_input.begin(), back_up_input.end(), '\n'), back_up_input.end());
+	back_up_input.erase(std::remove(back_up_input.begin(), back_up_input.end(), '\r'), back_up_input.end());
 	str1 = const_cast<char *>(back_up_input.c_str());
 	str1 = strtok(str1, ":");
 	str1 = strtok(NULL, ":");
