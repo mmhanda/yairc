@@ -6,19 +6,12 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 09:17:29 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/25 04:18:26 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/25 07:12:28 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
 
-/*
-					Command: NICK
-	NICK <nickname> [<hopcount>] (RFC 1459)
-	NICK <nickname> (RFC 2812)
-	ERRORS : ERR_NONICKNAMEGIVEN   ERR_ERRONEUSNICKNAME   ERR_NICKNAMEINUSE        ERR_NICKCOLLISION
-	 NICK message is used to give user a nickname or change the previous one.
-*/
 int check_NICK(std::vector<std::string> const &splited_line, user *tmp)
 {
 	if (splited_line.size() != 2)
@@ -28,11 +21,6 @@ int check_NICK(std::vector<std::string> const &splited_line, user *tmp)
 	return (1);
 }
 
-/*
-						Command: USER
-	USER <username> <hostname> <servername> <realname> (RFC 1459)
-	USER <user> <mode> <unused> <realname> (RFC 2812)
-*/
 int check_USER(std::vector<std::string> const &splited_line, user *tmp)
 {
 	if (splited_line.size() != 5)
@@ -50,12 +38,6 @@ int check_USER(std::vector<std::string> const &splited_line, user *tmp)
 	return (1);
 }
 
-/*
-				Command: OPER   Parameters: <user> <password>
-	OPER message is used by a normal user to obtain operator privileges.
-	The combination of <user> and <password> are required to gain
-	Operator privileges.
-*/
 int check_OPER(std::vector<std::string> const &splited_line)
 {
 	if (splited_line.size() != 2)
@@ -65,10 +47,6 @@ int check_OPER(std::vector<std::string> const &splited_line)
 	return (0);
 }
 
-/*
-			Command: QUIT:
-				Parameters: [<Quit message>]
-*/
 int check_QUIT(std::string  &back_up_input, user *user)
 {
 	char *str1;
@@ -79,25 +57,20 @@ int check_QUIT(std::string  &back_up_input, user *user)
 	str1 = strtok(NULL, ":");
 	if (str1 != NULL)
 	{
-		/*  If a "Quit Message" is given,
-			this will be sent instead of the default message, the nickname. */
 		std::string message =  "QUIT ERROR :Closing link: [";
 		message = message + str1 + "]\n" ;
 		::send(user->client_fd(),  message.c_str() , message.length(), 0);
-			close(user->client_fd()); // to kill nc process 
+			close(user->client_fd());
 	}
 	if (str1 == NULL)
 	{
 		std::string message =  "QUIT ERROR :Closing link: [User exited]\n";
 		::send(user->client_fd(),  message.c_str() , message.length(), 0);
-		close(user->client_fd()); // to kill nc process 
+		close(user->client_fd());
 	}
 
 	return (0);
 }
-/*    Command: JOIN Parameters: <channel>{,<channel>} [<key>{,<key>}]
-					example JOIN #foo,#bar fubar,foobar
-*/
 
 int check_JOIN(std::vector<std::string> &splited_line, user *user)
 {
@@ -108,7 +81,6 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 		send(user->client_fd(), "461 JOIN :Not enough parameters\n", 32, 0);
 	else
 	{
-		/*use a map of channel name and a password */
 		std::map<std::string, std::string> channels_map;
 		std::vector<std::string> channels;
 		std::vector<std::string> password;
@@ -134,7 +106,6 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 			{
 				return (0);
 			}
-			// std::cout << "channels [" << h << "] =" << channels[h] << std::endl;
 			h++;
 		}
 		// h = 0;
@@ -171,21 +142,15 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 	return (0);
 }
 
-/*
-					Command: PART
-	Parameters: <channel>{,<channel>}
-	example   PART #oz-ops,&group5
-*/
 int check_PART(std::vector<std::string> &splited_line, user *user)
 {
 	size_t h;
 
 	h = 0;
-	std::cout << "PART COMMAND" << std::endl;
 	if (splited_line.size() <= 1 || splited_line.size() >= 3)
-	/* why 3? to avoid : PART #oz-ops, &dsd   there is a space after ,*/
 	{
-		std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
+		std::string sen = "461 PART :Not enough parameters";
+		send(user->client_fd(), sen.c_str(), sen.size(), 0);
 	}
 	else
 	{
@@ -202,6 +167,9 @@ int check_PART(std::vector<std::string> &splited_line, user *user)
 			if (map_channels.find(channels_[h]) != map_channels.end())
 			{
 				std::cout << channels_[h] << " is found" << std::endl;
+				if (user->chan != nullptr) {
+					map_channels.at(channels_[h])->how_many_usr()
+				}
 				map_channels.erase(channels_[h]);
 				std::string sen = "you have left channel " + channels_[h] + "\n";
 				send(user->client_fd(), sen.c_str(), sen.size(), 0);
@@ -209,14 +177,8 @@ int check_PART(std::vector<std::string> &splited_line, user *user)
 			h++;
 		}
 	}
-
 	return (0);
 }
-
-/*
-		Command: PRIVMSG
-		Parameters: <receiver>{,<receiver>} <text to be sent>
-*/
 
 int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up)
 {
@@ -226,7 +188,7 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up)
 	x = 0;
 	if (splited_line.size() > 2)
 	{
-		std::vector<std::string> message_receivers; /*send message to this*/
+		std::vector<std::string> message_receivers;
 		while (splited_line[1].find(",") <= splited_line[1].size())
 		{
 			message_receivers.push_back((splited_line[1].substr(0,
@@ -248,12 +210,12 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up)
 		str1 = const_cast<char *>(back_up.c_str());
 		str1 = strtok(str1, ":");
 		str1 = strtok(NULL, ":");
-		if (str1 == NULL || strcmp(str1, "") == 0) // no ":"" is provided //PRIVMSG ff fff :
+		if (str1 == NULL || strcmp(str1, "") == 0)
 		{
 			std::cerr << splited_line[0] << " :Wrong input" << std::endl;
 			return (0);
 		}
-		std::cout << "str1: " << str1 << "||" << std::endl; // message
+		std::cout << "str1: " << str1 << "||" << std::endl;
 	}
 	else
 	{
@@ -262,11 +224,6 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up)
 	}
 	return (0);
 }
-
-/*
-	  Command: NOTICE
-   Parameters: <nickname> <text>
-*/
 
 int check_NOTICE(std::vector<std::string> &splited_line,
 				 std::string &back_up_input)
@@ -283,9 +240,8 @@ int check_NOTICE(std::vector<std::string> &splited_line,
 		std::cout << "nickname " << nickname << std::endl
 				  << std::endl
 				  << std::endl
-				  << std::endl;								   // nickname
-		std::cout << "MESSAGE:" << back_up_input << std::endl; // ,message
-															   // exit(1);
+				  << std::endl;								  
+		std::cout << "MESSAGE:" << back_up_input << std::endl;
 	}
 	else
 	{
@@ -294,16 +250,6 @@ int check_NOTICE(std::vector<std::string> &splited_line,
 	}
 	return (0);
 }
-
-
-/*
-      Command: KICK
-   Parameters: <channel> <user> [<comment>]
-   The KICK command can be  used  to  forcibly  remove  a  user  from  a
-   channel.   It  'kicks  them  out'  of the channel (forced PART).
-	Only a channel operator may kick another user out of a  channel.
-	KICK #Finnish John :Speaking English
-*/
 
 int	check_KICK(std::string &input, user *tmp)
 {

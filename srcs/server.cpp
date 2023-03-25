@@ -38,14 +38,13 @@ server::server(int port, std::string passwd)  : addr_(setup_address(port)), pass
 
 
 void server::start() {
-	if ((sock_fd_ = socket(PF_INET, SOCK_STREAM, 0) < 0));
+	if ((sock_fd_ = socket(PF_INET, SOCK_STREAM, 0)) < 0)
 		terminate_and_throw();
-
 	int yes = 1;
 	if (setsockopt(sock_fd_, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) < 0)
 		terminate_and_throw();
 
-	if (bind(sock_fd_, addr_, sizeof(struct sockaddr)) < 0);
+	if (bind(sock_fd_, addr_, sizeof(struct sockaddr)) < 0)
 		terminate_and_throw();
 
 	if (fcntl(sock_fd_, F_SETFL, O_NONBLOCK) < 0)
@@ -87,7 +86,6 @@ ssize_t server::recieve_message(pollfd_iter client) {
 		map_msgs.erase(client->fd);
 		clients_.erase(client);
 	} else if (errno != EWOULDBLOCK) {
-		std::cout << "catch\n" ;
 		terminate_and_throw();
 	}
 	return n_bytes;
