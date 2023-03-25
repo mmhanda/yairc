@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 09:17:29 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/25 03:38:13 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/25 04:18:26 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -307,7 +307,6 @@ int check_NOTICE(std::vector<std::string> &splited_line,
 
 int	check_KICK(std::string &input, user *tmp)
 {
-
 	std::string message;
 	std::string part_one;
 	std::string chan;
@@ -324,5 +323,5 @@ int	check_KICK(std::string &input, user *tmp)
 		std::cerr << "input  = " <<  input<<std::endl;
 		std::cerr << "message  = " <<  message<<std::endl;
 		std::cerr << "part_one  = " <<  part_one<<std::endl;
-
+	return (0);
 }

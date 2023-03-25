@@ -38,13 +38,16 @@ server::server(int port, std::string passwd)  : addr_(setup_address(port)), pass
 
 
 void server::start() {
-	if ((sock_fd_ = socket(PF_INET, SOCK_STREAM, 0)) < 0
-			|| ((bind(sock_fd_, addr_, sizeof(struct sockaddr))) < 0))
+	if ((sock_fd_ = socket(PF_INET, SOCK_STREAM, 0) < 0));
 		terminate_and_throw();
 
 	int yes = 1;
 	if (setsockopt(sock_fd_, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) < 0)
 		terminate_and_throw();
+
+	if (bind(sock_fd_, addr_, sizeof(struct sockaddr)) < 0);
+		terminate_and_throw();
+
 	if (fcntl(sock_fd_, F_SETFL, O_NONBLOCK) < 0)
 		terminate_and_throw();
 
