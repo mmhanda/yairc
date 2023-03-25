@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 09:17:29 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/24 22:08:11 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/25 03:38:13 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,9 @@ int check_OPER(std::vector<std::string> const &splited_line)
 			Command: QUIT:
 				Parameters: [<Quit message>]
 */
-int check_QUIT(char *str1, std::string  &back_up_input, user *user)
+int check_QUIT(std::string  &back_up_input, user *user)
 {
+	char *str1;
 	back_up_input.erase(std::remove(back_up_input.begin(), back_up_input.end(), '\n'), back_up_input.end());
 	back_up_input.erase(std::remove(back_up_input.begin(), back_up_input.end(), '\r'), back_up_input.end());
 	str1 = const_cast<char *>(back_up_input.c_str());
