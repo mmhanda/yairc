@@ -17,7 +17,7 @@
 #include <string>
 #include <vector>
 #include "server.hpp"
-
+#include <sstream>
 #define CLIENT_MAX_NICKNAME 9
 
 bool    authenticate(std::string &msg , const int fd);
@@ -30,6 +30,6 @@ int check_OPER(std::vector<std::string> const & splited_line);
 int check_QUIT(char	*str1, std::string const & back_up_input, user *user);
 int check_JOIN(std::vector<std::string>  & splited_line, user *user);
 int check_PART(std::vector<std::string>  & splited_line, user *user);
-
+int	check_KICK(std::string &input, user *tmp);
 int	check_PRIVMSG(std::vector<std::string> &splited_line , std::string &back_up);
 int	check_NOTICE(std::vector<std::string> &splited_line, std::string &back_up_input);

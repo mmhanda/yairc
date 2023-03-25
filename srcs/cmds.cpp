@@ -291,3 +291,35 @@ int check_NOTICE(std::vector<std::string> &splited_line,
 	}
 	return (0);
 }
+
+
+/*
+      Command: KICK
+   Parameters: <channel> <user> [<comment>]
+   The KICK command can be  used  to  forcibly  remove  a  user  from  a
+   channel.   It  'kicks  them  out'  of the channel (forced PART).
+	Only a channel operator may kick another user out of a  channel.
+	KICK #Finnish John :Speaking English
+*/
+
+int	check_KICK(std::string &input, user *tmp)
+{
+
+	std::string message;
+	std::string part_one;
+	std::string chan;
+	std::string user;
+
+
+	std::istringstream line_to_stream(input);
+	std::getline(line_to_stream , part_one , ':');
+	std::getline(line_to_stream , message , ':');
+	// for (size_t i = 0; i < splited_line.size(); i++)
+	// {
+	// 	std::cerr << "splited  = " <<  splited_line[i]<<std::endl;
+	// }
+		std::cerr << "input  = " <<  input<<std::endl;
+		std::cerr << "message  = " <<  message<<std::endl;
+		std::cerr << "part_one  = " <<  part_one<<std::endl;
+
+}
