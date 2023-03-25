@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 04:55:12 by archid            #+#    #+#             */
-/*   Updated: 2023/03/24 22:12:52 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/25 08:00:40 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,11 @@ channel::channel(std::string name, std::string passwd, std::string topic)
 	: name_(name), passwd(passwd), topic_(topic) {}
 
 void channel::insert_users(user *user) {
-	// need to check priviliges first
+	if (how_many_usr() == 0)
+	{
+		std::cout << "set admin " << std::endl;
+		admin_names.push_back(user->username());
+	}
 	user->chan = this;
 	this->users_fd.push_back(user->client_fd());
 }
@@ -34,6 +38,14 @@ void channel::broadcast(std::string msg, user *sender) {
 		}
 	}
 }
+
+void channel::part_user(user *user) {
+	auto new_end = std::remove(
+		users_fd.begin(), users_fd.end(), user->client_fd());
+	users_fd.erase(new_end, users_fd.end());
+	user->chan = nullptr;
+}
+
 
 bool channel::check_if_user_in() {
 	auto it = std::find(users_fd.begin(), users_fd.end(), 3);

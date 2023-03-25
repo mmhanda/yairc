@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 09:17:29 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/25 07:12:28 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/25 07:54:58 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ int check_PART(std::vector<std::string> &splited_line, user *user)
 	h = 0;
 	if (splited_line.size() <= 1 || splited_line.size() >= 3)
 	{
-		std::string sen = "461 PART :Not enough parameters";
+		std::string sen = "461 PART :Not enough parameters\n";
 		send(user->client_fd(), sen.c_str(), sen.size(), 0);
 	}
 	else
@@ -163,16 +163,19 @@ int check_PART(std::vector<std::string> &splited_line, user *user)
 		channels_.push_back((splited_line[1].substr(0)));
 		while (h < channels_.size())
 		{
-			std::cout << "channels [" << h << "] =" << channels_[h] << std::endl;
 			if (map_channels.find(channels_[h]) != map_channels.end())
 			{
-				std::cout << channels_[h] << " is found" << std::endl;
-				if (user->chan != nullptr) {
-					map_channels.at(channels_[h])->how_many_usr()
+				if (user->chan != nullptr && map_channels.at(channels_[h])->how_many_usr() >= 2) {
+					std::string sen = "you have left channel\n" + channels_[h];
+					map_channels.at(channels_[h])->part_user(user);
+					send(user->client_fd(), sen.c_str(), sen.size(), 0);
 				}
-				map_channels.erase(channels_[h]);
-				std::string sen = "you have left channel " + channels_[h] + "\n";
-				send(user->client_fd(), sen.c_str(), sen.size(), 0);
+				else {
+					std::string sen = "you have left channel\n" + channels_[h];
+					map_channels.at(channels_[h])->part_user(user);
+					send(user->client_fd(), sen.c_str(), sen.size(), 0);
+					map_channels.erase(channels_[h]);
+				}
 			}
 			h++;
 		}
