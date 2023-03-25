@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 01:13:18 by archid            #+#    #+#             */
-/*   Updated: 2023/03/24 12:00:42 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/25 11:02:58 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,12 @@ const std::string &user::username() const { return username_; }
 
 void user::username(std::string username) { username_ = username; }
 
-// bool user::join_or_create_channel(const std::string &chan_name) {
-// 	channel *&chan = channels[chan_name];
-// 	if (chan != nullptr) {
-// 		chan = new channel(chan_name);
-// 		std::cerr << *this << " created " << *chan << "\n";
-// 		chan->join(this);
-// 		roles_[chan] = role_operator;
-// 		return true;
-// 	} else {
-// 		chan->join(this);
-// 		roles_[chan] = role_user;
-// 		return false;
-// 	}
-// }
+void send_confirm_msg(user *user_){
 
-// bool private_message(const user *user, const std::string &msg) {
-// 	// serve.message(user->)
-// }
-
-// void leave_channel(class channel *chan, class user *usr){
-// }
-
-std::ostream &operator<<(std::ostream &oss, const class user u) {
-	return oss << u.username() << " (" << u.nickname() << ")";
+	if (user_->NICK_authenticated && user_->PASS_authenticated
+		&&user_->USER_authenticated && user_->PRINTER) {
+		std::string sen = "You " + user_->username() + " have joined successfully\n";
+		send(user_->client_fd(), sen.c_str(), sen.size(), 0);
+		user_->PRINTER = true;
+	}
 }

@@ -6,34 +6,50 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 09:17:29 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/25 07:54:58 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/25 10:47:16 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
 
-int check_NICK(std::vector<std::string> const &splited_line, user *tmp)
+int check_NICK(std::vector<std::string> const &splited_line, user *user)
 {
 	if (splited_line.size() != 2)
 		return (0);
-	tmp->nickname(splited_line[1]);
-	tmp->NICK_authenticated = true;
+	if (user->NICK_authenticated == true)
+		return(1);
+	if (std::find(server_nick_names.begin(), server_nick_names.end(),
+		splited_line[1]) != server_nick_names.end()) {
+		std::string sen = "invalid nickname :already exist\n";
+		send(user->client_fd(), sen.c_str(), sen.size(), 0);
+		user->PRINTER = false;
+	}
+	else{
+		user->nickname(splited_line[1]);
+		server_nick_names.push_back(user->nickname());
+		user->PRINTER = true;
+		user->NICK_authenticated = true;
+	}
 	return (1);
 }
 
-int check_USER(std::vector<std::string> const &splited_line, user *tmp)
+int check_USER(std::vector<std::string> const &splited_line, user *user)
 {
 	if (splited_line.size() != 5)
-	{
-		std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
 		return 0;
+	if (user->USER_authenticated == true)
+		return (1);
+	if (std::find(server_user_names.begin(), server_user_names.end(),
+		splited_line[1]) != server_user_names.end()) {
+		std::string sen = "invalid username :already exist\n";
+		send(user->client_fd(), sen.c_str(), sen.size(), 0);
+		user->PRINTER = false;
 	}
-	tmp->username(splited_line[1]);
-	tmp->USER_authenticated = true;
-	if (tmp->PASS_authenticated && tmp->NICK_authenticated && tmp->USER_authenticated)
-	{
-		std::cout << "\e[1m"
-				  << "🅆 🄴 🄻 🄲 🄾 🄼 🄴   🅃 🄾     🅈 🄰 🄸 🅁 🄲    🅂 🄴 🅁 🅅 🄴 🅁 " << std::endl;
+	else{
+		user->username(splited_line[1]);
+		server_user_names.push_back(user->username());
+		user->PRINTER = true;
+		user->USER_authenticated = true;
 	}
 	return (1);
 }
@@ -108,13 +124,6 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 			}
 			h++;
 		}
-		// h = 0;
-		// while (h < password.size())
-		// {
-		// 	std::cout << "password [" << h << "] =" << password[h] << std::endl;
-		// 	h++;
-		// }
-
 		std::map<std::string, std::string>::iterator it;
 		it = channels_map.begin();
 		while (it != channels_map.end())
@@ -129,9 +138,15 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 					std::string sen = "you have joined channel " + it->first + "\n";
 					send(user->client_fd(), sen.c_str(), sen.size(), 0);
 				}
+				else {
+					std::string sen = "Pssword needed or wrong password\n";
+					send(user->client_fd(), sen.c_str(), sen.size(), 0);
+				}
 			}
 			else
 			{
+				std::string sen = "Channel "  + it->first +" has been created\n";
+				send(user->client_fd(), sen.c_str(), sen.size(), 0);
 				channel *tmp = new channel(it->first, it->second);
 				map_channels.insert(std::pair<std::string, channel *>(it->first, tmp));
 				tmp->insert_users(user);
@@ -166,12 +181,15 @@ int check_PART(std::vector<std::string> &splited_line, user *user)
 			if (map_channels.find(channels_[h]) != map_channels.end())
 			{
 				if (user->chan != nullptr && map_channels.at(channels_[h])->how_many_usr() >= 2) {
-					std::string sen = "you have left channel\n" + channels_[h];
+					std::string send_to_others = "user " + user->username()
+							+ " has left the cahnnel\n";
+					user->chan->broadcast(send_to_others, user);
+					std::string sen = "you have left channel " + channels_[h];
 					map_channels.at(channels_[h])->part_user(user);
 					send(user->client_fd(), sen.c_str(), sen.size(), 0);
 				}
 				else {
-					std::string sen = "you have left channel\n" + channels_[h];
+					std::string sen = "you have left channel " + channels_[h] + "\n";
 					map_channels.at(channels_[h])->part_user(user);
 					send(user->client_fd(), sen.c_str(), sen.size(), 0);
 					map_channels.erase(channels_[h]);
@@ -265,10 +283,6 @@ int	check_KICK(std::string &input, user *tmp)
 	std::istringstream line_to_stream(input);
 	std::getline(line_to_stream , part_one , ':');
 	std::getline(line_to_stream , message , ':');
-	// for (size_t i = 0; i < splited_line.size(); i++)
-	// {
-	// 	std::cerr << "splited  = " <<  splited_line[i]<<std::endl;
-	// }
 		std::cerr << "input  = " <<  input<<std::endl;
 		std::cerr << "message  = " <<  message<<std::endl;
 		std::cerr << "part_one  = " <<  part_one<<std::endl;

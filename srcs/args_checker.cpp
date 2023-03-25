@@ -6,48 +6,35 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:23:40 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/24 11:06:20 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/25 10:32:54 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
 std::string PASSWORD;
 
-/*
-		Command: PASS
-	Parameters: <password> (RFC 1459)
-	ERRORS : ERR_ALREADYREGISTRED  ERR_NEEDMOREPARAMS
-*/
-int	check_PASS(std::vector<std::string> const &splited_line , user *tmp)
+int	check_PASS(std::vector<std::string> const &splited_line , user *user)
 {
 	std::cout << splited_line[1] <<std::endl;
 	std::cout << splited_line[1].size() <<std::endl;
 
-	if(tmp->PASS_authenticated == true)
-		return (0);
-	else
-	{
+	if(user->PASS_authenticated == true)
+		return (3);
+	else {
 		if (splited_line.size() != 2)
 			return (0);
-		else
-		{
-			if (splited_line[1] != PASSWORD)
-			{
-				std::cerr << "464 " << splited_line[0] << " :Password incorrect "  << std::endl;
-				return (0);
+		else {
+			if (splited_line[1] != PASSWORD) {
+				std::string sen = "464 " + splited_line[0] + " :Password incorrect\n";
+				send(user->client_fd(), sen.c_str(), sen.size(), 0);
+				return (1);
 			}
-			tmp->PASS_authenticated = true;
-			if(	tmp->PASS_authenticated && 	tmp->NICK_authenticated && 	tmp->USER_authenticated)
-			{
-						std::cout << "\e[1m"<< "🅆 🄴 🄻 🄲 🄾 🄼 🄴   🅃 🄾     🅈 🄰 🄸 🅁 🄲    🅂 🄴 🅁 🅅 🄴 🅁 " << std::endl;
-
-			}
+			user->PRINTER = true;
+			user->PASS_authenticated = true;
 		}
 	}
-
 	return (1);
 }
-
 
 int	checker(int ac, char **av, int &port)
 {

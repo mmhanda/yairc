@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 09:20:51 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/25 03:40:18 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/25 10:03:32 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ bool    authenticate(std::string &msg , const int fd, user *user_);
 int	parse_command(std::string &input , const int fd, user *user_);
 int	checker(int ac, char **av,int		&port);
 int	check_PASS(std::vector<std::string> const &splited_line , user *tmp);
-int	check_NICK(std::vector<std::string> const &splited_line, user *tmp);
+int	check_NICK(std::vector<std::string> const &splited_line, user *user);
 int	check_USER(std::vector<std::string> const &splited_line, user *tmp);
 int check_OPER(std::vector<std::string> const & splited_line);
 int check_QUIT(std::string  & back_up_input, user *user);

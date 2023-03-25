@@ -78,10 +78,9 @@ ssize_t server::recieve_message(pollfd_iter client) {
 	ssize_t n_bytes = recv(client->fd, buffer, sizeof(buffer), 0);
 
 	if (n_bytes > 0) {
-		std::cerr << "recieved from " << n_bytes << " from client " << client->fd << "\n";
 		map_msgs[client->fd].append(buffer, buffer + n_bytes);
 	} else if (n_bytes == 0) {
-		std::cerr << map_users.at(client->fd)->username() << " " << client->fd << " has disconnected\n";
+		std::cout << "[ * ]" << map_users.at(client->fd)->username() << " has disconnected\n";
 		close(client->fd);
 		map_msgs.erase(client->fd);
 		clients_.erase(client);
@@ -96,10 +95,11 @@ void server::accept_clients() {
 	int client_fd;
 
 	while ((client_fd = ::accept(sock_fd_, addr_, &sock_len)) >= 0) {
-		std::cerr << "new client joined number " << client_fd << '\n';
-		message(client_fd, "Welcome to yairc server\n");
+		message(client_fd, "[ Welcome to YAIRC server ]\n");
 		map_users.insert(std::pair<int, user *>(client_fd, new user(client_fd)));
 		clients_.push_back(client_pollfd(client_fd));
+		std::cerr << "New client joined number " << "[ "
+				<< map_users.size() << " ]\n";
 	}
 
 	if (client_fd < 0 && errno != EWOULDBLOCK) {
@@ -146,4 +146,6 @@ void server::run() {
 const char *msg_delim = "\n";
 std::map<int, std::string> map_msgs;
 std::map<int, class user *> map_users;
+std::vector<std::string> server_user_names;
+std::vector<std::string> server_nick_names;
 std::map<std::string, class channel *> map_channels;

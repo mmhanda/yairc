@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 23:43:25 by archid            #+#    #+#             */
-/*   Updated: 2023/03/25 07:58:17 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/25 08:14:43 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,13 @@ class channel {
 		const std::string &name() const { return name_; }
 		const std::string &topic() const { return topic_; }
 
-		int how_many_usr() const {return users_fd.size();}
+		int 	how_many_usr() const {return users_fd.size();}
 		bool	check_if_user_in();
 
 	private:
 		std::vector<int> users_fd;
 		std::vector<std::string> admin_names;
+		std::vector<std::string> r_user_names;
 		std::string name_, topic_, passwd;
 };
 

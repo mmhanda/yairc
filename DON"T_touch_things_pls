@@ -1,0 +1,12 @@
+NOTE :
+
+please don't touch the code without my permission i can't debug it again
+
+
+Work done to follows :
+
+duplicated name and user in the server : DONE
+the Command PART is not working : DONE
+the bug in QUIT : DONE
+the communication between the multiple clients in one channel : DONE
+handled multiple bugs and errors and inputs : DONE

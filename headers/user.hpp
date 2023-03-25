@@ -34,15 +34,16 @@ class user {
 
 		class channel *chan = nullptr;
 
+
 		bool PASS_authenticated;
 		bool NICK_authenticated;
 		bool USER_authenticated;
+		bool PRINTER;
 
 	protected:
 		int client_fd_;
 		std::string nickname_, username_;
 };
 
-std::ostream &operator<<(std::ostream &oss, const class user u);
-
+void send_confirm_msg(user *user_);
 #endif

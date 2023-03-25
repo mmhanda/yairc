@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             */
-/*   Updated: 2023/03/25 06:40:14 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/25 10:00:33 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,11 @@
 #include <iostream>
 #include <utility>
 #include <stdexcept>
-
+#include <string>
 #include <algorithm>
 #include <vector>
 #include <map>
 
-#include <string>
 
 #include "user.hpp"
 #include "channel.hpp"
@@ -42,24 +41,6 @@
 #define TIMEOUT 1
 #define PORT 8881
 
-#include <assert.h>
-#include <errno.h>
-
-#include <unistd.h>
-#include <poll.h>
-#include <sys/socket.h>
-#include <fcntl.h>
-#include <arpa/inet.h>
-#include <string.h>
-#include <iostream>
-#include <utility>
-#include <stdexcept>
-
-#include <algorithm>
-#include <vector>
-#include <map>
-
-#include <string>
 
 #include "user.hpp"
 #include "channel.hpp"
@@ -68,7 +49,7 @@
 
 #define NUM_CONNECTIONS 16
 #define BUFF_SIZE 256
-#define TIMEOUT 1								// seconds
+#define TIMEOUT 1
 #define PORT 8881
 
 class server {
@@ -97,23 +78,17 @@ class server {
       server &operator = (const server &copyfrom);
 
       void message(int client_fd, const std::string &msg, int flags = 0);
-      // void mode(user *user, channel *chan, user_roles role);
-      // void mode(channel *chan, channel_properties prop);
 
       void terminate();
       void run();
 };
 
 void authenticate(const std::string &msg, const int fd);
-// void parse_args(int argc, const char *argv[]);
-
-// extern short num_port;
-// extern char *passwd;
 
 extern const char *msg_delim;
 extern std::map<int, std::string> map_msgs;
 extern std::map<int, class user *> map_users;
-
+extern std::vector<std::string> server_user_names;
 extern server ircserv;
 
 
@@ -126,4 +101,5 @@ extern const char *msg_delim;
 extern std::map<int, std::string> map_msgs;
 extern std::map<int, class user *> map_users;
 extern std::map<std::string, class channel *> map_channels;
+extern std::vector<std::string> server_nick_names;
 extern server ircserv;
