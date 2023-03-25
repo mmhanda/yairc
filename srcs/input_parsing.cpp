@@ -81,7 +81,7 @@ int	parse_command(std::string &input , const int fd, user *user_)
 				}
 				else if (splited_line[0] == "QUIT")
 				{
-					check_QUIT(str1, back_up_input);
+					check_QUIT(str1, back_up_input, user_);
 				}
 				else if (splited_line[0] == "JOIN")
 				{

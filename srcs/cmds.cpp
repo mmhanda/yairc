@@ -23,8 +23,8 @@ int check_NICK(std::vector<std::string> const &splited_line, user *tmp)
 {
 	if (splited_line.size() != 2)
 		return (0);
-		tmp->nickname(splited_line[1]);
-		tmp->NICK_authenticated = true;
+	tmp->nickname(splited_line[1]);
+	tmp->NICK_authenticated = true;
 	return (1);
 }
 
@@ -69,7 +69,7 @@ int check_OPER(std::vector<std::string> const &splited_line)
 			Command: QUIT:
 				Parameters: [<Quit message>]
 */
-int check_QUIT(char *str1, std::string const &back_up_input)
+int check_QUIT(char *str1, std::string const &back_up_input, user *user)
 {
 	str1 = const_cast<char *>(back_up_input.c_str());
 	str1 = strtok(str1, ":");
@@ -78,7 +78,10 @@ int check_QUIT(char *str1, std::string const &back_up_input)
 	{
 		/*  If a "Quit Message" is given,
 			this will be sent instead of the default message, the nickname. */
-		std::cerr << "ERROR :Closing link: [" << str1 << "]" << std::endl;
+		// std::cerr << "ERROR :Closing link: [" << str1 << "]" << std::endl;
+		std::string message =  "QUIT ERROR :Closing link: [";
+		message = message + str1 + "]\n" ;
+		   ::send(user->client_fd(),  message.c_str() , message.length(), 0);
 		// str1 is the full message  without : ERROR :Closing link: (asd@localhost) [Gone to have lunch]
 	}
 	if (str1 == NULL)
@@ -86,6 +89,7 @@ int check_QUIT(char *str1, std::string const &back_up_input)
 		std::cerr << "ERROR :Closing link: [User exited]" << std::endl;
 		// ERROR :Closing link: (atabiti@localhost) [User exited]
 	}
+
 	return (0);
 }
 /*    Command: JOIN Parameters: <channel>{,<channel>} [<key>{,<key>}]
@@ -141,22 +145,24 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 		it = channels_map.begin();
 		while (it != channels_map.end())
 		{
-		
-		if (map_channels.find(it->first) != map_channels.end()) {
-			if (map_channels.at(it->first)->passwrd() == it->second) {
-				channel *tmp = map_channels.at(it->first);
-				tmp->insert_users(user);
-				std::string sen = "you have joined channel " + it->first + "\n";
-				send(user->client_fd(), sen.c_str(), sen.size(), 0);
+
+			if (map_channels.find(it->first) != map_channels.end())
+			{
+				if (map_channels.at(it->first)->passwrd() == it->second)
+				{
+					channel *tmp = map_channels.at(it->first);
+					tmp->insert_users(user);
+					std::string sen = "you have joined channel " + it->first + "\n";
+					send(user->client_fd(), sen.c_str(), sen.size(), 0);
+				}
 			}
-		}
-		else 
-		{
-			channel *tmp = new channel(it->first, it->second);
-			map_channels.insert(std::pair<std::string, channel *>(it->first, tmp));
-			tmp->insert_users(user);
-		}
-		it++;
+			else
+			{
+				channel *tmp = new channel(it->first, it->second);
+				map_channels.insert(std::pair<std::string, channel *>(it->first, tmp));
+				tmp->insert_users(user);
+			}
+			it++;
 		}
 	}
 	return (0);
@@ -183,21 +189,21 @@ int check_PART(std::vector<std::string> &splited_line, user *user)
 		std::vector<std::string> channels_;
 		while (splited_line[1].find(",") <= splited_line[1].size())
 		{
-			channels_.push_back((splited_line[1].substr(0,splited_line[1].find(","))));
+			channels_.push_back((splited_line[1].substr(0, splited_line[1].find(","))));
 			splited_line[1].erase(0, splited_line[1].find(",") + 1);
 		}
 		channels_.push_back((splited_line[1].substr(0)));
 		while (h < channels_.size())
 		{
 			std::cout << "channels [" << h << "] =" << channels_[h] << std::endl;
+			if (map_channels.find(channels_[h]) != map_channels.end())
+			{
+				std::cout << channels_[h] << " is found" << std::endl;
+				map_channels.erase(channels_[h]);
+				std::string sen = "you have left channel " + channels_[h] + "\n";
+				send(user->client_fd(), sen.c_str(), sen.size(), 0);
+			}
 			h++;
-		}
-	if(map_channels.find(channels_[0]) != map_channels.end())
-		{
-			std::cout <<channels_[0] <<" is found" <<std::endl;
-			map_channels.erase(channels_[0]);
-			std::string sen = "you have left channel " + channels_[0] + "\n";
-			send(user->client_fd(), sen.c_str(), sen.size(), 0);
 		}
 	}
 
