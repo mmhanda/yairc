@@ -81,12 +81,13 @@ int check_QUIT(char *str1, std::string const &back_up_input, user *user)
 		// std::cerr << "ERROR :Closing link: [" << str1 << "]" << std::endl;
 		std::string message =  "QUIT ERROR :Closing link: [";
 		message = message + str1 + "]\n" ;
-		   ::send(user->client_fd(),  message.c_str() , message.length(), 0);
+		::send(user->client_fd(),  message.c_str() , message.length(), 0);
 		// str1 is the full message  without : ERROR :Closing link: (asd@localhost) [Gone to have lunch]
 	}
 	if (str1 == NULL)
 	{
-		std::cerr << "ERROR :Closing link: [User exited]" << std::endl;
+		std::string message =  "QUIT ERROR :Closing link: [User exited]\n";
+		::send(user->client_fd(),  message.c_str() , message.length(), 0);
 		// ERROR :Closing link: (atabiti@localhost) [User exited]
 	}
 
