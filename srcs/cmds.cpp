@@ -23,8 +23,8 @@ int check_NICK(std::vector<std::string> const &splited_line, user *tmp)
 {
 	if (splited_line.size() != 2)
 		return (0);
-		tmp->nickname(splited_line[1]);
-		tmp->NICK_authenticated = true;
+	tmp->nickname(splited_line[1]);
+	tmp->NICK_authenticated = true;
 	return (1);
 }
 
@@ -69,8 +69,10 @@ int check_OPER(std::vector<std::string> const &splited_line)
 			Command: QUIT:
 				Parameters: [<Quit message>]
 */
-int check_QUIT(char *str1, std::string const &back_up_input)
+int check_QUIT(char *str1, std::string  &back_up_input, user *user)
 {
+	back_up_input.erase(std::remove(back_up_input.begin(), back_up_input.end(), '\n'), back_up_input.end());
+	back_up_input.erase(std::remove(back_up_input.begin(), back_up_input.end(), '\r'), back_up_input.end());
 	str1 = const_cast<char *>(back_up_input.c_str());
 	str1 = strtok(str1, ":");
 	str1 = strtok(NULL, ":");
@@ -78,14 +80,18 @@ int check_QUIT(char *str1, std::string const &back_up_input)
 	{
 		/*  If a "Quit Message" is given,
 			this will be sent instead of the default message, the nickname. */
-		std::cerr << "ERROR :Closing link: [" << str1 << "]" << std::endl;
-		// str1 is the full message  without : ERROR :Closing link: (asd@localhost) [Gone to have lunch]
+		std::string message =  "QUIT ERROR :Closing link: [";
+		message = message + str1 + "]\n" ;
+		::send(user->client_fd(),  message.c_str() , message.length(), 0);
+			close(user->client_fd()); // to kill nc process 
 	}
 	if (str1 == NULL)
 	{
-		std::cerr << "ERROR :Closing link: [User exited]" << std::endl;
-		// ERROR :Closing link: (atabiti@localhost) [User exited]
+		std::string message =  "QUIT ERROR :Closing link: [User exited]\n";
+		::send(user->client_fd(),  message.c_str() , message.length(), 0);
+		close(user->client_fd()); // to kill nc process 
 	}
+
 	return (0);
 }
 /*    Command: JOIN Parameters: <channel>{,<channel>} [<key>{,<key>}]
@@ -103,7 +109,6 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 	{
 		/*use a map of channel name and a password */
 		std::map<std::string, std::string> channels_map;
-		std::cout << "JOIN COMMAND " << std::endl;
 		std::vector<std::string> channels;
 		std::vector<std::string> password;
 		while (splited_line[1].find(",") <= splited_line[1].size())
@@ -113,10 +118,9 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 			splited_line[1].erase(0, splited_line[1].find(",") + 1);
 		}
 		channels.push_back((splited_line[1].substr(0)));
-		while (splited_line[2].find(",") <= splited_line[2].size())
+		while (splited_line[2].find(",") <= splited_line[2].size() && !splited_line[2].empty())
 		{
-			password.push_back((splited_line[2].substr(0,
-													   splited_line[2].find(","))));
+			password.push_back((splited_line[2].substr(0, splited_line[2].find(","))));
 			splited_line[2].erase(0, splited_line[2].find(",") + 1);
 		}
 		password.push_back((splited_line[2].substr(0)));
@@ -129,32 +133,38 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 			{
 				return (0);
 			}
-			std::cout << "channels [" << h << "] =" << channels[h] << std::endl;
+			// std::cout << "channels [" << h << "] =" << channels[h] << std::endl;
 			h++;
 		}
-		h = 0;
-		while (h < password.size())
-		{
-			std::cout << "password [" << h << "] =" << password[h] << std::endl;
-			h++;
-		}
+		// h = 0;
+		// while (h < password.size())
+		// {
+		// 	std::cout << "password [" << h << "] =" << password[h] << std::endl;
+		// 	h++;
+		// }
 
 		std::map<std::string, std::string>::iterator it;
 		it = channels_map.begin();
-		if (map_channels.find(it->first) != map_channels.end()) {
-			if (map_channels.at(it->first)->passwrd() == it->second) {
-				channel *tmp = map_channels.at(splited_line[1]);
-				tmp->insert_users(user);
-				std::string sen = "you have joined channel \n" + splited_line[1];
-				send(user->client_fd(), sen.c_str(), sen.size(), 0);
-			}
-		}
-		else {
-			channel *tmp = new channel(splited_line[1], it->second);
-			map_channels.insert(
-				std::pair<std::string, channel *>(splited_line[1], tmp));
+		while (it != channels_map.end())
+		{
 
-			tmp->insert_users(user);
+			if (map_channels.find(it->first) != map_channels.end())
+			{
+				if (map_channels.at(it->first)->passwrd() == it->second)
+				{
+					channel *tmp = map_channels.at(it->first);
+					tmp->insert_users(user);
+					std::string sen = "you have joined channel " + it->first + "\n";
+					send(user->client_fd(), sen.c_str(), sen.size(), 0);
+				}
+			}
+			else
+			{
+				channel *tmp = new channel(it->first, it->second);
+				map_channels.insert(std::pair<std::string, channel *>(it->first, tmp));
+				tmp->insert_users(user);
+			}
+			it++;
 		}
 	}
 	return (0);
@@ -165,34 +175,40 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 	Parameters: <channel>{,<channel>}
 	example   PART #oz-ops,&group5
 */
-int check_PART(std::vector<std::string> &splited_line)
+int check_PART(std::vector<std::string> &splited_line, user *user)
 {
 	size_t h;
 
 	h = 0;
 	std::cout << "PART COMMAND" << std::endl;
 	if (splited_line.size() <= 1 || splited_line.size() >= 3)
-	/* why 3? to avoid : PART #oz-ops,
-					&dsd   there is a space after ,*/
+	/* why 3? to avoid : PART #oz-ops, &dsd   there is a space after ,*/
 	{
 		std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
 	}
 	else
 	{
-		std::vector<std::string> channels;
+		std::vector<std::string> channels_;
 		while (splited_line[1].find(",") <= splited_line[1].size())
 		{
-			channels.push_back((splited_line[1].substr(0,
-													   splited_line[1].find(","))));
+			channels_.push_back((splited_line[1].substr(0, splited_line[1].find(","))));
 			splited_line[1].erase(0, splited_line[1].find(",") + 1);
 		}
-		channels.push_back((splited_line[1].substr(0)));
-		while (h < channels.size())
+		channels_.push_back((splited_line[1].substr(0)));
+		while (h < channels_.size())
 		{
-			std::cout << "channels [" << h << "] =" << channels[h] << std::endl;
+			std::cout << "channels [" << h << "] =" << channels_[h] << std::endl;
+			if (map_channels.find(channels_[h]) != map_channels.end())
+			{
+				std::cout << channels_[h] << " is found" << std::endl;
+				map_channels.erase(channels_[h]);
+				std::string sen = "you have left channel " + channels_[h] + "\n";
+				send(user->client_fd(), sen.c_str(), sen.size(), 0);
+			}
 			h++;
 		}
 	}
+
 	return (0);
 }
 
@@ -276,4 +292,36 @@ int check_NOTICE(std::vector<std::string> &splited_line,
 		return (0);
 	}
 	return (0);
+}
+
+
+/*
+      Command: KICK
+   Parameters: <channel> <user> [<comment>]
+   The KICK command can be  used  to  forcibly  remove  a  user  from  a
+   channel.   It  'kicks  them  out'  of the channel (forced PART).
+	Only a channel operator may kick another user out of a  channel.
+	KICK #Finnish John :Speaking English
+*/
+
+int	check_KICK(std::string &input, user *tmp)
+{
+
+	std::string message;
+	std::string part_one;
+	std::string chan;
+	std::string user;
+
+
+	std::istringstream line_to_stream(input);
+	std::getline(line_to_stream , part_one , ':');
+	std::getline(line_to_stream , message , ':');
+	// for (size_t i = 0; i < splited_line.size(); i++)
+	// {
+	// 	std::cerr << "splited  = " <<  splited_line[i]<<std::endl;
+	// }
+		std::cerr << "input  = " <<  input<<std::endl;
+		std::cerr << "message  = " <<  message<<std::endl;
+		std::cerr << "part_one  = " <<  part_one<<std::endl;
+
 }

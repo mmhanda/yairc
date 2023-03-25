@@ -79,17 +79,17 @@ int	parse_command(std::string &input , const int fd, user *user_)
 				{
 					check_OPER(splited_line);
 				}
-				else if (splited_line[0] == "QUIT")
+				else if (splited_line[0] == "QUIT") //done 60%
 				{
-					check_QUIT(str1, back_up_input);
+					check_QUIT(str1, back_up_input, user_);
 				}
 				else if (splited_line[0] == "JOIN")
 				{
 					check_JOIN(splited_line, user_);
 				}
-				else if (splited_line[0] == "PART")
+				else if (splited_line[0] == "PART") //done 60%
 				{
-					check_PART(splited_line);
+					check_PART(splited_line,user_);
 				}
 				else if (splited_line[0] == "MODE")
 				{
