@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/24 08:30:49 by mhanda            #+#    #+#             */
-/*   Updated: 2023/03/24 21:08:53 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/25 03:17:08 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,50 +60,3 @@ bool    authenticate(std::string &msg , const int fd)
     }
     return (false);
 }
-
-void    join_channel(std::string msg, user *user){
-    
-    // char *str = NULL;
-    
-    // std::vector<std::string> splited_line;
-
-    // msg.erase(std::remove(msg.begin(), msg.end(), '\n'), msg.end());
-    //     msg.erase(std::remove(msg.begin(), msg.end(), '\r'), msg.end());
-
-    // str = const_cast<char *>(msg.c_str());
-
-    // str = strtok(str, " ");
-    // if (str != NULL)
-    // {
-    //     while (str != NULL)
-    //     {
-    //         splited_line.push_back(str);
-    //         str = strtok(NULL, " ");
-    //     }
-    //     if (splited_line.size() != 2 && splited_line[0] != "JOIN" ){
-    //         send(user->client_fd(), "461 JOIN :Not enough parameters\n", 32, 0);}
-    //     else if (splited_line[0] == "JOIN") {
-    //             if (map_channels.count(splited_line[1])) {
-    //                 channel *tmp = map_channels.at(splited_line[1]);
-    //                 //     std::cout << "user 1 \n";
-    //                 // if (tmp->check_if_user_in()){
-    //                 //     std::cout << "user 2 \n";
-    //                 //     return ;}
-    //                 // else {
-    //                 tmp->insert_users(user);
-    //                 std::string sen = "you have joined channel \n" + splited_line[1];
-    //                 send(user->client_fd(), sen.c_str(), sen.size(), 0);
-    //             }
-    //             else {
-    //                 channel *tmp = new channel(splited_line[1]);
-    //                     map_channels.insert(std::pair<std::string, channel *>\
-    //                             (splited_line[1], tmp));
-    //                 tmp->insert_users(user);
-    //             }
-    //         }
-    // }
-}
-
-
-
-

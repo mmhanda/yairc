@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             */
-/*   Updated: 2023/03/24 21:41:39 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/25 03:16:59 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ class server {
       void run();
 };
 
-void join_channel(std::string msg, user *user);
 void authenticate(const std::string &msg, const int fd);
 // void parse_args(int argc, const char *argv[]);
 

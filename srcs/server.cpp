@@ -135,25 +135,12 @@ void server::run() {
 
 						map_msgs.erase(clients_[i].fd);
 						msg.erase();
-						// parse_command(msg ,  clients_[i].fd);
-						// command::pointer irc_cmd = parse_command(msg);
-
-						// if (irc_cmd->exec() < 0)
-						// 	terminate_and_throw();
-
 					}
 				}
 			}
 		}
 	}
 }
-
-// void server::mode(user *user, channel *chan, user_roles role) {
-
-// }
-
-// void server::mode(channel *chan, channel_properties prop) {
-// }
 
 const char *msg_delim = "\n";
 std::map<int, std::string> map_msgs;
