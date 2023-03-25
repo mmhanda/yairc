@@ -88,6 +88,7 @@ int check_QUIT(char *str1, std::string const &back_up_input, user *user)
 	{
 		std::string message =  "QUIT ERROR :Closing link: [User exited]\n";
 		::send(user->client_fd(),  message.c_str() , message.length(), 0);
+		close(user->client_fd()); // to kill nc process 
 		// ERROR :Closing link: (atabiti@localhost) [User exited]
 	}
 
