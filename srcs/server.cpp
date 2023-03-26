@@ -1,4 +1,4 @@
-	/* ************************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 00:59:52 by archid            #+#    #+#             */
-/*   Updated: 2023/03/24 09:22:23 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/26 10:57:13 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,3 +149,4 @@ std::map<int, class user *> map_users;
 std::vector<std::string> server_user_names;
 std::vector<std::string> server_nick_names;
 std::map<std::string, class channel *> map_channels;
+std::vector<std::string> channels_name;

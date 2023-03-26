@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 09:17:29 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/26 09:42:57 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/26 11:45:07 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,6 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 		it = channels_map.begin();
 		while (it != channels_map.end())
 		{
-
 			if (map_channels.find(it->first) != map_channels.end())
 			{
 				if (map_channels.at(it->first)->passwrd() == it->second)
@@ -139,6 +138,7 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 					std::string sen = ":" + user->nickname() + "!" + user->username()
 						+ "@localhost JOIN " + user->chan->name() + "\r\n";
 					send(user->client_fd(), sen.c_str(), sen.size(), 0);
+				
 				}
 				else {
 					std::string sen = "ERROR :Incorrect password\r\n";
@@ -150,6 +150,7 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 				channel *tmp = new channel(it->first, it->second);
 				map_channels.insert(std::pair<std::string, channel *>(it->first, tmp));
 				tmp->insert_users(user);
+				channels_name.push_back(it->first);
 				std::string sen1 = ":" + user->nickname() + "!" + user->username()
 						+ "@localhost JOIN " + user->chan->name() + "\r\n";
 				send(user->client_fd(), sen1.c_str(), sen1.size(), 0);
@@ -160,6 +161,13 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 				snprintf(message, 256, "NOTICE %s :This channel was created at %s\r\n", 
 						user->chan->name().c_str(), ctime(&now));
 				send(user->client_fd(), message, strlen(message), 0);
+				//
+				// char join_message[256];
+				// char join_message_2[256];
+				// snprintf(join_message_2, sizeof(join_message_2), "JOIN #test\r\n");
+				// send(user->client_fd(), join_message_2 , strlen(join_message_2) , 0);
+				// snprintf(join_message, sizeof(join_message), ":abc JOIN #test\r\n");
+				// send(user->client_fd(), join_message , strlen(join_message) , 0);
 			}
 			it++;
 		}
@@ -169,7 +177,20 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 
 int check_LIST(std::vector<std::string> &splited_line, user *user)
 {
-	
+	std::string list;
+
+	if (channels_name.begin() != channels_name.end()) {
+		for (size_t i = 0; i < channels_name.size(); i++) {
+			list = ":ircserv 322 " + user->nickname() + " " + channels_name[i] + " "
+				+ std::to_string(user->chan->how_many_usr()) + " :" + map_channels.at(
+					channels_name[i])->topic() + "\r\n";
+			std::cout << list ;
+		}
+		list.clear();
+		list = ":ircserv 323 " + user->nickname() + " :End of LIST\r\n";
+		send(user->client_fd(), list.c_str(), list.length(), 0);
+		std::cout << list ;
+	}
 }
 
 int check_PART(std::vector<std::string> &splited_line, user *user)
@@ -243,6 +264,7 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up)
 			}
 			x++;
 		}
+
 		str1 = const_cast<char *>(back_up.c_str());
 		str1 = strtok(str1, ":");
 		str1 = strtok(NULL, ":");
@@ -260,7 +282,6 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up)
 	}
 	return (0);
 }
-
 
 int check_NOTICE(std::vector<std::string> &splited_line,
 				 std::string &back_up_input)

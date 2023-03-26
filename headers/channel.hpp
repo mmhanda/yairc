@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 23:43:25 by archid            #+#    #+#             */
-/*   Updated: 2023/03/25 08:14:43 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/26 10:03:53 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,3 +43,4 @@ void	send_msg(std::string, user *user);
 std::ostream &operator<<(std::ostream &oss, const class channel chan);
 typedef std::map<std::string, class channel *> channel_map;
 extern channel_map channels;
+extern std::vector<std::string> channels_name;

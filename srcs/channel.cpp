@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 04:55:12 by archid            #+#    #+#             */
-/*   Updated: 2023/03/25 10:48:08 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/26 11:55:21 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,12 @@ std::string channel::passwrd(void) {
 }
 
 void channel::broadcast(std::string msg, user *sender) {
+
+	std::string broad = "PRIVMSG #" + sender->chan->name() + " " + msg + "\r\n";
+	std::cout << broad << std::endl;
 	for (int user_fd : users_fd) {
 		if (sender->client_fd() != user_fd) {
-			send(user_fd, msg.c_str(), msg.size(), 0);
+			send(user_fd, broad.c_str(), broad.size(), 0);
 		}
 	}
 }

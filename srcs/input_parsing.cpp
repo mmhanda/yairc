@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/26 09:51:50 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/26 11:20:07 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ std::cout << "from limchat " << input << std::endl;
 		/////
 				check_JOIN(splited_line, user_);
 			}
-			else if (splited_line[0] == "LIST")
+			else if (splited_line[0] == "LIST" && splited_line.size() == 1)
 			{
 				check_LIST(splited_line, user_);
 			}
