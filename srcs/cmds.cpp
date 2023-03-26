@@ -186,12 +186,11 @@ int check_LIST(std::vector<std::string> &splited_line, user *user)
 {
 	std::string list;
 	std::map<std::string, class channel *>::iterator iter;
-	std::string channel_list ;
+		std::string channel_list ;
 	iter =   map_channels.begin();
-	while (iter !=  map_channels.end())
+	while (iter != (map_channels.end()))
 	{
-
-    	 	channel_list +=	iter->second->name()+","; 
+    	 	channel_list +=	iter->second->name()+" "; 		
 			std::cout <<  "iter->second->name() "<<iter->second->name()<<std::endl;
 			iter++;
 	}
