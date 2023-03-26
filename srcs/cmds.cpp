@@ -253,20 +253,15 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up,u
 	x = 0;
 	if(splited_line.size() == 3)
 	{
-		std::cout <<"	if(splited_line.size() == 3  )" <<std::endl;
-		std::cout <<"	i(splited_line[2] " << splited_line[2] <<std::endl;
-		//  if (user_->chan != nullptr) {
+		std::cout <<"hada howa message  " << splited_line[2] <<std::endl;
+		 if (user_->chan != nullptr) {
 				user_->chan->broadcast(splited_line[2], user_);
-			// }
+			}
 	}
 	else if (splited_line.size() > 2)
 	{
 		std::string message;
 		std::string channel_name;
-		std::string chan;
-		std::string user;
-		std::string channel;
-
 		std::istringstream line_to_stream(back_up);
 		std::getline(line_to_stream, channel_name, ':');
 		std::getline(line_to_stream, message, ':');
@@ -277,41 +272,10 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up,u
 		if(i < channel_name.npos)
 			channel_name.erase(i ,remove_command.length ());
 		std::cerr << "part_one  removed = " << channel_name << std::endl;
- 		// if (user_->chan != nullptr) {
+ 		if (user_->chan != nullptr) 
+		{
 				user_->chan->broadcast(message, user_);
-			// }
-		// std::cerr << "channel  = " << channel << std::endl;
-	
-		// std::vector<std::string> message_receivers;
-
-		// while (splited_line[1].find(",") <= splited_line[1].size())
-		// {
-		// 	message_receivers.push_back((splited_line[1].substr(0,
-		// 														splited_line[1].find(","))));
-		// 	splited_line[1].erase(0, splited_line[1].find(",") + 1);
-		// }
-		// message_receivers.push_back((splited_line[1].substr(0)));
-		// x = 0;
-		// while (x < message_receivers.size())
-		// {
-		// 	std::cout << "message_receivers = " << message_receivers[x] << std::endl;
-		// 	if (message_receivers[x].empty())
-		// 	{
-		// 		std::cerr << splited_line[0] << " :Wrong input" << std::endl;
-		// 		return (0);
-		// 	}
-		// 	x++;
-		// }
-
-		// str1 = const_cast<char *>(back_up.c_str());
-		// str1 = strtok(str1, ":");
-		// str1 = strtok(NULL, ":");
-		// if (str1 == NULL || strcmp(str1, "") == 0)
-		// {
-		// 	std::cerr << splited_line[0] << " :Wrong input" << std::endl;
-		// 	return (0);
-		// }
-		// std::cout << "str1: " << str1 << "||" << std::endl;
+		}
 	}
 	else
 	{
