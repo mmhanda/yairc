@@ -158,13 +158,13 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 				tmp->insert_users(user);
 				channels_name.push_back(it->first);
 
-				// std::string msg ("JOIN ");
-				// std::string msg1 (":");
-				// msg1 = msg1 + user->username() + " " + "JOIN " + it->first + "\r\n";
+				std::string msg ("JOIN ");
+				std::string msg1 (":");
+				msg1 = msg1 + user->username() + " " + "JOIN " + it->first + "\r\n";
 
-				// msg = msg + "#"+it->first+" \r\n";
-				// send(user->client_fd(), msg.c_str() , msg.length() , 0);
-				// send(user->client_fd(), msg1.c_str() , msg1.length() , 0);
+				msg = msg + "#"+it->first+" \r\n";
+				send(user->client_fd(), msg.c_str() , msg.length() , 0);
+				send(user->client_fd(), msg1.c_str() , msg1.length() , 0);
 
 				std::string sen1 = ":" + user->nickname() + "!" + user->username() + "@localhost JOIN " + user->chan->name() + "\r\n";
 				send(user->client_fd(), sen1.c_str(), sen1.size(), 0);
@@ -185,19 +185,20 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 int check_LIST(std::vector<std::string> &splited_line, user *user)
 {
 	std::string list;
-
-	if (channels_name.begin() != channels_name.end())
+	std::map<std::string, class channel *>::iterator iter;
+	std::string channel_list ;
+	iter =   map_channels.begin();
+	while (iter !=  map_channels.end())
 	{
-		for (size_t i = 0; i < channels_name.size(); i++)
-		{
-			list = ":ircserv 322 " + user->nickname() + " " + channels_name[i] + " " + std::to_string(user->chan->how_many_usr()) + " :" + map_channels.at(channels_name[i])->topic() + "\r\n";
-			std::cout << list;
-		}
-		list.clear();
-		list = ":ircserv 323 " + user->nickname() + " :End of LIST\r\n";
-		send(user->client_fd(), list.c_str(), list.length(), 0);
-		std::cout << list;
+
+    	 	channel_list +=	iter->second->name()+","; 
+			std::cout <<  "iter->second->name() "<<iter->second->name()<<std::endl;
+			iter++;
 	}
+	std::string numeric_reply = "322"; 
+    std::string properties = " :End of /LIST"; 
+    std::string response = ":" + std::string("127.0.0.1") + " " + numeric_reply + " " + channel_list + properties + "\r\n"; // IRC protocol requires responses to end with \r\n
+    send(user->client_fd(), response.c_str(), response.length(), 0);
 }
 
 int check_PART(std::vector<std::string> &splited_line, user *user)
