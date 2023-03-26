@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             */
-/*   Updated: 2023/03/25 10:00:33 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/26 09:00:44 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 #include <algorithm>
 #include <vector>
 #include <map>
-
+#include <time.h>
 
 #include "user.hpp"
 #include "channel.hpp"

@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 09:20:51 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/25 10:03:32 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/26 09:41:32 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	check_USER(std::vector<std::string> const &splited_line, user *tmp);
 int check_OPER(std::vector<std::string> const & splited_line);
 int check_QUIT(std::string  & back_up_input, user *user);
 int check_JOIN(std::vector<std::string>  & splited_line, user *user);
+int check_LIST(std::vector<std::string>  & splited_line, user *user);
 int check_PART(std::vector<std::string>  & splited_line, user *user);
 int	check_KICK(std::string &input, user *tmp);
 int	check_PRIVMSG(std::vector<std::string> &splited_line , std::string &back_up);

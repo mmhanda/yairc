@@ -80,7 +80,7 @@ ssize_t server::recieve_message(pollfd_iter client) {
 	if (n_bytes > 0) {
 		map_msgs[client->fd].append(buffer, buffer + n_bytes);
 	} else if (n_bytes == 0) {
-		// std::cout << "[ " << map_users.at(client->fd)->username() << " ]" << " has disconnected\n";
+		std::cout << "[ * ]" << map_users.at(client->fd)->username() << " has disconnected\n";
 		close(client->fd);
 		map_msgs.erase(client->fd);
 		clients_.erase(client);

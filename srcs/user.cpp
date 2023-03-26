@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 01:13:18 by archid            #+#    #+#             */
-/*   Updated: 2023/03/26 00:20:59 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/26 02:26:55 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,7 @@ void send_confirm_msg(user *user_){
 
 	if (user_->NICK_authenticated && user_->PASS_authenticated
 		&&user_->USER_authenticated && user_->PRINTER) {
-		// 		std::string sen = "NOTICE " + user_->username() + " :have joined successfully "
-		// + "#" + user_->chan->name() + "\r\n";
-		std::string sen = "You " + user_->username() + " have joined successfully\n";
+		std::string sen = ":ircserv 001 " + user_->nickname() + ": Welcome to the ircserv network\r\n";
 		send(user_->client_fd(), sen.c_str(), sen.size(), 0);
 		user_->PRINTER = true;
 	}

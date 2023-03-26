@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 09:17:29 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/26 01:03:13 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/26 09:42:57 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 	size_t h;
 
 	h = 0;
+
 	if (splited_line.size() <= 1)
 		send(user->client_fd(), "461 JOIN :Not enough parameters\r\n", 33, 0);
 	else
@@ -135,7 +136,8 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 				{
 					channel *tmp = map_channels.at(it->first);
 					tmp->insert_users(user);
-					std::string sen = ":ircserv JOIN :#" + user->chan->name() + "\r\n";
+					std::string sen = ":" + user->nickname() + "!" + user->username()
+						+ "@localhost JOIN " + user->chan->name() + "\r\n";
 					send(user->client_fd(), sen.c_str(), sen.size(), 0);
 				}
 				else {
@@ -145,19 +147,29 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 			}
 			else
 			{
-				std::cout << "entred" << std::endl;
-				// std::string sen = "Channel "  + it->first +" has been created\r\n";
 				channel *tmp = new channel(it->first, it->second);
 				map_channels.insert(std::pair<std::string, channel *>(it->first, tmp));
 				tmp->insert_users(user);
-				std::string sen = "NOTICE " + user->username() + " :have joined successfully "
-					+ user->chan->name() + "\r\n";
-				send(user->client_fd(), sen.c_str(), sen.size(), 0);
+				std::string sen1 = ":" + user->nickname() + "!" + user->username()
+						+ "@localhost JOIN " + user->chan->name() + "\r\n";
+				send(user->client_fd(), sen1.c_str(), sen1.size(), 0);
+				std::string sen2 = "NOTICE " + user->username() + " :Mode: +nt test only!\r\n";
+				send(user->client_fd(), sen2.c_str(), sen2.size(), 0);
+				 time_t now = time(NULL);
+				char message[256];
+				snprintf(message, 256, "NOTICE %s :This channel was created at %s\r\n", 
+						user->chan->name().c_str(), ctime(&now));
+				send(user->client_fd(), message, strlen(message), 0);
 			}
 			it++;
 		}
 	}
 	return (0);
+}
+
+int check_LIST(std::vector<std::string> &splited_line, user *user)
+{
+	
 }
 
 int check_PART(std::vector<std::string> &splited_line, user *user)
@@ -248,6 +260,7 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up)
 	}
 	return (0);
 }
+
 
 int check_NOTICE(std::vector<std::string> &splited_line,
 				 std::string &back_up_input)
