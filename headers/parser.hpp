@@ -32,5 +32,6 @@ int check_JOIN(std::vector<std::string>  & splited_line, user *user);
 int check_LIST(std::vector<std::string>  & splited_line, user *user);
 int check_PART(std::vector<std::string>  & splited_line, user *user);
 int	check_KICK(std::string &input, user *tmp);
-int	check_PRIVMSG(std::vector<std::string> &splited_line , std::string &back_up);
+int	check_PRIVMSG(std::vector<std::string> &splited_line , std::string &back_up ,user *user_);
+// int	check_PRIVMSG(std::vector<std::string> &splited_line , std::string &back_up);
 int	check_NOTICE(std::vector<std::string> &splited_line, std::string &back_up_input);

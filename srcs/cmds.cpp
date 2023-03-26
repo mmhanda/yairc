@@ -17,14 +17,16 @@ int check_NICK(std::vector<std::string> const &splited_line, user *user)
 	if (splited_line.size() != 2)
 		return (0);
 	if (user->NICK_authenticated == true)
-		return(1);
+		return (1);
 	if (std::find(server_nick_names.begin(), server_nick_names.end(),
-		splited_line[1]) != server_nick_names.end()) {
+				  splited_line[1]) != server_nick_names.end())
+	{
 		std::string sen = "invalid nickname :already exist\r\n";
 		send(user->client_fd(), sen.c_str(), sen.size(), 0);
 		user->PRINTER = false;
 	}
-	else{
+	else
+	{
 		user->nickname(splited_line[1]);
 		server_nick_names.push_back(user->nickname());
 		user->PRINTER = true;
@@ -40,12 +42,14 @@ int check_USER(std::vector<std::string> const &splited_line, user *user)
 	if (user->USER_authenticated == true)
 		return (1);
 	if (std::find(server_user_names.begin(), server_user_names.end(),
-		splited_line[1]) != server_user_names.end()) {
+				  splited_line[1]) != server_user_names.end())
+	{
 		std::string sen = "invalid username :already exist\r\n";
 		send(user->client_fd(), sen.c_str(), sen.size(), 0);
 		user->PRINTER = false;
 	}
-	else{
+	else
+	{
 		user->username(splited_line[1]);
 		server_user_names.push_back(user->username());
 		user->PRINTER = true;
@@ -63,7 +67,7 @@ int check_OPER(std::vector<std::string> const &splited_line)
 	return (0);
 }
 
-int check_QUIT(std::string  &back_up_input, user *user)
+int check_QUIT(std::string &back_up_input, user *user)
 {
 	char *str1;
 	back_up_input.erase(std::remove(back_up_input.begin(), back_up_input.end(), '\n'), back_up_input.end());
@@ -73,15 +77,15 @@ int check_QUIT(std::string  &back_up_input, user *user)
 	str1 = strtok(NULL, ":");
 	if (str1 != NULL)
 	{
-		std::string message =  "QUIT ERROR :Closing link: [";
-		message = message + str1 + "]\n" ;
-		::send(user->client_fd(),  message.c_str() , message.length(), 0);
-			close(user->client_fd());
+		std::string message = "QUIT ERROR :Closing link: [";
+		message = message + str1 + "]\n";
+		::send(user->client_fd(), message.c_str(), message.length(), 0);
+		close(user->client_fd());
 	}
 	if (str1 == NULL)
 	{
-		std::string message =  "QUIT ERROR :Closing link: [User exited]\r\n";
-		::send(user->client_fd(),  message.c_str() , message.length(), 0);
+		std::string message = "QUIT ERROR :Closing link: [User exited]\r\n";
+		::send(user->client_fd(), message.c_str(), message.length(), 0);
 		close(user->client_fd());
 	}
 
@@ -129,45 +133,48 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 		it = channels_map.begin();
 		while (it != channels_map.end())
 		{
+			std::cout << "already  " << std::endl;
 			if (map_channels.find(it->first) != map_channels.end())
 			{
 				if (map_channels.at(it->first)->passwrd() == it->second)
 				{
 					channel *tmp = map_channels.at(it->first);
 					tmp->insert_users(user);
-					std::string sen = ":" + user->nickname() + "!" + user->username()
-						+ "@localhost JOIN " + user->chan->name() + "\r\n";
+					std::string sen = ":" + user->nickname() + "!" + user->username() + "@localhost JOIN " + user->chan->name() + "\r\n";
 					send(user->client_fd(), sen.c_str(), sen.size(), 0);
-				
 				}
-				else {
+				else
+				{
 					std::string sen = "ERROR :Incorrect password\r\n";
 					send(user->client_fd(), sen.c_str(), sen.size(), 0);
 				}
 			}
 			else
 			{
+				std::cout << "new channel  " << std::endl;
+
 				channel *tmp = new channel(it->first, it->second);
 				map_channels.insert(std::pair<std::string, channel *>(it->first, tmp));
 				tmp->insert_users(user);
 				channels_name.push_back(it->first);
-				std::string sen1 = ":" + user->nickname() + "!" + user->username()
-						+ "@localhost JOIN " + user->chan->name() + "\r\n";
+
+				// std::string msg ("JOIN ");
+				// std::string msg1 (":");
+				// msg1 = msg1 + user->username() + " " + "JOIN " + it->first + "\r\n";
+
+				// msg = msg + "#"+it->first+" \r\n";
+				// send(user->client_fd(), msg.c_str() , msg.length() , 0);
+				// send(user->client_fd(), msg1.c_str() , msg1.length() , 0);
+
+				std::string sen1 = ":" + user->nickname() + "!" + user->username() + "@localhost JOIN " + user->chan->name() + "\r\n";
 				send(user->client_fd(), sen1.c_str(), sen1.size(), 0);
 				std::string sen2 = "NOTICE " + user->username() + " :Mode: +nt test only!\r\n";
 				send(user->client_fd(), sen2.c_str(), sen2.size(), 0);
-				 time_t now = time(NULL);
+				time_t now = time(NULL);
 				char message[256];
-				snprintf(message, 256, "NOTICE %s :This channel was created at %s\r\n", 
-						user->chan->name().c_str(), ctime(&now));
+				snprintf(message, 256, "NOTICE %s :This channel was created at %s\r\n",
+						 user->chan->name().c_str(), ctime(&now));
 				send(user->client_fd(), message, strlen(message), 0);
-				//
-				// char join_message[256];
-				// char join_message_2[256];
-				// snprintf(join_message_2, sizeof(join_message_2), "JOIN #test\r\n");
-				// send(user->client_fd(), join_message_2 , strlen(join_message_2) , 0);
-				// snprintf(join_message, sizeof(join_message), ":abc JOIN #test\r\n");
-				// send(user->client_fd(), join_message , strlen(join_message) , 0);
 			}
 			it++;
 		}
@@ -179,17 +186,17 @@ int check_LIST(std::vector<std::string> &splited_line, user *user)
 {
 	std::string list;
 
-	if (channels_name.begin() != channels_name.end()) {
-		for (size_t i = 0; i < channels_name.size(); i++) {
-			list = ":ircserv 322 " + user->nickname() + " " + channels_name[i] + " "
-				+ std::to_string(user->chan->how_many_usr()) + " :" + map_channels.at(
-					channels_name[i])->topic() + "\r\n";
-			std::cout << list ;
+	if (channels_name.begin() != channels_name.end())
+	{
+		for (size_t i = 0; i < channels_name.size(); i++)
+		{
+			list = ":ircserv 322 " + user->nickname() + " " + channels_name[i] + " " + std::to_string(user->chan->how_many_usr()) + " :" + map_channels.at(channels_name[i])->topic() + "\r\n";
+			std::cout << list;
 		}
 		list.clear();
 		list = ":ircserv 323 " + user->nickname() + " :End of LIST\r\n";
 		send(user->client_fd(), list.c_str(), list.length(), 0);
-		std::cout << list ;
+		std::cout << list;
 	}
 }
 
@@ -216,15 +223,16 @@ int check_PART(std::vector<std::string> &splited_line, user *user)
 		{
 			if (map_channels.find(channels_[h]) != map_channels.end())
 			{
-				if (user->chan != nullptr && map_channels.at(channels_[h])->how_many_usr() >= 2) {
-					std::string send_to_others = "user " + user->username()
-							+ " has left the cahnnel\n";
+				if (user->chan != nullptr && map_channels.at(channels_[h])->how_many_usr() >= 2)
+				{
+					std::string send_to_others = "user " + user->username() + " has left the cahnnel\n";
 					user->chan->broadcast(send_to_others, user);
 					std::string sen = "you have left channel " + channels_[h];
 					map_channels.at(channels_[h])->part_user(user);
 					send(user->client_fd(), sen.c_str(), sen.size(), 0);
 				}
-				else {
+				else
+				{
 					std::string sen = "you have left channel " + channels_[h] + "\n";
 					map_channels.at(channels_[h])->part_user(user);
 					send(user->client_fd(), sen.c_str(), sen.size(), 0);
@@ -237,43 +245,73 @@ int check_PART(std::vector<std::string> &splited_line, user *user)
 	return (0);
 }
 
-int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up)
+int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up,user *user_)
 {
 	size_t x;
 	char *str1;
 
 	x = 0;
-	if (splited_line.size() > 2)
+	if(splited_line.size() == 3)
 	{
-		std::vector<std::string> message_receivers;
-		while (splited_line[1].find(",") <= splited_line[1].size())
-		{
-			message_receivers.push_back((splited_line[1].substr(0,
-																splited_line[1].find(","))));
-			splited_line[1].erase(0, splited_line[1].find(",") + 1);
-		}
-		message_receivers.push_back((splited_line[1].substr(0)));
-		x = 0;
-		while (x < message_receivers.size())
-		{
-			std::cout << "message_receivers = " << message_receivers[x] << std::endl;
-			if (message_receivers[x].empty())
-			{
-				std::cerr << splited_line[0] << " :Wrong input" << std::endl;
-				return (0);
-			}
-			x++;
-		}
+		std::cout <<"	if(splited_line.size() == 3  )" <<std::endl;
+		std::cout <<"	i(splited_line[2] " << splited_line[2] <<std::endl;
+		//  if (user_->chan != nullptr) {
+				user_->chan->broadcast(splited_line[2], user_);
+			// }
+	}
+	else if (splited_line.size() > 2)
+	{
+		std::string message;
+		std::string channel_name;
+		std::string chan;
+		std::string user;
+		std::string channel;
 
-		str1 = const_cast<char *>(back_up.c_str());
-		str1 = strtok(str1, ":");
-		str1 = strtok(NULL, ":");
-		if (str1 == NULL || strcmp(str1, "") == 0)
-		{
-			std::cerr << splited_line[0] << " :Wrong input" << std::endl;
-			return (0);
-		}
-		std::cout << "str1: " << str1 << "||" << std::endl;
+		std::istringstream line_to_stream(back_up);
+		std::getline(line_to_stream, channel_name, ':');
+		std::getline(line_to_stream, message, ':');
+		std::cerr << "input  = " << back_up << std::endl;
+		std::cerr << "message  = " << message << std::endl;
+		std::string remove_command("PRIVMSG");
+		size_t i = channel_name.find(remove_command);
+		if(i < channel_name.npos)
+			channel_name.erase(i ,remove_command.length ());
+		std::cerr << "part_one  removed = " << channel_name << std::endl;
+ 		// if (user_->chan != nullptr) {
+				user_->chan->broadcast(message, user_);
+			// }
+		// std::cerr << "channel  = " << channel << std::endl;
+	
+		// std::vector<std::string> message_receivers;
+
+		// while (splited_line[1].find(",") <= splited_line[1].size())
+		// {
+		// 	message_receivers.push_back((splited_line[1].substr(0,
+		// 														splited_line[1].find(","))));
+		// 	splited_line[1].erase(0, splited_line[1].find(",") + 1);
+		// }
+		// message_receivers.push_back((splited_line[1].substr(0)));
+		// x = 0;
+		// while (x < message_receivers.size())
+		// {
+		// 	std::cout << "message_receivers = " << message_receivers[x] << std::endl;
+		// 	if (message_receivers[x].empty())
+		// 	{
+		// 		std::cerr << splited_line[0] << " :Wrong input" << std::endl;
+		// 		return (0);
+		// 	}
+		// 	x++;
+		// }
+
+		// str1 = const_cast<char *>(back_up.c_str());
+		// str1 = strtok(str1, ":");
+		// str1 = strtok(NULL, ":");
+		// if (str1 == NULL || strcmp(str1, "") == 0)
+		// {
+		// 	std::cerr << splited_line[0] << " :Wrong input" << std::endl;
+		// 	return (0);
+		// }
+		// std::cout << "str1: " << str1 << "||" << std::endl;
 	}
 	else
 	{
@@ -298,7 +336,7 @@ int check_NOTICE(std::vector<std::string> &splited_line,
 		std::cout << "nickname " << nickname << std::endl
 				  << std::endl
 				  << std::endl
-				  << std::endl;								  
+				  << std::endl;
 		std::cout << "MESSAGE:" << back_up_input << std::endl;
 	}
 	else
@@ -309,19 +347,18 @@ int check_NOTICE(std::vector<std::string> &splited_line,
 	return (0);
 }
 
-int	check_KICK(std::string &input, user *tmp)
+int check_KICK(std::string &input, user *tmp)
 {
 	std::string message;
 	std::string part_one;
 	std::string chan;
 	std::string user;
 
-
 	std::istringstream line_to_stream(input);
-	std::getline(line_to_stream , part_one , ':');
-	std::getline(line_to_stream , message , ':');
-		std::cerr << "input  = " <<  input<<std::endl;
-		std::cerr << "message  = " <<  message<<std::endl;
-		std::cerr << "part_one  = " <<  part_one<<std::endl;
+	std::getline(line_to_stream, part_one, ':');
+	std::getline(line_to_stream, message, ':');
+	std::cerr << "input  = " << input << std::endl;
+	std::cerr << "message  = " << message << std::endl;
+	std::cerr << "part_one  = " << part_one << std::endl;
 	return (0);
 }

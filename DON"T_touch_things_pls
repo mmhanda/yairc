@@ -11,3 +11,5 @@ the Command PART is not working : DONE
 the bug in QUIT : DONE
 the communication between the multiple clients in one channel : DONE
 handled multiple bugs and errors and inputs : DONE
+
+PRIVMSG is obligatory to send a message 

@@ -85,15 +85,15 @@ std::cout << "from limchat " << input << std::endl;
 			}
 			else if (splited_line[0] == "PRIVMSG")
 			{
-				check_PRIVMSG(splited_line, back_up_input);
+				check_PRIVMSG(splited_line, back_up_input,user_);
 			}
 			else if (splited_line[0] == "NOTICE")
 			{
 				check_NOTICE(splited_line, back_up_input);
 			}
-			else if (user_->chan != nullptr) {
-				user_->chan->broadcast(back_up_input, user_);
-			}
+			// else if (user_->chan != nullptr) {
+			// 	user_->chan->broadcast(back_up_input, user_);
+			// }
 		}
 	}
 	return 0;
