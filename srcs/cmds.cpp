@@ -133,10 +133,12 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 		it = channels_map.begin();
 		while (it != channels_map.end())
 		{
-			std::cout << "already  " << std::endl;
-			if (map_channels.find(it->first) != map_channels.end())
+			std::map<std::string, class channel *>::iterator is_found;
+
+			if ( map_channels.find(it->first) != map_channels.end())
 			{
-				if (map_channels.at(it->first)->passwrd() == it->second)
+				is_found = map_channels.find(it->first);
+				if (is_found->second->passwrd() == it->second)
 				{
 					channel *tmp = map_channels.at(it->first);
 					tmp->insert_users(user);
