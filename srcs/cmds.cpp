@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "server.hpp"
-
+#include "channel.hpp"
 int check_NICK(std::vector<std::string> const &splited_line, user *user)
 {
 	if (splited_line.size() != 2)
@@ -158,21 +158,21 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 				tmp->insert_users(user);
 				channels_name.push_back(it->first);
 
-				std::string msg ("JOIN ");
-				std::string msg1 (":");
-				msg1 = msg1 + user->username() + " " + "JOIN " + it->first + "\r\n";
+				// std::string msg ("JOIN ");
+				// std::string msg1 (":");
+				// msg1 = msg1 + user->username() + " " + "JOIN " + it->first + "\r\n";
 
-				msg = msg + "#"+it->first+" \r\n";
-				send(user->client_fd(), msg.c_str() , msg.length() , 0);
-				send(user->client_fd(), msg1.c_str() , msg1.length() , 0);
+				// msg = msg + "#"+it->first+" \r\n";
+				// send(user->client_fd(), msg.c_str() , msg.length() , 0);
+				// send(user->client_fd(), msg1.c_str() , msg1.length() , 0);
 
-				std::string sen1 = ":" + user->nickname() + "!" + user->username() + "@localhost JOIN " + user->chan->name() + "\r\n";
+				std::string sen1 = ":" + user->nickname() + "!" + user->username() + "@localhost JOIN " + user->chan->name() + "\n";
 				send(user->client_fd(), sen1.c_str(), sen1.size(), 0);
 				std::string sen2 = "NOTICE " + user->username() + " :Mode: +nt test only!\r\n";
 				send(user->client_fd(), sen2.c_str(), sen2.size(), 0);
 				time_t now = time(NULL);
 				char message[256];
-				snprintf(message, 256, "NOTICE %s :This channel was created at %s\r\n",
+				snprintf(message, 256, "NOTICE %s :This channel was created at %s\n",
 						 user->chan->name().c_str(), ctime(&now));
 				send(user->client_fd(), message, strlen(message), 0);
 			}
@@ -186,19 +186,19 @@ int check_LIST(std::vector<std::string> &splited_line, user *user)
 {
 	std::string list;
 	std::map<std::string, class channel *>::iterator iter;
-		std::string channel_list ;
-	iter =   map_channels.begin();
+	std::string channel_list;
+	iter = map_channels.begin();
 
 	while (iter != map_channels.end())
 	{
-			
-    	 	 channel_list +=	iter->second->name()+" "; 		
-			iter++;
+
+		channel_list += iter->second->name() + " ";
+		iter++;
 	}
-	std::string numeric_reply = "322"; 
-    std::string properties = " :End of /LIST"; 
-    std::string response = ":" + std::string("127.0.0.1") + " " + numeric_reply + " " + channel_list + properties + "\r\n"; 
-    send(user->client_fd(), response.c_str(), response.length(), 0);
+	std::string numeric_reply = "322";
+	std::string properties = " :End of /LIST";
+	std::string response = ":" + std::string("127.0.0.1") + " " + numeric_reply + " " + channel_list + properties + "\r\n";
+	send(user->client_fd(), response.c_str(), response.length(), 0);
 }
 
 int check_PART(std::vector<std::string> &splited_line, user *user)
@@ -246,20 +246,33 @@ int check_PART(std::vector<std::string> &splited_line, user *user)
 	return (0);
 }
 
-int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up,user *user_)
+int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up, user *user_)
 {
 	size_t x;
 	char *str1;
 
 	x = 0;
-	if(splited_line.size() == 3)
+	if (splited_line.size() == 3)
 	{
-		std::cout <<"hada howa message  " << splited_line[2] <<std::endl;
-		 if (user_->chan != nullptr) {
-				user_->chan->broadcast(splited_line[2], user_);
+		std::cout << "hada howa message  " << splited_line[2] << std::endl;
+		if (user_->chan != nullptr)
+		{
+			std::string broad = "PRIVMSG " + user_->chan->name() + " " + splited_line[2] + "\r\n";
+			std::map<std::string, class channel *>::iterator iter;
+			iter  = channels.begin();
+			for (int user_fd : user_->chan->users_fd) 
+			{
+
+				{
+					if (user_->client_fd() != user_fd)
+					{
+						send(user_fd, broad.c_str(), broad.size(), 0);
+					}
+				}
 			}
+		}
 	}
-	else if (splited_line.size() > 2)
+	else if (splited_line.size() > 3)
 	{
 		std::string message;
 		std::string channel_name;
@@ -270,12 +283,27 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up,u
 		std::cerr << "message  = " << message << std::endl;
 		std::string remove_command("PRIVMSG");
 		size_t i = channel_name.find(remove_command);
-		if(i < channel_name.npos)
-			channel_name.erase(i ,remove_command.length ());
+		if (i < channel_name.npos)
+			channel_name.erase(i, remove_command.length());
 		std::cerr << "part_one  removed = " << channel_name << std::endl;
- 		if (user_->chan != nullptr) 
+		if (user_->chan != nullptr)
 		{
-				user_->chan->broadcast(message, user_);
+			if (user_->chan != nullptr)
+		{
+			std::string broad = "PRIVMSG " + user_->chan->name() + " " + message + "\r\n";
+			std::map<std::string, class channel *>::iterator iter;
+			iter  = channels.begin();
+			for (int user_fd : user_->chan->users_fd) 
+			{
+
+				{
+					if (user_->client_fd() != user_fd)
+					{
+						send(user_fd, broad.c_str(), broad.size(), 0);
+					}
+				}
+			}
+		}
 		}
 	}
 	else

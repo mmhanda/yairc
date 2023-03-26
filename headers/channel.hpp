@@ -31,8 +31,8 @@ class channel {
 		int 	how_many_usr() const {return users_fd.size();}
 		bool	check_if_user_in();
 
-	private:
 		std::vector<int> users_fd;
+	private:
 		std::vector<std::string> admin_names;
 		std::vector<std::string> r_user_names;
 		std::string name_, topic_, passwd;
