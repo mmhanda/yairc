@@ -188,15 +188,16 @@ int check_LIST(std::vector<std::string> &splited_line, user *user)
 	std::map<std::string, class channel *>::iterator iter;
 		std::string channel_list ;
 	iter =   map_channels.begin();
-	while (iter != (map_channels.end()))
+
+	while (iter != map_channels.end())
 	{
-    	 	channel_list +=	iter->second->name()+" "; 		
-			std::cout <<  "iter->second->name() "<<iter->second->name()<<std::endl;
+			
+    	 	 channel_list +=	iter->second->name()+" "; 		
 			iter++;
 	}
 	std::string numeric_reply = "322"; 
     std::string properties = " :End of /LIST"; 
-    std::string response = ":" + std::string("127.0.0.1") + " " + numeric_reply + " " + channel_list + properties + "\r\n"; // IRC protocol requires responses to end with \r\n
+    std::string response = ":" + std::string("127.0.0.1") + " " + numeric_reply + " " + channel_list + properties + "\r\n"; 
     send(user->client_fd(), response.c_str(), response.length(), 0);
 }
 

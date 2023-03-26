@@ -13,4 +13,4 @@ the communication between the multiple clients in one channel : DONE
 handled multiple bugs and errors and inputs : DONE
 
 PRIVMSG is obligatory to send a message (atabiti)
-LIST: khas tlopi 3la  map_channels maxi  channels_name 
+LIST: khas tlopi 3la  map_channels maxi  channels_name , now is woking in Limechat
