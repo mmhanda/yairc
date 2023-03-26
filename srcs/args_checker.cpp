@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:23:40 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/25 10:32:54 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/25 21:46:22 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	check_PASS(std::vector<std::string> const &splited_line , user *user)
 			return (0);
 		else {
 			if (splited_line[1] != PASSWORD) {
-				std::string sen = "464 " + splited_line[0] + " :Password incorrect\n";
+				std::string sen = "464 " + splited_line[0] + " :Password incorrect\r\n";
 				send(user->client_fd(), sen.c_str(), sen.size(), 0);
 				return (1);
 			}

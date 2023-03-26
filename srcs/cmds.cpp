@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 09:17:29 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/25 10:47:16 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/26 01:03:13 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int check_NICK(std::vector<std::string> const &splited_line, user *user)
 		return(1);
 	if (std::find(server_nick_names.begin(), server_nick_names.end(),
 		splited_line[1]) != server_nick_names.end()) {
-		std::string sen = "invalid nickname :already exist\n";
+		std::string sen = "invalid nickname :already exist\r\n";
 		send(user->client_fd(), sen.c_str(), sen.size(), 0);
 		user->PRINTER = false;
 	}
@@ -41,7 +41,7 @@ int check_USER(std::vector<std::string> const &splited_line, user *user)
 		return (1);
 	if (std::find(server_user_names.begin(), server_user_names.end(),
 		splited_line[1]) != server_user_names.end()) {
-		std::string sen = "invalid username :already exist\n";
+		std::string sen = "invalid username :already exist\r\n";
 		send(user->client_fd(), sen.c_str(), sen.size(), 0);
 		user->PRINTER = false;
 	}
@@ -80,7 +80,7 @@ int check_QUIT(std::string  &back_up_input, user *user)
 	}
 	if (str1 == NULL)
 	{
-		std::string message =  "QUIT ERROR :Closing link: [User exited]\n";
+		std::string message =  "QUIT ERROR :Closing link: [User exited]\r\n";
 		::send(user->client_fd(),  message.c_str() , message.length(), 0);
 		close(user->client_fd());
 	}
@@ -94,7 +94,7 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 
 	h = 0;
 	if (splited_line.size() <= 1)
-		send(user->client_fd(), "461 JOIN :Not enough parameters\n", 32, 0);
+		send(user->client_fd(), "461 JOIN :Not enough parameters\r\n", 33, 0);
 	else
 	{
 		std::map<std::string, std::string> channels_map;
@@ -135,21 +135,24 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 				{
 					channel *tmp = map_channels.at(it->first);
 					tmp->insert_users(user);
-					std::string sen = "you have joined channel " + it->first + "\n";
+					std::string sen = ":ircserv JOIN :#" + user->chan->name() + "\r\n";
 					send(user->client_fd(), sen.c_str(), sen.size(), 0);
 				}
 				else {
-					std::string sen = "Pssword needed or wrong password\n";
+					std::string sen = "ERROR :Incorrect password\r\n";
 					send(user->client_fd(), sen.c_str(), sen.size(), 0);
 				}
 			}
 			else
 			{
-				std::string sen = "Channel "  + it->first +" has been created\n";
-				send(user->client_fd(), sen.c_str(), sen.size(), 0);
+				std::cout << "entred" << std::endl;
+				// std::string sen = "Channel "  + it->first +" has been created\r\n";
 				channel *tmp = new channel(it->first, it->second);
 				map_channels.insert(std::pair<std::string, channel *>(it->first, tmp));
 				tmp->insert_users(user);
+				std::string sen = "NOTICE " + user->username() + " :have joined successfully "
+					+ user->chan->name() + "\r\n";
+				send(user->client_fd(), sen.c_str(), sen.size(), 0);
 			}
 			it++;
 		}
@@ -164,7 +167,7 @@ int check_PART(std::vector<std::string> &splited_line, user *user)
 	h = 0;
 	if (splited_line.size() <= 1 || splited_line.size() >= 3)
 	{
-		std::string sen = "461 PART :Not enough parameters\n";
+		std::string sen = "461 PART :Not enough parameters\r\n";
 		send(user->client_fd(), sen.c_str(), sen.size(), 0);
 	}
 	else

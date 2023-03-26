@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/25 07:54:40 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/25 23:04:28 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ int	parse_command(std::string &input , const int fd, user *user_)
 
 	str = NULL;
 	str1 = NULL;
-
+	std::cout << "[" << input << "]" << std::endl;
+		// std::cout << "splited_line[1] is " << splited_line[1] << " splited_line[2] is " << splited_line[2];
 		std::vector<std::string> splited_line;
 		std::string back_up_input;
 		back_up_input = input;
