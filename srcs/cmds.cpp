@@ -105,7 +105,7 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 	}
 	else
 	{
-		std::map<std::string, std::string> channels_map;
+		std::map<std::string, std::string> channels_parse;
 		std::vector<std::string> channels;
 		std::vector<std::string> password;
 
@@ -118,10 +118,8 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 			{
 				std::string error_("476 JOIN Bad Channel Mask\r\n");
 				send(user->client_fd(), error_.c_str(), error_.length(), 0);
-
 				return (0);
 			}
-
 			std::cout << "channels  " << read_here << std::endl;
 			channels.push_back(read_here);
 		}
@@ -131,19 +129,21 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 			std::cout << "password  " << read_here << std::endl;
 			password.push_back(read_here);
 		}
-
 		h = 0;
 		while (h < channels.size())
 		{
 			if (password.empty())
-				channels_map.insert(std::pair<std::string, std::string>(channels[h], std::string("")));
+				channels_parse.insert(std::pair<std::string, std::string>(channels[h], std::string("")));
 			else
-				channels_map.insert(std::pair<std::string, std::string>(channels[h], password[h]));
+				channels_parse.insert(std::pair<std::string, std::string>(channels[h], password[h]));
 			h++;
 		}
+
+
+
 		std::map<std::string, std::string>::iterator it;
-		it = channels_map.begin();
-		while (it != channels_map.end())
+		it = channels_parse.begin();
+		while (it != channels_parse.end())
 		{
 			std::map<std::string, class channel *>::iterator is_found;
 
@@ -155,12 +155,12 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 					channel *tmp = map_channels.at(it->first);
 					tmp->insert_users(user);
 					std::string sen = ":" + user->nickname() + "!" + user->username() + "@localhost JOIN " + user->chan->name() + "\r\n";
-					send(user->client_fd(), sen.c_str(), sen.size(), 0);
+					send(user->client_fd(), sen.c_str(), sen.length(), 0);
 				}
 				else
 				{
 					std::string sen = "ERROR :Incorrect password\r\n";
-					send(user->client_fd(), sen.c_str(), sen.size(), 0);
+					send(user->client_fd(), sen.c_str(), sen.length(), 0);
 					return 0;
 				}
 			}
