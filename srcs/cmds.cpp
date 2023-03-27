@@ -18,8 +18,7 @@ int check_NICK(std::vector<std::string> const &splited_line, user *user)
 		return (0);
 	if (user->NICK_authenticated == true)
 		return (1);
-	if (std::find(server_nick_names.begin(), server_nick_names.end(),
-				  splited_line[1]) != server_nick_names.end())
+	if (std::find(server_nick_names.begin(), server_nick_names.end(), splited_line[1]) != server_nick_names.end())
 	{
 		std::string sen = "invalid nickname :already exist\r\n";
 		send(user->client_fd(), sen.c_str(), sen.size(), 0);
@@ -138,8 +137,6 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 				channels_parse.insert(std::pair<std::string, std::string>(channels[h], password[h]));
 			h++;
 		}
-
-
 
 		std::map<std::string, std::string>::iterator it;
 		it = channels_parse.begin();
@@ -312,33 +309,38 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up, 
 	}
 	else
 	{
-		std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
+		std::string sen = "461 PRIVMSG  :Not enough parameters \r\n";
+		send(user_->client_fd(), sen.c_str(), sen.size(), 0);
 		return (0);
 	}
 	return (0);
 }
 
-int check_NOTICE(std::vector<std::string> &splited_line,
-				 std::string &back_up_input)
+int check_NOTICE(std::vector<std::string> &splited_line, std::string &back_up_input, user *user_)
 {
 	if (splited_line.size() >= 3)
 	{
 		std::string message;
 		std::string nickname;
 		nickname = splited_line[1];
-		back_up_input.erase(back_up_input.find("NOTICE"),
-							splited_line[0].length());
-		back_up_input.erase(back_up_input.find(splited_line[1]),
-							splited_line[1].length());
+		back_up_input.erase(back_up_input.find("NOTICE"), splited_line[0].length());
+		back_up_input.erase(back_up_input.find(splited_line[1]), splited_line[1].length());
+		back_up_input.erase(std::remove(back_up_input.begin(),back_up_input.end(), '\r') , back_up_input.end());
+		back_up_input.erase(std::remove(back_up_input.begin(),back_up_input.end(), '\n') , back_up_input.end());
 		std::cout << "nickname " << nickname << std::endl
 				  << std::endl
 				  << std::endl
 				  << std::endl;
 		std::cout << "MESSAGE:" << back_up_input << std::endl;
+		if (user_->chan != nullptr)
+		{
+			user_->chan->broadcast(back_up_input, user_);
+		}
 	}
 	else
 	{
-		std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
+		std::string sen = "461 NOTICE  :Not enough parameters \r\n";
+		send(user_->client_fd(), sen.c_str(), sen.size(), 0);
 		return (0);
 	}
 	return (0);

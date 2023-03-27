@@ -76,10 +76,10 @@ int parse_command(std::string &input, const int fd, user *user_)
 				// snprintf(join_message, sizeof(join_message), "JOIN %s\r\n", splited_line[1].c_str());
 				// send(user_->client_fd(), join_message, strlen(join_message), 0);
 			}
-			// else if (splited_line[0] == "LIST" && splited_line.size() == 1)
-			// {
-			// 	check_LIST(splited_line, user_);
-			// }
+			else if (splited_line[0] == "LIST" && splited_line.size() == 1)
+			{
+				check_LIST(splited_line, user_);
+			}
 			else if (splited_line[0] == "PART")
 			{
 				check_PART(splited_line, user_);
@@ -94,7 +94,11 @@ int parse_command(std::string &input, const int fd, user *user_)
 			}
 			else if (splited_line[0] == "NOTICE")
 			{
-				check_NOTICE(splited_line, back_up_input);
+				check_NOTICE(splited_line, back_up_input, user_);
+			}
+			else if (splited_line[0] == "TOPIC")
+			{
+				// check_NOTICE(splited_line, back_up_input);
 			}
 			// else if (user_->chan != nullptr) {
 			// 	user_->chan->broadcast(back_up_input, user_);
