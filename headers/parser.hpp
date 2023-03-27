@@ -36,3 +36,4 @@ int	check_PRIVMSG(std::vector<std::string> &splited_line , std::string &back_up 
 // int	check_PRIVMSG(std::vector<std::string> &splited_line , std::string &back_up);
 // int	check_NOTICE(std::vector<std::string> &splited_line, std::string &back_up_input);
 int check_NOTICE(std::vector<std::string> &splited_line,std::string &back_up_input,  user *user_);
+int check_TOPIC(std::vector<std::string> &splited_line,std::string &back_up_input,  user *user_);

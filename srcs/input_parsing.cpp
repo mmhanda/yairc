@@ -98,11 +98,12 @@ int parse_command(std::string &input, const int fd, user *user_)
 			}
 			else if (splited_line[0] == "TOPIC")
 			{
-				// check_NOTICE(splited_line, back_up_input);
+				check_TOPIC(splited_line, back_up_input, user_);
 			}
-			// else if (user_->chan != nullptr) {
-			// 	user_->chan->broadcast(back_up_input, user_);
-			// }
+			else if (splited_line[0] == "KICK")
+			{
+				check_KICK(back_up_input, user_); // the user sould be an operator to do this
+			}
 		}
 	}
 	return 0;

@@ -325,8 +325,8 @@ int check_NOTICE(std::vector<std::string> &splited_line, std::string &back_up_in
 		nickname = splited_line[1];
 		back_up_input.erase(back_up_input.find("NOTICE"), splited_line[0].length());
 		back_up_input.erase(back_up_input.find(splited_line[1]), splited_line[1].length());
-		back_up_input.erase(std::remove(back_up_input.begin(),back_up_input.end(), '\r') , back_up_input.end());
-		back_up_input.erase(std::remove(back_up_input.begin(),back_up_input.end(), '\n') , back_up_input.end());
+		back_up_input.erase(std::remove(back_up_input.begin(), back_up_input.end(), '\r'), back_up_input.end());
+		back_up_input.erase(std::remove(back_up_input.begin(), back_up_input.end(), '\n'), back_up_input.end());
 		std::cout << "nickname " << nickname << std::endl
 				  << std::endl
 				  << std::endl
@@ -360,4 +360,25 @@ int check_KICK(std::string &input, user *tmp)
 	std::cerr << "message  = " << message << std::endl;
 	std::cerr << "part_one  = " << part_one << std::endl;
 	return (0);
+}
+
+int check_TOPIC(std::vector<std::string> &splited_line, std::string &back_up_input, user *user_)
+{
+	if (splited_line.size() == 1) // return topic only
+	{
+		if (user_->chan != nullptr)
+		{
+
+			std::string msg("TOPIC: ");
+			msg = msg +  user_->chan->topic() + "\r\n";
+			send(user_->client_fd(),msg.c_str(), msg.length(), 0);
+			return 0;
+		}
+		else
+		{
+			std::string msg("403: * No such channel\r\n");
+			send(user_->client_fd(), msg.c_str(), msg.length(), 0);
+			return 0;
+		}
+	}
 }
