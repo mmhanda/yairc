@@ -131,8 +131,10 @@ void server::run() {
 					if (map_msgs.at(clients_[i].fd).find(msg_delim) != std::string::npos)
 					{
 						std::string msg = map_msgs.at(clients_[i].fd);
-						if (authenticate(msg, clients_[i].fd, map_users.at(clients_[i].fd))){
-							parse_command(msg, clients_[i].fd, map_users.at(clients_[i].fd));}
+						if (authenticate(msg, clients_[i].fd, map_users.at(clients_[i].fd)))
+						{
+							parse_command(msg, clients_[i].fd, map_users.at(clients_[i].fd));
+						}
 
 						map_msgs.erase(clients_[i].fd);
 						msg.erase();

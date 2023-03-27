@@ -99,34 +99,46 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 	h = 0;
 
 	if (splited_line.size() <= 1)
+	{
 		send(user->client_fd(), "461 JOIN :Not enough parameters\r\n", 33, 0);
+		return 0;
+	}
 	else
 	{
 		std::map<std::string, std::string> channels_map;
 		std::vector<std::string> channels;
 		std::vector<std::string> password;
-		while (splited_line[1].find(",") <= splited_line[1].size())
+
+		std::istringstream line_to_stream(splited_line[1]);
+		std::istringstream line_to_stream_2(splited_line[2]);
+		std::string read_here;
+		while (getline(line_to_stream, read_here, ','))
 		{
-			channels.push_back((splited_line[1].substr(0,
-													   splited_line[1].find(","))));
-			splited_line[1].erase(0, splited_line[1].find(",") + 1);
+			if (read_here.find('#') > read_here.size())
+			{
+				std::string error_("476 JOIN Bad Channel Mask\r\n");
+				send(user->client_fd(), error_.c_str(), error_.length(), 0);
+
+				return (0);
+			}
+
+			std::cout << "channels  " << read_here << std::endl;
+			channels.push_back(read_here);
 		}
-		channels.push_back((splited_line[1].substr(0)));
-		while (splited_line[2].find(",") <= splited_line[2].size() && !splited_line[2].empty())
+
+		while (getline(line_to_stream_2, read_here, ','))
 		{
-			password.push_back((splited_line[2].substr(0, splited_line[2].find(","))));
-			splited_line[2].erase(0, splited_line[2].find(",") + 1);
+			std::cout << "password  " << read_here << std::endl;
+			password.push_back(read_here);
 		}
-		password.push_back((splited_line[2].substr(0)));
+
 		h = 0;
 		while (h < channels.size())
 		{
-			channels_map.insert(
-				std::pair<std::string, std::string>(channels[h], password[h]));
-			if (channels[h].empty())
-			{
-				return (0);
-			}
+			if (password.empty())
+				channels_map.insert(std::pair<std::string, std::string>(channels[h], std::string("")));
+			else
+				channels_map.insert(std::pair<std::string, std::string>(channels[h], password[h]));
 			h++;
 		}
 		std::map<std::string, std::string>::iterator it;
@@ -135,7 +147,7 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 		{
 			std::map<std::string, class channel *>::iterator is_found;
 
-			if ( map_channels.find(it->first) != map_channels.end())
+			if (map_channels.find(it->first) != map_channels.end())
 			{
 				is_found = map_channels.find(it->first);
 				if (is_found->second->passwrd() == it->second)
@@ -149,25 +161,15 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 				{
 					std::string sen = "ERROR :Incorrect password\r\n";
 					send(user->client_fd(), sen.c_str(), sen.size(), 0);
+					return 0;
 				}
 			}
 			else
 			{
-				std::cout << "new channel  " << std::endl;
-
 				channel *tmp = new channel(it->first, it->second);
 				map_channels.insert(std::pair<std::string, channel *>(it->first, tmp));
 				tmp->insert_users(user);
 				channels_name.push_back(it->first);
-
-				// std::string msg ("JOIN ");
-				// std::string msg1 (":");
-				// msg1 = msg1 + user->username() + " " + "JOIN " + it->first + "\r\n";
-
-				// msg = msg + "#"+it->first+" \r\n";
-				// send(user->client_fd(), msg.c_str() , msg.length() , 0);
-				// send(user->client_fd(), msg1.c_str() , msg1.length() , 0);
-
 				std::string sen1 = ":" + user->nickname() + "!" + user->username() + "@localhost JOIN " + user->chan->name() + "\n";
 				send(user->client_fd(), sen1.c_str(), sen1.size(), 0);
 				std::string sen2 = "NOTICE " + user->username() + " :Mode: +nt test only!\r\n";
@@ -261,8 +263,8 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up, 
 		{
 			std::string broad = "PRIVMSG " + user_->chan->name() + " " + splited_line[2] + "\r\n";
 			std::map<std::string, class channel *>::iterator iter;
-			iter  = channels.begin();
-			for (int user_fd : user_->chan->users_fd) 
+			iter = channels.begin();
+			for (int user_fd : user_->chan->users_fd)
 			{
 
 				{
@@ -291,21 +293,21 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up, 
 		if (user_->chan != nullptr)
 		{
 			if (user_->chan != nullptr)
-		{
-			std::string broad = "PRIVMSG " + user_->chan->name() + " " + message + "\r\n";
-			std::map<std::string, class channel *>::iterator iter;
-			iter  = channels.begin();
-			for (int user_fd : user_->chan->users_fd) 
 			{
-
+				std::string broad = "PRIVMSG " + user_->chan->name() + " " + message + "\r\n";
+				std::map<std::string, class channel *>::iterator iter;
+				iter = channels.begin();
+				for (int user_fd : user_->chan->users_fd)
 				{
-					if (user_->client_fd() != user_fd)
+
 					{
-						send(user_fd, broad.c_str(), broad.size(), 0);
+						if (user_->client_fd() != user_fd)
+						{
+							send(user_fd, broad.c_str(), broad.size(), 0);
+						}
 					}
 				}
 			}
-		}
 		}
 	}
 	else
