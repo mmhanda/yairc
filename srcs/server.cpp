@@ -94,12 +94,12 @@ void server::accept_clients() {
 	socklen_t sock_len = sizeof(struct sockaddr);
 	int client_fd;
 
-	while ((client_fd = ::accept(sock_fd_, addr_, &sock_len)) >= 0) {
+	while ((client_fd = ::accept(sock_fd_, addr_, &sock_len)) >= 0) 
+	{
 		message(client_fd, "[ Welcome to YAIRC server ]\n");
 		map_users.insert(std::pair<int, user *>(client_fd, new user(client_fd)));
 		clients_.push_back(client_pollfd(client_fd));
-		std::cerr << "New client joined number " << "[ "
-				<< map_users.size() << " ]\n";
+		std::cerr << "New client joined number " << "[ "<< map_users.size() << " ]\n";
 	}
 
 	if (client_fd < 0 && errno != EWOULDBLOCK) {
