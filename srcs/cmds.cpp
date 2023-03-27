@@ -381,4 +381,8 @@ int check_TOPIC(std::vector<std::string> &splited_line, std::string &back_up_inp
 			return 0;
 		}
 	}
+	/*
+		hna khas txiki  wax user 3ando permission ybdal topic dyal channel OK? mhanda
+		
+	*/
 }

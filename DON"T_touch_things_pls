@@ -14,4 +14,8 @@ handled multiple bugs and errors and inputs : DONE
 
 PRIVMSG is obligatory to send a message (atabiti)
 LIST: khas tlopi 3la  map_channels maxi  channels_name , now is woking in Limechat
-PLZ DO NOT TOUCH PRIVMSG (if you want to test it use liek this :  PRIVMSG #channame message or use  PRIVMSG #channame :message twil fih bzaff hadra ok ) 
+
+PLZ DO NOT TOUCH PRIVMSG (if you want to test it use like this :  PRIVMSG #channame 
+message or use  PRIVMSG #channame :message twil fih bzaff hadra ok ) 
+
+txiki TOPIC bax tkmlha
