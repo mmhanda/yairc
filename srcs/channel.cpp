@@ -3,6 +3,33 @@
 #include <iostream>
 #include <sstream>
 
+void channel::notif_new_client_joined(user *sender) {
+
+	std::string broad = SEND_CHAN(sender->username(), sender->username(),  sender->chan->name());
+	for (int user_fd : users_fd) {
+		if (sender->client_fd() != user_fd) {
+			send(user_fd, broad.c_str(), broad.size(), 0);
+		}
+	}
+}
+
+std::string channel::users_list() {
+			
+	std::string ret = ":@";
+
+	size_t i = 0;
+	while ( i < how_many_usr())
+	{
+		if (i == 0)
+			ret += admin_names[0] + " ";
+		ret += r_user_names[i] + " ";
+		i ++;
+	}
+	ret += "\r\n";
+	// std::cout << "USER LIST IS " << ret << "I IS " << std::to_string(i);
+	return (ret);
+}
+
 channel::channel(std::string name, std::string passwd, std::string topic)
 	: name_(name), passwd(passwd), topic_(topic) {}
 
@@ -20,16 +47,15 @@ std::string channel::passwrd(void) {
 
 void channel::broadcast(std::string msg, user *sender) {
 
-	std::string broad = "PRIVMSG #" + sender->chan->name() + " " + msg + "\r\n";
-	std::cout << broad << std::endl;
 	for (int user_fd : users_fd) {
-		if (sender->client_fd() != user_fd) {
-			send(user_fd, broad.c_str(), broad.size(), 0);
-		}
+		// if (sender->client_fd() != user_fd) {
+			send(user_fd, msg.c_str(), msg.size(), 0);
+		// }
 	}
 }
 
 void channel::part_user(user *user) {
+
 	auto new_end = std::remove(
 		users_fd.begin(), users_fd.end(), user->client_fd());
 	users_fd.erase(new_end, users_fd.end());

@@ -1,6 +1,7 @@
 
 #include "server.hpp"
 #include "channel.hpp"
+
 int check_NICK(std::vector<std::string> const &splited_line, user *user)
 {
 	if (splited_line.size() != 2)
@@ -108,15 +109,14 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 				send(user->client_fd(), error_.c_str(), error_.length(), 0);
 				return (0);
 			}
-			// std::cout << "channels  " << read_here << std::endl;
 			channels.push_back(read_here);
 		}
 
-		while (getline(line_to_stream_2, read_here, ','))
-		{
-			std::cout << "password  " << read_here << std::endl;
-			password.push_back(read_here);
-		}
+		// while (getline(line_to_stream_2, read_here, ','))
+		// {
+		// 	std::cout << "password hada " << read_here << std::endl;
+		// 	password.push_back(read_here);
+		// }
 		h = 0;
 		while (h < channels.size())
 		{
@@ -135,13 +135,25 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 
 			if (map_channels.find(it->first) != map_channels.end())
 			{
+				std::cout << "FIRST\n";
 				is_found = map_channels.find(it->first);
 				if (is_found->second->passwrd() == it->second) {
-					channel *tmp = map_channels.at(it->first);
-					tmp->insert_users(user);
-					std::string sen = SEND_CHAN(user->nickname(), user->nickname()[0], user->chan->name());
-					send(user->client_fd(), sen.c_str(), sen.length(), 0);
-					user->chan->notif_new_client_joined(user);
+					if (user->chan == nullptr) {
+						std::cout << "IN IN IN\n";
+						if (user->chan->name() != it->first) {
+							std::cout << "ON ON ON\n";
+							channel *tmp = map_channels.at(it->first);
+							tmp->insert_users(user);
+
+							user->chan->notif_new_client_joined(user);
+
+							std::string sen = SEND_CHAN(user->username(), user->username(), user->chan->name());
+							send(user->client_fd(), sen.c_str(), sen.length(), 0);
+
+							sen = USERS_LIST(user->username(), user->chan->name()) + user->chan->users_list();
+							send(user->client_fd(), sen.c_str(), sen.size(), 0);
+						}
+					}
 				}
 				else {
 					std::string sen = "ERROR :Incorrect password\r\n";
@@ -156,23 +168,22 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 				tmp->insert_users(user);
 				channels_name.push_back(it->first);
 
-				std::string sen = SEND_CHAN(user->nickname(), user->nickname()[0], user->chan->name());
+				std::string sen = SEND_CHAN(user->username(), user->username(), user->chan->name());
 				send(user->client_fd(), sen.c_str(), sen.size(), 0);
 
-				sen = USERS_LIST(user->nickname(), user->chan->name()) + ":@" + user->nickname() + " " "\r\n";		
+				sen = USERS_LIST(user->username(), user->chan->name()) + ":@" + user->username() + " " "\r\n";		
 				send(user->client_fd(), sen.c_str(), sen.size(), 0);
 
-				sen = END_LIST(user->nickname(), user->chan->name());
+				sen = END_LIST(user->username(), user->chan->name());
 				send(user->client_fd(), sen.c_str(), sen.size(), 0);
-					std::cout << sen;
 
 				// std::string sen2 = "NOTICE " + user->username() + " :Mode: +nt test only!\r\n";
 				// send(user->client_fd(), sen2.c_str(), sen2.size(), 0);
+				// std::string tim = "NOTICE " + user->chan->name() + " :This channel was created at " + get_tim() + "\r\n";
 				// time_t now = time(NULL);
 				// char message[256];
-				// snprintf(message, 256, "NOTICE %s :This channel was created at %s\n",
-				// 		 user->chan->name().c_str(), ctime(&now));
-				// send(user->client_fd(), message, strlen(message), 0);
+				// snprintf(message, 256, "NOTICE %s :This channel was created at %s\n", user->chan->name().c_str(), ctime(&now));
+				// send(user->client_fd(), tim.c_str(), tim.length(), 0);
 			}
 			it++;
 		}
@@ -204,7 +215,7 @@ int check_PART(std::vector<std::string> &splited_line, user *user)
 	size_t h;
 
 	h = 0;
-	if (splited_line.size() <= 1 || splited_line.size() >= 3)
+	if (splited_line.size() <= 1 || splited_line.size() > 3)
 	{
 		std::string sen = "461 PART :Not enough parameters\r\n";
 		send(user->client_fd(), sen.c_str(), sen.size(), 0);
@@ -224,17 +235,17 @@ int check_PART(std::vector<std::string> &splited_line, user *user)
 			{
 				if (user->chan != nullptr && map_channels.at(channels_[h])->how_many_usr() >= 2)
 				{
-					std::string send_to_others = "user " + user->username() + " has left the cahnnel\n";
+					std::string send_to_others = PART(user->username(), user->username(), user->chan->name())
+						+ "\r\n";
 					user->chan->broadcast(send_to_others, user);
-					std::string sen = "you have left channel " + channels_[h];
 					map_channels.at(channels_[h])->part_user(user);
-					send(user->client_fd(), sen.c_str(), sen.size(), 0);
 				}
-				else
+				else if (user->chan != nullptr && map_channels.at(channels_[h])->how_many_usr() == 1)
 				{
-					std::string sen = "you have left channel " + channels_[h] + "\n";
+					std::string send_to_others = PART(user->username(), user->username(), user->chan->name())
+						+ "\r\n";
+					user->chan->broadcast(send_to_others, user);
 					map_channels.at(channels_[h])->part_user(user);
-					send(user->client_fd(), sen.c_str(), sen.size(), 0);
 					map_channels.erase(channels_[h]);
 				}
 			}

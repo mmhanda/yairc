@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 01:13:18 by archid            #+#    #+#             */
-/*   Updated: 2023/03/28 09:34:09 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/28 14:57:28 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ user::user(int client_fd) : PASS_authenticated(false),
 				NICK_authenticated(false),
 				USER_authenticated(false) {
 	client_fd_ = client_fd;
+	chan = nullptr;
 }
 
 const std::string &user::nickname() const { return nickname_; }
