@@ -100,16 +100,16 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 
 		std::istringstream line_to_stream(splited_line[1]);
 		std::string read_here;
-		if (splited_line.size() == 3)
-		{
+		// if (splited_line.size() == 3)
+		// {
 
-			std::istringstream line_to_stream_2(splited_line[2]);
-			while (getline(line_to_stream_2, read_here, ','))
-			{
-				std::cout << "password hada " << read_here << std::endl;
-				password.push_back(read_here);
-			}
-		}
+		// 	std::istringstream line_to_stream_2(splited_line[2]);
+		// 	while (getline(line_to_stream_2, read_here, ','))
+		// 	{
+		// 		std::cout << "password hada " << read_here << std::endl;
+		// 		password.push_back(read_here);
+		// 	}
+		// }
 		while (getline(line_to_stream, read_here, ','))
 		{
 			if (read_here.find('#') > read_here.size())
@@ -163,7 +163,8 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 
 					std::cout << "4N\n";
 
-					sen = USERS_LIST(user->username(), it->first) + tmp->users_list(); // hna fin kayn moxkil fe userlist
+					sen = USERS_LIST(user->username(), it->first);
+					// + tmp->users_list(); // hna fin kayn moxkil fe userlist
 					std::cout << "1N\n";
 					send(user->client_fd(), sen.c_str(), sen.size(), 0);
 					// }
@@ -190,8 +191,7 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 				std::string sen = SEND_CHAN(user->username(), user->username(), user->chan->name());
 				send(user->client_fd(), sen.c_str(), sen.size(), 0);
 
-				sen = USERS_LIST(user->username(), user->chan->name()) + ":@" + user->username() + " "
-																								   "\r\n";
+				sen = USERS_LIST(user->username(), user->chan->name()) + ":@" + user->username() + "\r\n";
 				send(user->client_fd(), sen.c_str(), sen.size(), 0);
 
 				sen = END_LIST(user->username(), user->chan->name());

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_parsing.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/28 10:56:43 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/28 20:18:00 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,20 @@ int parse_command(std::string &input, const int fd, user *user_)
 				splited_line.push_back(str);
 				str = strtok(NULL, " ");
 			}
-			user *tmp = NULL;
-			tmp = map_users.at(fd);
+			// user *user_ = NULL;
+			// user_ = map_users.at(fd);
 
 			if (splited_line[0] == "PASS")
 			{
-				check_PASS(splited_line, tmp);
+				check_PASS(splited_line, user_);
 			}
 			else if (splited_line[0] == "NICK")
 			{
-				check_NICK(splited_line, tmp);
+				check_NICK(splited_line, user_);
 			}
 			else if (splited_line[0] == "USER")
 			{
-				check_USER(splited_line, tmp);
+				check_USER(splited_line, user_);
 			}
 			else if (splited_line[0] == "OPER")
 			{
