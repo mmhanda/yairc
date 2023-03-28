@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cmds.cpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/11 09:17:29 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/26 11:45:07 by mhanda           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "server.hpp"
 #include "channel.hpp"
@@ -119,7 +108,7 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 				send(user->client_fd(), error_.c_str(), error_.length(), 0);
 				return (0);
 			}
-			std::cout << "channels  " << read_here << std::endl;
+			// std::cout << "channels  " << read_here << std::endl;
 			channels.push_back(read_here);
 		}
 
@@ -151,7 +140,8 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 				{
 					channel *tmp = map_channels.at(it->first);
 					tmp->insert_users(user);
-					std::string sen = ":" + user->nickname() + "!" + user->username() + "@localhost JOIN " + user->chan->name() + "\r\n";
+					std::string sen = ":" + user->nickname() + "!" + user->username() + "@ircserv JOIN :#" + user->chan->name() + "\r\n";
+					std::cout << sen;
 					send(user->client_fd(), sen.c_str(), sen.length(), 0);
 				}
 				else
@@ -162,20 +152,54 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 				}
 			}
 			else
-			{
+			{	
+
+////////////////////////////////
+// string user_info()
+// 			{
+// 				return (this->nick + "!" + this->username + "@" + this->ip_address);
+// 			}
+/////////////////////////////////////////////////////////
 				channel *tmp = new channel(it->first, it->second);
 				map_channels.insert(std::pair<std::string, channel *>(it->first, tmp));
 				tmp->insert_users(user);
 				channels_name.push_back(it->first);
-				std::string sen1 = ":" + user->nickname() + "!" + user->username() + "@localhost JOIN " + user->chan->name() + "\n";
+				
+				// std::string modes = "nt";
+				// std::string sen = ":" + user->nickname() + "!" + user->username() + "@127.0.0.1" + " JOIN " + user->chan->name() + "\r\n"
+				// ":ircserv MODE "  " +nt\r\n"
+				// ":ircserv 353 " + user->nickname() + " = " + user->chan->name() + " :@" + user->nickname() + "\r\n"
+				// ":ircserv 366 " + user->nickname() + " " + user->chan->name() + " :End of /NAMES list.MODE #chan +sn\r\n";
+
+
+
+std::string sen = RFEPLY_CHANNEL(user->nickname(), user->nickname()[0], user->chan->name());
+				// std::string sen = ":" + user->nickname()  + "!" + user->nickname()[0] + "@localhost" + " JOIN " + user->chan->name() + "\r\n";
+				send(user->client_fd(), sen.c_str(), sen.size(), 0);
+std::string sen1 = LISTUSERS(user->nickname(), user->chan->name()) + ":@" + user->nickname() + " " "\r\n";
+				// std::string sen1 = ":localhost 353 " + user->nickname() + " = " + user->chan->name() + " :@" + user->nickname() + " \r\n";
 				send(user->client_fd(), sen1.c_str(), sen1.size(), 0);
-				std::string sen2 = "NOTICE " + user->username() + " :Mode: +nt test only!\r\n";
+std::string sen2 = ENDLIST(user->nickname(), user->chan->name());
+				// std::string sen2 = ":localhost 366 " + user->nickname() + " " + user->chan->name() + " :End of /NAMES list.\r\n";
 				send(user->client_fd(), sen2.c_str(), sen2.size(), 0);
-				time_t now = time(NULL);
-				char message[256];
-				snprintf(message, 256, "NOTICE %s :This channel was created at %s\n",
-						 user->chan->name().c_str(), ctime(&now));
-				send(user->client_fd(), message, strlen(message), 0);
+
+// std::string sen = ":" + user->nickname() + "!" + user->username() + "@127.0.0.1 JOIN "
+// + user->chan->name() + "\r\n:ircserv MODE +nt\r\n:ircserv 353 "
+// + user->nickname() + " = " + user->chan->name() + " :@" + user->nickname() +"\r\n:ircserv 366 " + user->nickname() + " "
+// + user->chan->name() + user->chan->name() + " :End of /NAMES list.MODE " + user->chan->name() + " +sn\r\n";
+					std::cout << sen;
+					std::cout << sen1;
+					std::cout << sen2;
+				// std::string sen1 = ":" + user->nickname() + "!" + user->username() + "@localhost JOIN " + user->chan->name() + "\n";
+
+
+				// std::string sen2 = "NOTICE " + user->username() + " :Mode: +nt test only!\r\n";
+				// send(user->client_fd(), sen2.c_str(), sen2.size(), 0);
+				// time_t now = time(NULL);
+				// char message[256];
+				// snprintf(message, 256, "NOTICE %s :This channel was created at %s\n",
+				// 		 user->chan->name().c_str(), ctime(&now));
+				// send(user->client_fd(), message, strlen(message), 0);
 			}
 			it++;
 		}
@@ -198,7 +222,7 @@ int check_LIST(std::vector<std::string> &splited_line, user *user)
 	}
 	std::string numeric_reply = "322";
 	std::string properties = " :End of /LIST";
-	std::string response = ":" + std::string("127.0.0.1") + " " + numeric_reply + " " + channel_list + properties + "\r\n";
+	std::string response = ":" + std::string("127.0.0.1") + " " + numeric_reply + " " + channel_list + "\r\n";
 	send(user->client_fd(), response.c_str(), response.length(), 0);
 }
 

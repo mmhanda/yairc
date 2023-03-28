@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/26 11:20:07 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/28 09:05:27 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,7 @@ int parse_command(std::string &input, const int fd, user *user_)
 			}
 			else if (splited_line[0] == "JOIN")
 			{
-				////           may be for later !
-				// char join_message[256];
-				// snprintf(join_message, sizeof(join_message), ":abc JOIN #test\r\n");
-				// std::cout << join_message;
-				// send(fd, join_message , strlen(join_message) , 0);
-				/////
 				check_JOIN(splited_line, user_);
-				// char join_message[256];
-				// snprintf(join_message, sizeof(join_message), ":%s!%s@%s JOIN #%s\r\n", user_->nickname().c_str(), user_->username().c_str(), "127.0.0.1", splited_line[1].c_str());
-				// send(fd, join_message, strlen(join_message), 0);
-				// snprintf(join_message, sizeof(join_message), "JOIN %s\r\n", splited_line[1].c_str());
-				// send(user_->client_fd(), join_message, strlen(join_message), 0);
 			}
 			else if (splited_line[0] == "LIST" && splited_line.size() == 1)
 			{

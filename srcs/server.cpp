@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 00:59:52 by archid            #+#    #+#             */
-/*   Updated: 2023/03/26 10:57:13 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/28 09:05:02 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,16 @@ void server::terminate_and_throw() {
 	throw std::runtime_error(str_error());
 }
 
-void server::message(int client_fd, const std::string &msg, int flags) {
-	ssize_t n_bytes = ::send(client_fd, msg.c_str(), msg.size(), flags);
-	if (n_bytes < 0)
-		terminate_and_throw();
+void server::message(int client_fd, std::string msg, int flags) {
+
+	msg = ":localhost NOTICE AUTH :*** Looking up for your ident...\r\n";
+	send(client_fd, msg.c_str(), msg.length(), flags);
+	msg = ":localhost NOTICE AUTH :*** Looking up for your hostname\r\n";
+	send(client_fd, msg.c_str(), msg.length(), flags);
+	msg = ":localhost NOTICE AUTH :*** You are now connected to the YAIRC server\r\n";
+	send(client_fd, msg.c_str(), msg.length(), flags);
+	msg = ":localhost NOTICE AUTH :*** Enter your identity below: \n          NICK: <nickname>\n          USER: username> <unused> <unused> <realname>\n          PASS: <password>\r\n";
+	send(client_fd, msg.c_str(), msg.length(), flags);
 }
 
 ssize_t server::recieve_message(pollfd_iter client) {
@@ -96,7 +102,7 @@ void server::accept_clients() {
 
 	while ((client_fd = ::accept(sock_fd_, addr_, &sock_len)) >= 0) 
 	{
-		message(client_fd, "[ Welcome to YAIRC server ]\n");
+		message(client_fd);
 		map_users.insert(std::pair<int, user *>(client_fd, new user(client_fd)));
 		clients_.push_back(client_pollfd(client_fd));
 		std::cerr << "New client joined number " << "[ "<< map_users.size() << " ]\n";
@@ -132,9 +138,7 @@ void server::run() {
 					{
 						std::string msg = map_msgs.at(clients_[i].fd);
 						if (authenticate(msg, clients_[i].fd, map_users.at(clients_[i].fd)))
-						{
 							parse_command(msg, clients_[i].fd, map_users.at(clients_[i].fd));
-						}
 
 						map_msgs.erase(clients_[i].fd);
 						msg.erase();

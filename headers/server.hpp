@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             */
-/*   Updated: 2023/03/26 09:00:44 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/28 09:03:49 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@
 #include <vector>
 #include <map>
 #include <time.h>
+
+# define   RFEPLY_CHANNEL(a, c, b)          ":" + a + "!" + c + "@localhost JOIN " + b + "\r\n"
+# define   LISTUSERS(a,b)                   ":localhost 353 " + a + " = "  + b + " "
+# define   ENDLIST(a,b)                     ":localhost 366 " + a + " " + b + " :End of /NAMES list.\r\n"
+
 
 #include "user.hpp"
 #include "channel.hpp"
@@ -77,7 +82,7 @@ class server {
       server(int port, std::string passwd);
       server &operator = (const server &copyfrom);
 
-      void message(int client_fd, const std::string &msg, int flags = 0);
+      void message(int client_fd, std::string msg = "", int flags = 0);
 
       void terminate();
       void run();
