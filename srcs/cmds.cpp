@@ -158,7 +158,8 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 							send(user->client_fd(), sen.c_str(), sen.length(), 0);
 
 							std::cout << "4N\n";
-							sen = USERS_LIST(user->username(), user->chan->name()) + user->chan->users_list();
+							
+							sen = USERS_LIST(user->username(), it->first) + is_found->second->users_list();
 							std::cout << "1N\n";
 							send(user->client_fd(), sen.c_str(), sen.size(), 0);
 						// }
