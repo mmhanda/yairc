@@ -149,9 +149,10 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 					// if (user->chan->name() != it->first)
 					// {
 					std::cout << "ON ON ON\n";
-					// channel *tmp = map_channels.at(it->first);
+					channel *tmp = map_channels.at(it->first);
 
-					is_found->second->insert_users(user);
+					tmp->insert_users(user);
+					// is_found->second->insert_users(user);
 					std::cout << "7N\n";
 					user->chan->notif_new_client_joined(user);
 
@@ -162,7 +163,7 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 
 					std::cout << "4N\n";
 
-					sen = USERS_LIST(user->username(), it->first) + is_found->second->users_list();
+					sen = USERS_LIST(user->username(), it->first) + tmp->users_list(); // hna fin kayn moxkil fe userlist
 					std::cout << "1N\n";
 					send(user->client_fd(), sen.c_str(), sen.size(), 0);
 					// }
