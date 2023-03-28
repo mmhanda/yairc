@@ -145,16 +145,21 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 						// if (user->chan->name() != it->first)
 						// {
 							std::cout << "ON ON ON\n";
-							channel *tmp = map_channels.at(it->first);
-
-							tmp->insert_users(user);
-
+							// channel *tmp = map_channels.at(it->first);
+	
+							
+							is_found->second->insert_users(user);
+							std::cout << "7N\n";
 							user->chan->notif_new_client_joined(user);
-
+							
+							std::cout << "6N\n";
 							std::string sen = SEND_CHAN(user->username(), user->username(), user->chan->name());
+							std::cout << "5N\n";
 							send(user->client_fd(), sen.c_str(), sen.length(), 0);
 
+							std::cout << "4N\n";
 							sen = USERS_LIST(user->username(), user->chan->name()) + user->chan->users_list();
+							std::cout << "1N\n";
 							send(user->client_fd(), sen.c_str(), sen.size(), 0);
 						// }
 					}
