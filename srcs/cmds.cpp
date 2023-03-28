@@ -99,8 +99,17 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 		std::vector<std::string> password;
 
 		std::istringstream line_to_stream(splited_line[1]);
-		std::istringstream line_to_stream_2(splited_line[2]);
 		std::string read_here;
+		if (splited_line.size() == 3)
+		{
+
+			std::istringstream line_to_stream_2(splited_line[2]);
+			while (getline(line_to_stream_2, read_here, ','))
+			{
+				std::cout << "password hada " << read_here << std::endl;
+				password.push_back(read_here);
+			}
+		}
 		while (getline(line_to_stream, read_here, ','))
 		{
 			if (read_here.find('#') > read_here.size())
@@ -112,11 +121,6 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 			channels.push_back(read_here);
 		}
 
-		// while (getline(line_to_stream_2, read_here, ','))
-		// {
-		// 	std::cout << "password hada " << read_here << std::endl;
-		// 	password.push_back(read_here);
-		// }
 		h = 0;
 		while (h < channels.size())
 		{
@@ -139,35 +143,34 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 				is_found = map_channels.find(it->first);
 				// if (is_found->second->passwrd() == it->second)
 				// {
-					if (user->chan == nullptr || user->chan->name() != it->first) //user ba9i mdkhalx lhad lgoup
-					{
-						std::cout << "IN IN IN\n";
-						// if (user->chan->name() != it->first)
-						// {
-							std::cout << "ON ON ON\n";
-							// channel *tmp = map_channels.at(it->first);
-	
-							
-							is_found->second->insert_users(user);
-							std::cout << "7N\n";
-							user->chan->notif_new_client_joined(user);
-							
-							std::cout << "6N\n";
-							std::string sen = SEND_CHAN(user->username(), user->username(), user->chan->name());
-							std::cout << "5N\n";
-							send(user->client_fd(), sen.c_str(), sen.length(), 0);
-
-							std::cout << "4N\n";
-							
-							sen = USERS_LIST(user->username(), it->first) + is_found->second->users_list();
-							std::cout << "1N\n";
-							send(user->client_fd(), sen.c_str(), sen.size(), 0);
-						// }
-					}
-					// else if()//user  dakahl lhad  lgoup
+				if (user->chan == nullptr || user->chan->name() != it->first) // user ba9i mdkhalx lhad lgoup
+				{
+					std::cout << "IN IN IN\n";
+					// if (user->chan->name() != it->first)
 					// {
+					std::cout << "ON ON ON\n";
+					// channel *tmp = map_channels.at(it->first);
 
+					is_found->second->insert_users(user);
+					std::cout << "7N\n";
+					user->chan->notif_new_client_joined(user);
+
+					std::cout << "6N\n";
+					std::string sen = SEND_CHAN(user->username(), user->username(), user->chan->name());
+					std::cout << "5N\n";
+					send(user->client_fd(), sen.c_str(), sen.length(), 0);
+
+					std::cout << "4N\n";
+
+					sen = USERS_LIST(user->username(), it->first) + is_found->second->users_list();
+					std::cout << "1N\n";
+					send(user->client_fd(), sen.c_str(), sen.size(), 0);
 					// }
+				}
+				// else if()//user  dakahl lhad  lgoup
+				// {
+
+				// }
 				// }
 				// else
 				// {
@@ -198,35 +201,6 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 	}
 	return (0);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 int check_LIST(std::vector<std::string> &splited_line, user *user)
 {

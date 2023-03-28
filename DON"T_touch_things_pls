@@ -12,10 +12,16 @@ the bug in QUIT : DONE
 the communication between the multiple clients in one channel : DONE
 handled multiple bugs and errors and inputs : DONE
 
-PRIVMSG is obligatory to send a message (atabiti)
-LIST: khas tlopi 3la  map_channels maxi  channels_name , now is woking in Limechat
+PRIVMSG is obligatory to send a message (by atabiti)
+LIST: khas tlopi 3la  map_channels maxi  channels_name , now is woking in Limechat (by atabiti)
 
-PLZ DO NOT TOUCH PRIVMSG (if you want to test it use like this :  PRIVMSG #channame 
-message or use  PRIVMSG #channame :message twil fih bzaff hadra ok ) 
+PLZ DO NOT TOUCH PRIVMSG (if you want to test it use like this :  PRIVMSG #channame  (by atabiti)
+message or use  PRIVMSG #channame :message twil fih bzaff hadra ok )  (by atabiti)
 
-txiki TOPIC bax tkmlha
+txiki TOPIC bax tkmlha (by atabiti)
+
+Must be fixed : (check this https://stackoverflow.com/questions/3598556/g-warning-comparison-of-unsigned-expression-0-is-always-false) (by atabiti)
+
+ warning: comparison of unsigned expression in ‘< 0’ is always false [-Wtype-limits]
+   23 |         if (addr.sin_addr.s_addr < 0)
+      |             ~~~~~~~~~~~~~~~~~~~~~^~~ 
