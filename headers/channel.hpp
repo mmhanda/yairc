@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 23:43:25 by archid            #+#    #+#             */
-/*   Updated: 2023/03/26 10:03:53 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/28 10:56:23 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,16 @@ class channel {
 		channel(std::string name, std::string passwd = "", std::string topic = "");
 		std::string passwrd(void);
 		void broadcast(std::string msg, user *sender);
+
+		void notif_new_client_joined(user *sender) {
+
+			std::string broad = SEND_CHAN(sender->nickname(), sender->username(),  sender->chan->name());
+			for (int user_fd : users_fd) {
+				if (sender->client_fd() != user_fd) {
+					send(user_fd, broad.c_str(), broad.size(), 0);
+				}
+			}
+		}
 		
 		void insert_users(user *user);
 		void part_user(user *user);

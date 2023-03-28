@@ -136,16 +136,14 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 			if (map_channels.find(it->first) != map_channels.end())
 			{
 				is_found = map_channels.find(it->first);
-				if (is_found->second->passwrd() == it->second)
-				{
+				if (is_found->second->passwrd() == it->second) {
 					channel *tmp = map_channels.at(it->first);
 					tmp->insert_users(user);
-					std::string sen = ":" + user->nickname() + "!" + user->username() + "@ircserv JOIN :#" + user->chan->name() + "\r\n";
-					std::cout << sen;
+					std::string sen = SEND_CHAN(user->nickname(), user->nickname()[0], user->chan->name());
 					send(user->client_fd(), sen.c_str(), sen.length(), 0);
+					user->chan->notif_new_client_joined(user);
 				}
-				else
-				{
+				else {
 					std::string sen = "ERROR :Incorrect password\r\n";
 					send(user->client_fd(), sen.c_str(), sen.length(), 0);
 					return 0;
@@ -158,18 +156,15 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 				tmp->insert_users(user);
 				channels_name.push_back(it->first);
 
-std::string sen = SEND_CHAN(user->nickname(), user->nickname()[0], user->chan->name());
-
+				std::string sen = SEND_CHAN(user->nickname(), user->nickname()[0], user->chan->name());
 				send(user->client_fd(), sen.c_str(), sen.size(), 0);
-std::string sen1 = USERS_LIST(user->nickname(), user->chan->name()) + ":@" + user->nickname() + " " "\r\n";
-		
-				send(user->client_fd(), sen1.c_str(), sen1.size(), 0);
-std::string sen2 = END_LIST(user->nickname(), user->chan->name());
-		
-				send(user->client_fd(), sen2.c_str(), sen2.size(), 0);
+
+				sen = USERS_LIST(user->nickname(), user->chan->name()) + ":@" + user->nickname() + " " "\r\n";		
+				send(user->client_fd(), sen.c_str(), sen.size(), 0);
+
+				sen = END_LIST(user->nickname(), user->chan->name());
+				send(user->client_fd(), sen.c_str(), sen.size(), 0);
 					std::cout << sen;
-					std::cout << sen1;
-					std::cout << sen2;
 
 				// std::string sen2 = "NOTICE " + user->username() + " :Mode: +nt test only!\r\n";
 				// send(user->client_fd(), sen2.c_str(), sen2.size(), 0);
