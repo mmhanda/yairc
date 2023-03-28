@@ -137,12 +137,16 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 			{
 				std::cout << "FIRST\n";
 				is_found = map_channels.find(it->first);
-				if (is_found->second->passwrd() == it->second) {
-					if (user->chan == nullptr) {
+				// if (is_found->second->passwrd() == it->second)
+				// {
+					if (user->chan == nullptr || user->chan->name() != it->first) //user ba9i mdkhalx lhad lgoup
+					{
 						std::cout << "IN IN IN\n";
-						if (user->chan->name() != it->first) {
+						// if (user->chan->name() != it->first)
+						// {
 							std::cout << "ON ON ON\n";
 							channel *tmp = map_channels.at(it->first);
+
 							tmp->insert_users(user);
 
 							user->chan->notif_new_client_joined(user);
@@ -152,14 +156,19 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 
 							sen = USERS_LIST(user->username(), user->chan->name()) + user->chan->users_list();
 							send(user->client_fd(), sen.c_str(), sen.size(), 0);
-						}
+						// }
 					}
-				}
-				else {
-					std::string sen = "ERROR :Incorrect password\r\n";
-					send(user->client_fd(), sen.c_str(), sen.length(), 0);
-					return 0;
-				}
+					// else if()//user  dakahl lhad  lgoup
+					// {
+
+					// }
+				// }
+				// else
+				// {
+				// 	std::string sen = "ERROR :Incorrect password\r\n";
+				// 	send(user->client_fd(), sen.c_str(), sen.length(), 0);
+				// 	return 0;
+				// }
 			}
 			else
 			{
@@ -171,25 +180,47 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 				std::string sen = SEND_CHAN(user->username(), user->username(), user->chan->name());
 				send(user->client_fd(), sen.c_str(), sen.size(), 0);
 
-				sen = USERS_LIST(user->username(), user->chan->name()) + ":@" + user->username() + " " "\r\n";		
+				sen = USERS_LIST(user->username(), user->chan->name()) + ":@" + user->username() + " "
+																								   "\r\n";
 				send(user->client_fd(), sen.c_str(), sen.size(), 0);
 
 				sen = END_LIST(user->username(), user->chan->name());
 				send(user->client_fd(), sen.c_str(), sen.size(), 0);
-
-				// std::string sen2 = "NOTICE " + user->username() + " :Mode: +nt test only!\r\n";
-				// send(user->client_fd(), sen2.c_str(), sen2.size(), 0);
-				// std::string tim = "NOTICE " + user->chan->name() + " :This channel was created at " + get_tim() + "\r\n";
-				// time_t now = time(NULL);
-				// char message[256];
-				// snprintf(message, 256, "NOTICE %s :This channel was created at %s\n", user->chan->name().c_str(), ctime(&now));
-				// send(user->client_fd(), tim.c_str(), tim.length(), 0);
 			}
 			it++;
 		}
 	}
 	return (0);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 int check_LIST(std::vector<std::string> &splited_line, user *user)
 {
@@ -235,15 +266,13 @@ int check_PART(std::vector<std::string> &splited_line, user *user)
 			{
 				if (user->chan != nullptr && map_channels.at(channels_[h])->how_many_usr() >= 2)
 				{
-					std::string send_to_others = PART(user->username(), user->username(), user->chan->name())
-						+ "\r\n";
+					std::string send_to_others = PART(user->username(), user->username(), user->chan->name()) + "\r\n";
 					user->chan->broadcast(send_to_others, user);
 					map_channels.at(channels_[h])->part_user(user);
 				}
 				else if (user->chan != nullptr && map_channels.at(channels_[h])->how_many_usr() == 1)
 				{
-					std::string send_to_others = PART(user->username(), user->username(), user->chan->name())
-						+ "\r\n";
+					std::string send_to_others = PART(user->username(), user->username(), user->chan->name()) + "\r\n";
 					user->chan->broadcast(send_to_others, user);
 					map_channels.at(channels_[h])->part_user(user);
 					map_channels.erase(channels_[h]);
@@ -378,8 +407,8 @@ int check_TOPIC(std::vector<std::string> &splited_line, std::string &back_up_inp
 		{
 
 			std::string msg("TOPIC: ");
-			msg = msg +  user_->chan->topic() + "\r\n";
-			send(user_->client_fd(),msg.c_str(), msg.length(), 0);
+			msg = msg + user_->chan->topic() + "\r\n";
+			send(user_->client_fd(), msg.c_str(), msg.length(), 0);
 			return 0;
 		}
 		else
@@ -391,6 +420,6 @@ int check_TOPIC(std::vector<std::string> &splited_line, std::string &back_up_inp
 	}
 	/*
 		hna khas txiki  wax user 3ando permission ybdal topic dyal channel OK? mhanda
-		
+
 	*/
 }

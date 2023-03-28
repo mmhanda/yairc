@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             */
-/*   Updated: 2023/03/28 13:47:09 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/28 15:24:56 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 #include <time.h>
 
 # define   SEND_CHAN(nick_name, user_name, channel_name) ":" + nick_name + "!" + user_name + "@localhost JOIN " + channel_name + "\r\n"
-# define   USERS_LIST(nick_name, channel_name)           ":localhost 353 " + nick_name + " = "  + channel_name + " "
+# define   USERS_LIST(nick_name, channel_name)           ":localhost 353 " + nick_name + " = "  + channel_name + "\r\n" // problem was here segfault!
 # define   END_LIST(nick_name, channel_name)             ":localhost 366 " + nick_name + " " + channel_name + " :End of /NAMES list.\r\n"
 # define   PART(nick_name, nick_name1, channel_name)  ":" + nick_name + "!" + nick_name1 + "@localhost PART " + channel_name
 

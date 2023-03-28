@@ -36,7 +36,10 @@ channel::channel(std::string name, std::string passwd, std::string topic)
 void channel::insert_users(user *user) {
 	if (how_many_usr() == 0)
 		admin_names.push_back(user->username());
-	else {r_user_names.push_back(user->username());}
+	else 
+	{
+		r_user_names.push_back(user->username());	
+	}
 	user->chan = this;
 	this->users_fd.push_back(user->client_fd());
 }
