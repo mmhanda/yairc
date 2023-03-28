@@ -152,46 +152,24 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 				}
 			}
 			else
-			{	
-
-////////////////////////////////
-// string user_info()
-// 			{
-// 				return (this->nick + "!" + this->username + "@" + this->ip_address);
-// 			}
-/////////////////////////////////////////////////////////
+			{
 				channel *tmp = new channel(it->first, it->second);
 				map_channels.insert(std::pair<std::string, channel *>(it->first, tmp));
 				tmp->insert_users(user);
 				channels_name.push_back(it->first);
-				
-				// std::string modes = "nt";
-				// std::string sen = ":" + user->nickname() + "!" + user->username() + "@127.0.0.1" + " JOIN " + user->chan->name() + "\r\n"
-				// ":ircserv MODE "  " +nt\r\n"
-				// ":ircserv 353 " + user->nickname() + " = " + user->chan->name() + " :@" + user->nickname() + "\r\n"
-				// ":ircserv 366 " + user->nickname() + " " + user->chan->name() + " :End of /NAMES list.MODE #chan +sn\r\n";
 
+std::string sen = SEND_CHAN(user->nickname(), user->nickname()[0], user->chan->name());
 
-
-std::string sen = RFEPLY_CHANNEL(user->nickname(), user->nickname()[0], user->chan->name());
-				// std::string sen = ":" + user->nickname()  + "!" + user->nickname()[0] + "@localhost" + " JOIN " + user->chan->name() + "\r\n";
 				send(user->client_fd(), sen.c_str(), sen.size(), 0);
-std::string sen1 = LISTUSERS(user->nickname(), user->chan->name()) + ":@" + user->nickname() + " " "\r\n";
-				// std::string sen1 = ":localhost 353 " + user->nickname() + " = " + user->chan->name() + " :@" + user->nickname() + " \r\n";
+std::string sen1 = USERS_LIST(user->nickname(), user->chan->name()) + ":@" + user->nickname() + " " "\r\n";
+		
 				send(user->client_fd(), sen1.c_str(), sen1.size(), 0);
-std::string sen2 = ENDLIST(user->nickname(), user->chan->name());
-				// std::string sen2 = ":localhost 366 " + user->nickname() + " " + user->chan->name() + " :End of /NAMES list.\r\n";
+std::string sen2 = END_LIST(user->nickname(), user->chan->name());
+		
 				send(user->client_fd(), sen2.c_str(), sen2.size(), 0);
-
-// std::string sen = ":" + user->nickname() + "!" + user->username() + "@127.0.0.1 JOIN "
-// + user->chan->name() + "\r\n:ircserv MODE +nt\r\n:ircserv 353 "
-// + user->nickname() + " = " + user->chan->name() + " :@" + user->nickname() +"\r\n:ircserv 366 " + user->nickname() + " "
-// + user->chan->name() + user->chan->name() + " :End of /NAMES list.MODE " + user->chan->name() + " +sn\r\n";
 					std::cout << sen;
 					std::cout << sen1;
 					std::cout << sen2;
-				// std::string sen1 = ":" + user->nickname() + "!" + user->username() + "@localhost JOIN " + user->chan->name() + "\n";
-
 
 				// std::string sen2 = "NOTICE " + user->username() + " :Mode: +nt test only!\r\n";
 				// send(user->client_fd(), sen2.c_str(), sen2.size(), 0);

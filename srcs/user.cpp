@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 01:13:18 by archid            #+#    #+#             */
-/*   Updated: 2023/03/28 09:15:05 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/28 09:34:09 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,13 @@ const std::string &user::username() const { return username_; }
 void user::username(std::string username) { username_ = username; }
 
 std::string get_tim() {
+
 	time_t now = time(NULL);
 	char *time = ctime(&now);
 	std::string tim = time;
-	
+
 	std::size_t pos = tim.find("\n");
-	
+
 	if (pos != std::string::npos){
 		tim.erase(pos, 1);
 	}

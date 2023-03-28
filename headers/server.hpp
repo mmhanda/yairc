@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             */
-/*   Updated: 2023/03/28 09:03:49 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/28 09:32:59 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@
 #include <map>
 #include <time.h>
 
-# define   RFEPLY_CHANNEL(a, c, b)          ":" + a + "!" + c + "@localhost JOIN " + b + "\r\n"
-# define   LISTUSERS(a,b)                   ":localhost 353 " + a + " = "  + b + " "
-# define   ENDLIST(a,b)                     ":localhost 366 " + a + " " + b + " :End of /NAMES list.\r\n"
+# define   SEND_CHAN(nick_name, user_name, channel_name) ":" + nick_name + "!" + user_name + "@localhost JOIN " + channel_name + "\r\n"
+# define   USERS_LIST(nick_name, channel_name)           ":localhost 353 " + nick_name + " = "  + channel_name + " "
+# define   END_LIST(nick_name, channel_name)             ":localhost 366 " + nick_name + " " + channel_name + " :End of /NAMES list.\r\n"
 
 
 #include "user.hpp"
