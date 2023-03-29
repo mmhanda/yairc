@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   input_parsing.cpp                                  :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/07 09:22:56 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/28 20:18:00 by atabiti          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "parser.hpp"
 #include "server.hpp"
@@ -38,8 +28,6 @@ int parse_command(std::string &input, const int fd, user *user_)
 				splited_line.push_back(str);
 				str = strtok(NULL, " ");
 			}
-			// user *user_ = NULL;
-			// user_ = map_users.at(fd);
 
 			if (splited_line[0] == "PASS")
 			{
@@ -64,10 +52,6 @@ int parse_command(std::string &input, const int fd, user *user_)
 			else if (splited_line[0] == "JOIN")
 			{
 				check_JOIN(splited_line, user_);
-			}
-			else if (splited_line[0] == "LIST" && splited_line.size() == 1)
-			{
-				check_LIST(splited_line, user_);
 			}
 			else if (splited_line[0] == "PART")
 			{

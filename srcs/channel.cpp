@@ -18,15 +18,21 @@ std::string channel::users_list() {
 	std::string ret = ":@";
 
 	size_t i = 0;
+	size_t itt = 0;
+	std::vector<std::string>::iterator it;
 	while ( i < how_many_usr())
 	{
 		if (i == 0)
 			ret += admin_names[0] + " ";
-		ret += r_user_names[i] + " ";
+
+		else if (r_user_names.end() != it){
+			ret += r_user_names[itt] + " ";
+			itt ++;
+		}
+		it ++;
 		i ++;
 	}
-	ret += "\r\n";
-	// std::cout << "USER LIST IS " << ret << "I IS " << std::to_string(i);
+
 	return (ret);
 }
 
@@ -35,10 +41,10 @@ channel::channel(std::string name, std::string passwd, std::string topic)
 
 void channel::insert_users(user *user) {
 	if (how_many_usr() == 0)
-		admin_names.push_back(user->username());
+		this->admin_names.push_back(user->username());
 	else 
 	{
-		r_user_names.push_back(user->username());	
+		this->r_user_names.push_back(user->username());
 	}
 	user->chan = this;
 	this->users_fd.push_back(user->client_fd());
@@ -51,9 +57,7 @@ std::string channel::passwrd(void) {
 void channel::broadcast(std::string msg, user *sender) {
 
 	for (int user_fd : users_fd) {
-		// if (sender->client_fd() != user_fd) {
-			send(user_fd, msg.c_str(), msg.size(), 0);
-		// }
+		send(user_fd, msg.c_str(), msg.size(), 0);
 	}
 }
 

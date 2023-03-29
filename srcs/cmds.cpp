@@ -100,21 +100,18 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 
 		std::istringstream line_to_stream(splited_line[1]);
 		std::string read_here;
-		// if (splited_line.size() == 3)
-		// {
+		if (splited_line.size() == 3) {
 
-		// 	std::istringstream line_to_stream_2(splited_line[2]);
-		// 	while (getline(line_to_stream_2, read_here, ','))
-		// 	{
-		// 		std::cout << "password hada " << read_here << std::endl;
-		// 		password.push_back(read_here);
-		// 	}
-		// }
+			std::istringstream line_to_stream_2(splited_line[2]);
+
+			while (getline(line_to_stream_2, read_here, ','))
+				password.push_back(read_here);
+		}
 		while (getline(line_to_stream, read_here, ','))
 		{
 			if (read_here.find('#') > read_here.size())
 			{
-				std::string error_("476 JOIN Bad Channel Mask\r\n");
+				std::string error_(":localhost 476 JOIN Bad Channel Mask\r\n");
 				send(user->client_fd(), error_.c_str(), error_.length(), 0);
 				return (0);
 			}
@@ -139,47 +136,30 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 
 			if (map_channels.find(it->first) != map_channels.end())
 			{
-				std::cout << "FIRST\n";
 				is_found = map_channels.find(it->first);
-				// if (is_found->second->passwrd() == it->second)
-				// {
-				if (user->chan == nullptr || user->chan->name() != it->first) // user ba9i mdkhalx lhad lgoup
-				{
-					std::cout << "IN IN IN\n";
-					// if (user->chan->name() != it->first)
-					// {
-					std::cout << "ON ON ON\n";
-					channel *tmp = map_channels.at(it->first);
+				if (is_found->second->passwrd() == it->second) {
+					if (user->chan == nullptr || user->chan->name() != it->first) {
+							channel *tmp = map_channels.at(it->first);
 
-					tmp->insert_users(user);
-					// is_found->second->insert_users(user);
-					std::cout << "7N\n";
-					user->chan->notif_new_client_joined(user);
+							tmp->insert_users(user);
+							user->chan->notif_new_client_joined(user);
 
-					std::cout << "6N\n";
-					std::string sen = SEND_CHAN(user->username(), user->username(), user->chan->name());
-					std::cout << "5N\n";
-					send(user->client_fd(), sen.c_str(), sen.length(), 0);
+							std::string sen = SEND_CHAN(user->username(), user->username() , user->chan->name());
+							send(user->client_fd(), sen.c_str(), sen.length(), 0);
 
-					std::cout << "4N\n";
+							sen = USERS_LIST(user->username() , it->first,  user->chan->users_list());
+							send(user->client_fd(), sen.c_str(), sen.size(), 0);
 
-					sen = USERS_LIST(user->username(), it->first);
-					// + tmp->users_list(); // hna fin kayn moxkil fe userlist
-					std::cout << "1N\n";
-					send(user->client_fd(), sen.c_str(), sen.size(), 0);
-					// }
+							sen = END_LIST(user->username(), user->chan->name());
+							send(user->client_fd(), sen.c_str(), sen.size(), 0);
+						}
 				}
-				// else if()//user  dakahl lhad  lgoup
-				// {
-
-				// }
-				// }
-				// else
-				// {
-				// 	std::string sen = "ERROR :Incorrect password\r\n";
-				// 	send(user->client_fd(), sen.c_str(), sen.length(), 0);
-				// 	return 0;
-				// }
+				else
+				{
+					std::string sen = "ERROR :Incorrect password\r\n";
+					send(user->client_fd(), sen.c_str(), sen.length(), 0);
+					return 0;
+				}
 			}
 			else
 			{
@@ -191,7 +171,7 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 				std::string sen = SEND_CHAN(user->username(), user->username(), user->chan->name());
 				send(user->client_fd(), sen.c_str(), sen.size(), 0);
 
-				sen = USERS_LIST(user->username(), user->chan->name()) + ":@" + user->username() + "\r\n";
+				sen = USERS_LIST(user->username(), user->chan->name(), user->chan->users_list());
 				send(user->client_fd(), sen.c_str(), sen.size(), 0);
 
 				sen = END_LIST(user->username(), user->chan->name());
@@ -201,25 +181,6 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 		}
 	}
 	return (0);
-}
-
-int check_LIST(std::vector<std::string> &splited_line, user *user)
-{
-	std::string list;
-	std::map<std::string, class channel *>::iterator iter;
-	std::string channel_list;
-	iter = map_channels.begin();
-
-	while (iter != map_channels.end())
-	{
-
-		channel_list += iter->second->name() + " ";
-		iter++;
-	}
-	std::string numeric_reply = "322";
-	std::string properties = " :End of /LIST";
-	std::string response = ":" + std::string("127.0.0.1") + " " + numeric_reply + " " + channel_list + "\r\n";
-	send(user->client_fd(), response.c_str(), response.length(), 0);
 }
 
 int check_PART(std::vector<std::string> &splited_line, user *user)
