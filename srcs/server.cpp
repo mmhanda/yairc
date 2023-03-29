@@ -9,9 +9,6 @@ struct sockaddr *server::setup_address(const short port) {
 	addr.sin_port = htons(port);
 	addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
-	if (addr.sin_addr.s_addr < 0)
-		terminate_and_throw();
-
 	return reinterpret_cast<struct sockaddr *>(&addr);
 }
 
@@ -58,13 +55,13 @@ void server::terminate_and_throw() {
 
 void server::message(int client_fd, std::string msg, int flags) {
 
-	msg = ":localhost NOTICE AUTH :*** Looking up for your ident...\r\n";
+	msg = ":ircserv NOTICE AUTH :*** Looking up for your ident...\r\n";
 	send(client_fd, msg.c_str(), msg.length(), flags);
-	msg = ":localhost NOTICE AUTH :*** Looking up for your hostname\r\n";
+	msg = ":ircserv NOTICE AUTH :*** Looking up for your hostname\r\n";
 	send(client_fd, msg.c_str(), msg.length(), flags);
-	msg = ":localhost NOTICE AUTH :*** You are now connected to the YAIRC server\r\n";
+	msg = ":ircserv NOTICE AUTH :*** You are now connected to the YAIRC server\r\n";
 	send(client_fd, msg.c_str(), msg.length(), flags);
-	msg = ":localhost NOTICE AUTH :*** Enter your identity below: \n          NICK: <nickname>\n          USER: username> <unused> <unused> <realname>\n          PASS: <password>\r\n";
+	msg = ":ircserv NOTICE AUTH :*** Enter your identity below: \n          NICK: <nickname>\n          USER: username> <unused> <unused> <realname>\n          PASS: <password>\r\n";
 	send(client_fd, msg.c_str(), msg.length(), flags);
 }
 

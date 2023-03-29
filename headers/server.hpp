@@ -2,11 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                   +:++:+        +:+     */
+/*   By: mhanda <mhanda@student.42.fr>             +#+ +:+      +#+        */
+/*                                               +#+#+#+#+#+  +#+           */
 /*   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             */
-/*   Updated: 2023/03/29 08:13:45 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/29 09:18:55 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,30 +30,27 @@
 #include <map>
 #include <time.h>
 
-# define   SEND_CHAN(nick_name, user_name,\
-           channel_name)  ":" + nick_name + "!" +\
-           user_name + "@localhost JOIN " + channel_name + "\r\n"
+#define SEND_CHAN(nick_name, user_name,\
+           channel_name)  ":"+nick_name+"!"+\
+           user_name+"@ircserv JOIN "+channel_name+"\r\n"
 
-# define   USERS_LIST(nick_name, channel_name,\
-           user_list) ":localhost 353 " + nick_name +\
-           " = "  + channel_name + " " + user_list + "\r\n"
+#define USERS_LIST(nick_name, channel_name,\
+           user_list) ":ircserv 353 "+nick_name+\
+           " = " +channel_name+" "+user_list+"\r\n"
 
-# define   LIST_EN(nick_name, channel_name)\
-           ":localhost 366 " + nick_name + " "\
-           + channel_name + " :End of /NAMES list.\r\n"
+#define LIST_EN(nick_name, channel_name)\
+           ":ircserv 366 "+nick_name+" "\
+          +channel_name+" :End of /NAMES list.\r\n"
 
-# define   PART(nick_name, nick_name1,\
-           channel_name)      ":" + nick_name +\
-           "!" + nick_name1 + "@localhost PART " +\
+#define PART(nick_name, nick_name1,\
+           channel_name)      ":"+nick_name+\
+           "!"+nick_name1+"@ircserv PART "+\
            channel_name
 
-# define   SEND_TO_USRS(nick_name, user_name,\
-           channel_name, msg)         ":" +\
-           nick_name + "!" + user_name + "@localhost PRIVMSG "\
-           + channel_name +  " :" + msg + "\r\n"
-// # define   ERR_NOSUCHNICK(a)                "401 ERR_NOSUCHNICK<" + a +"> :No such nick/channel\r\n"
-
-
+#define SEND_TO_USRS(nick_name, user_name,\
+           channel_name, msg)         ":"+\
+           nick_name+"!"+user_name+"@ircserv PRIVMSG "\
+          +channel_name+ " :"+msg+"\r\n"
 
 #include "user.hpp"
 #include "channel.hpp"

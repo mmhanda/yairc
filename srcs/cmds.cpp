@@ -10,7 +10,7 @@ int check_NICK(std::vector<std::string> const &splited_line, user *user)
 		return (1);
 	if (std::find(server_nick_names.begin(), server_nick_names.end(), splited_line[1]) != server_nick_names.end())
 	{
-		std::string sen = "invalid nickname :already exist\r\n";
+		std::string sen = ":localhost 433 nickname username already exist\r\n";
 		send(user->client_fd(), sen.c_str(), sen.size(), 0);
 		user->PRINTER = false;
 	}
@@ -235,22 +235,47 @@ int check_PART(std::vector<std::string> &splited_line, user *user)
 	return (0);
 }
 
+std::string append_msgs(std::vector<std::string> splited_msg) {
+
+	std::string ret;
+	int dots = 0;
+
+	for (size_t i = 2; i < splited_msg.size(); i++) {
+		
+		if (std::find(splited_msg[i].begin(), splited_msg[i].end(),
+						':' ) == splited_msg[i].end() && dots == 0) {
+			dots ++;
+			ret += ":";
+		}
+		dots ++;
+		ret += splited_msg[i];
+		ret += " ";
+	}
+
+	return ret;
+}
+
 int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up, user *user_)
 {
 	size_t x;
 	char *str1;
 
 	x = 0;
-	if (splited_line.size() >= 3 && (std::find(server_user_names.begin(), server_user_names.end(), splited_line[1]) != server_user_names.end()))
+	if (splited_line.size() >= 3 && (std::find(server_user_names.begin(), server_user_names.end(),\
+		splited_line[1]) != server_user_names.end()))
 	{
 		std::cout << "USER \n";
-		if (user_->chan != nullptr)
-		{
-			std::string broad = ":" + user_->username() + "!" + user_->username() + "@localhost PRIVMSG "
+		std::string broad;
+		if (splited_line.size() == 3) {
+		
+			broad = ":" + user_->username() + "!" + user_->username() + "@localhost PRIVMSG "
 									+ splited_line[1] + " " + splited_line[2] + "\r\n";
-
-			send(map_for_privat_msg.at(splited_line[1]), broad.c_str(), broad.size(), 0);
 		}
+		else {
+			broad = ":" + user_->username() + "!" + user_->username() + "@localhost PRIVMSG "
+									+ splited_line[1] + " " + append_msgs(splited_line) + "\r\n";
+		}
+		send(map_for_privat_msg.at(splited_line[1]), broad.c_str(), broad.size(), 0);
 	}
 
 	else if (splited_line.size() >= 1 && std::find(channels_name.begin(), channels_name.end(), splited_line[1]) != channels_name.end())
@@ -258,7 +283,7 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up, 
 		std::cout << "CHANNEL \n";
 		std::string message;
 
-		if (splited_line.size() == 3) {
+		if (splited_line.size() == 3 && std::find(channels_name.begin(), channels_name.end(), splited_line[1]) != channels_name.end()) {
 
 			std::string channel_name;
 			std::istringstream line_to_stream(back_up);
@@ -292,7 +317,7 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up, 
 	}
 	else
 	{
-		std::string sen = ":loacalhost 401 :No such channel/user name\r\n";
+		std::string sen = ":loacalhost 401 " + splited_line[1] + " No such channel or user name\r\n";
 		send(user_->client_fd(), sen.c_str(), sen.size(), 0);
 		return (0);
 	}
