@@ -50,31 +50,3 @@ bool    authenticate(std::string &msg , const int fd, user *user_)
     }
     return (false);
 }
-
-
-
-
-		// input.erase(std::remove(input.begin(), input.end(), '\n'), input.end());
-		// input.erase(std::remove(input.begin(), input.end(), '\r'), input.end());
-		// str = const_cast<char *>(input.c_str());
-		// str = strtok(str, " ");
-		// if (str != NULL)
-		// {
-		// 	int x = 0;
-		// 	while (str != NULL)
-		// 	{
-		// 		if(x == 0)
-		// 		{
-		// 			int i = 0;
-		// 			while (str[i])
-		// 			{
-		// 				toupper(str[i]);
-		// 				i++;
-		// 			}
-					
-		// 		}
-		// 		x++;
-		// 		splited_line.push_back(str);
-		// 		str = strtok(NULL, " ");
-		// 	}
-			

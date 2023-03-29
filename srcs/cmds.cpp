@@ -357,15 +357,23 @@ int check_KICK(std::string &input, user *tmp)
 
 int check_TOPIC(std::vector<std::string> &splited_line, std::string &back_up_input, user *user_)
 {
-	if (splited_line.size() == 1)
-	{
-		if (user_->chan != nullptr)
-		{
+	// if (splited_line.size() == 1)
+	// {
+		if (user_->chan != nullptr) {
+			std::string mesg;
 
-			std::string msg("TOPIC: ");
-			msg = msg + user_->chan->topic() + "\r\n";
-			send(user_->client_fd(), msg.c_str(), msg.length(), 0);
-			return 0;
+			if (user_->chan->topic().empty()) {
+
+				mesg =	":ircserv 331 " + user_->chan->name() + " :No topic is set\r\n";
+				send(user_->client_fd(), mesg.c_str(), mesg.length(), 0);
+				return 0;
+			}
+			else {
+				mesg = "TOPIC: ";
+				mesg = mesg + user_->chan->topic() + "\r\n";
+				send(user_->client_fd(), mesg.c_str(), mesg.length(), 0);
+				return 0;
+			}
 		}
 		else
 		{
@@ -374,5 +382,5 @@ int check_TOPIC(std::vector<std::string> &splited_line, std::string &back_up_inp
 			return 0;
 		}
 		// to do else if oper
-	}
+	// }
 }
