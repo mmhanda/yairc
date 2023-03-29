@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmds.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 13:01:15 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/29 16:56:19 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/29 21:51:57 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int check_KICK(std::vector<std::string> const &splited_line, std::string &input,
 
 	if (splited_line[1].find('#') > splited_line[1].size())
 	{
-		std::string error_(":localhost 476 KICK Bad Channel Mask\r\n");
+		std::string error_(":ircserv 476 KICK Bad Channel Mask\r\n");
 		send(tmp->client_fd(), error_.c_str(), error_.length(), 0);
 		return (0);
 	}
@@ -98,7 +98,15 @@ int check_KICK(std::vector<std::string> const &splited_line, std::string &input,
 int check_TOPIC(std::vector<std::string> &splited_line, user *user_)
 {
 	//(332) "<client> <channel> :<topic>"
-	if (splited_line.size() == 2)
+	std::map<std::string, class channel *>::iterator iter = map_channels.find(splited_line[1]); // find the exact chan
+
+	if (iter == map_channels.end()) {
+		std::string msg = ":ircserv 401 " + splited_line[1] + " :Topic No such channel\r\n";
+		send(user_->client_fd(), msg.c_str(), msg.length(), 0);
+		return (0);
+	}
+
+	if (splited_line.size() == 3)
 	{
 		if (user_->chan != nullptr)
 		{
@@ -106,7 +114,7 @@ int check_TOPIC(std::vector<std::string> &splited_line, user *user_)
 
 			if (user_->chan->topic().empty())
 			{
-				mesg = ":ircserv 331 " + user_->chan->name() + " :No topic is set\r\n";
+				mesg = ":ircserv 331 " + user_->username() + " " + user_->chan->name() + " :No topic is set\r\n";
 				send(user_->client_fd(), mesg.c_str(), mesg.length(), 0);
 				return 0;
 			}
@@ -128,6 +136,8 @@ int check_TOPIC(std::vector<std::string> &splited_line, user *user_)
 	else // set topic
 	{
 		// to do else if oper
+		
+		
 		if (user_->chan != NULL)
 		{
 			std::map<std::string, class channel *>::iterator iter = map_channels.find(splited_line[1]); // find the exact chan

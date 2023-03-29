@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_NOTICE.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 13:01:09 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/29 14:59:56 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/29 21:48:04 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int check_NOTICE(std::vector<std::string> &splited_line, user *user_)
 
 	// 	std::cout << "MESSAGE:" << back_up_input << std::endl;
 	// 	std::string broad;
-	// 	broad = ":" + user_->username() + "!" + user_->username() + "@localhost " + back_up_input + "\r\n";
+	// 	broad = ":" + user_->username() + "!" + user_->username() + "@ircserv " + back_up_input + "\r\n";
 	// 	std::cout << "broad :" << back_up_input << std::endl;
 
 	// 		user_->chan->broadcast(broad, user_);
@@ -51,11 +51,11 @@ int check_NOTICE(std::vector<std::string> &splited_line, user *user_)
 		if (splited_line.size() == 3)
 		{
 
-			broad = ":" + user_->username() + "!" + user_->username() + "@localhost PRIVMSG " + splited_line[1] + " " + splited_line[2] + "\r\n";
+			broad = ":" + user_->username() + "!" + user_->username() + "@ircserv PRIVMSG " + splited_line[1] + " " + splited_line[2] + "\r\n";
 		}
 		else
 		{
-			broad = ":" + user_->username() + "!" + user_->username() + "@localhost PRIVMSG " + splited_line[1] + " " + append_msgs(splited_line) + "\r\n";
+			broad = ":" + user_->username() + "!" + user_->username() + "@ircserv PRIVMSG " + splited_line[1] + " " + append_msgs(splited_line) + "\r\n";
 		}
 		send(map_for_privat_msg.at(splited_line[1]), broad.c_str(), broad.size(), 0);
 	}

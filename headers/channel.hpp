@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "server.hpp"
@@ -22,7 +21,7 @@ class channel {
 		void set_topic(const std::string &top) {topic_ = top;}
 
 		int 	how_many_usr() const {return users_fd.size();}
-		bool	check_if_user_in();
+		bool	check_if_user_in(user *user_to_check);
 
 		std::vector<int> users_fd;
 	private:

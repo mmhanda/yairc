@@ -1,19 +1,9 @@
-
 #include "server.hpp"
 #include <iostream>
 #include <sstream>
 
 void channel::notif_new_client_joined(user *sender)
 {
-	/*
-	//old woking it use c++ 11 features
-	std::string broad = SEND_CHAN(sender->username(), sender->username(),  sender->chan->name());
-	for (int user_fd : users_fd) {
-		if (sender->client_fd() != user_fd) {
-			send(user_fd, broad.c_str(), broad.size(), 0);
-		}
-	} */
-
 	std::string broad = SEND_CHAN(sender->username(), sender->username(), sender->chan->name());
 	for (std::vector<int>::iterator it = users_fd.begin(); it != users_fd.end(); ++it)
 	{
@@ -27,7 +17,6 @@ void channel::notif_new_client_joined(user *sender)
 
 std::string channel::users_list()
 {
-
 	std::string ret = ":@";
 
 	int i = 0;
@@ -46,7 +35,6 @@ std::string channel::users_list()
 		it++;
 		i++;
 	}
-
 	return (ret);
 }
 
@@ -72,13 +60,6 @@ std::string channel::passwrd(void)
 
 void channel::broadcast(std::string msg)
 {
-
-	/*
-		// old one is working but use c++ 11
-		for (int user_fd : users_fd) {
-			send(user_fd, msg.c_str(), msg.size(), 0);
-		}
-	*/
 	for (std::vector<int>::iterator it = users_fd.begin(); it != users_fd.end(); ++it)
 	{
 		int user_fd = *it;
@@ -88,17 +69,14 @@ void channel::broadcast(std::string msg)
 
 void channel::part_user(user *user)
 {
-
-std::vector<int>::iterator new_end = std::remove(users_fd.begin(), users_fd.end(), user->client_fd());
-	// auto new_end = std::remove(users_fd.begin(), users_fd.end(), user->client_fd());
+	std::vector<int>::iterator new_end = std::remove(users_fd.begin(), users_fd.end(), user->client_fd());
 	users_fd.erase(new_end, users_fd.end());
 	user->chan = nullptr;
 }
 
-bool channel::check_if_user_in()
+bool channel::check_if_user_in(user *user_to_check)
 {
-	std::vector<int>::iterator it = std::find(users_fd.begin(), users_fd.end(), 3);
-	// auto it = std::find(users_fd.begin(), users_fd.end(), 3);
+	std::vector<int>::iterator it = std::find(users_fd.begin(), users_fd.end(), user_to_check->client_fd());
 	if (it != users_fd.end())
 		return (true);
 	else

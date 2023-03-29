@@ -1,18 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   check_USER.cpp                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/29 13:10:45 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/29 13:11:01 by atabiti          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-
 #include "server.hpp"
 #include "channel.hpp"
+
 int check_USER(std::vector<std::string> const &splited_line, user *user)
 {
 	if (splited_line.size() != 5)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_JOIN.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 13:13:03 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/29 16:31:18 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/29 21:48:04 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 		{
 			if (read_here.find('#') > read_here.size())
 			{
-				std::string error_(":localhost 476 JOIN Bad Channel Mask\r\n");
+				std::string error_(":ircserv 476 JOIN Bad Channel Mask\r\n");
 				send(user->client_fd(), error_.c_str(), error_.length(), 0);
 				return (0);
 			}
