@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 01:13:18 by archid            #+#    #+#             */
-/*   Updated: 2023/03/29 10:30:22 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/29 11:39:17 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ user::user(int client_fd) : PASS_authenticated(false),
 				USER_authenticated(false) {
 	client_fd_ = client_fd;
 	chan = nullptr;
+}
+
+user::~user() {
+	
+	delete map_users.at(this->client_fd());
 }
 
 const std::string &user::nickname() const { return nickname_; }

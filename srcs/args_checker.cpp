@@ -4,9 +4,6 @@ std::string PASSWORD;
 
 int	check_PASS(std::vector<std::string> const &splited_line , user *user)
 {
-	std::cout << splited_line[1] <<std::endl;
-	std::cout << splited_line[1].size() <<std::endl;
-
 	if(user->PASS_authenticated == true)
 		return (3);
 	else {
@@ -14,7 +11,7 @@ int	check_PASS(std::vector<std::string> const &splited_line , user *user)
 			return (0);
 		else {
 			if (splited_line[1] != PASSWORD) {
-				std::string sen = "464 " + splited_line[0] + " :Password incorrect\n";
+				std::string sen = ":ircserv 464 " + splited_line[0] + " :Password incorrect\n";
 				send(user->client_fd(), sen.c_str(), sen.size(), 0);
 				return (1);
 			}

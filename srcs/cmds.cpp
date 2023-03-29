@@ -280,37 +280,22 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up, 
 
 	else if (splited_line.size() >= 1 && std::find(channels_name.begin(), channels_name.end(), splited_line[1]) != channels_name.end())
 	{
-		std::cout << "CHANNEL \n";
-		std::string message;
-
-		if (splited_line.size() == 3 && std::find(channels_name.begin(), channels_name.end(), splited_line[1]) != channels_name.end()) {
-
-			std::string channel_name;
-			std::istringstream line_to_stream(back_up);
-			std::getline(line_to_stream, channel_name, ':');
-			std::getline(line_to_stream, message, ':');
-			std::string remove_command("PRIVMSG");
-			size_t i = channel_name.find(remove_command);
-			if (i < channel_name.npos)
-				channel_name.erase(i, remove_command.length());
-		}
-		else {
-			message = splited_line[2];
-		}
-
 		if (user_->chan != nullptr)
 		{
-			if (user_->chan != nullptr)
+			std::string broad;
+			if (splited_line.size() == 3) {
+				broad = "PRIVMSG " + user_->chan->name() + " " + splited_line[2] + "\r\n";
+			}
+			else {
+				broad = "PRIVMSG " + user_->chan->name() + " " + append_msgs(splited_line) + "\r\n";
+			}
+			std::map<std::string, class channel *>::iterator iter;
+			iter = channels.begin();
+			for (int user_fd : user_->chan->users_fd)
 			{
-				std::string broad = "PRIVMSG " + user_->chan->name() + " " + message + "\r\n";
-				std::map<std::string, class channel *>::iterator iter;
-				iter = channels.begin();
-				for (int user_fd : user_->chan->users_fd)
+				if (user_->client_fd() != user_fd)
 				{
-					if (user_->client_fd() != user_fd)
-					{
-						send(user_fd, broad.c_str(), broad.size(), 0);
-					}
+					send(user_fd, broad.c_str(), broad.size(), 0);
 				}
 			}
 		}
@@ -388,5 +373,6 @@ int check_TOPIC(std::vector<std::string> &splited_line, std::string &back_up_inp
 			send(user_->client_fd(), msg.c_str(), msg.length(), 0);
 			return 0;
 		}
+		// to do else if oper
 	}
 }

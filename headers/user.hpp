@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 03:21:35 by archid            #+#    #+#             */
-/*   Updated: 2023/03/28 12:02:02 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/29 11:37:13 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ class user {
 
 	public:
 		user(int client_fd);
+		~user();
 
 		int client_fd() const { return client_fd_; }
 

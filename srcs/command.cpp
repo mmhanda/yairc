@@ -30,7 +30,8 @@ bool    authenticate(std::string &msg , const int fd, user *user_)
                 splited_line.push_back(str);
                 str = strtok(NULL, " ");
             }
-
+            std::transform(splited_line[0].begin(), splited_line[0].end(),
+                            splited_line[0].begin(), toupper);
             if (splited_line[0] == "PASS"){
                 if (!check_PASS(splited_line , tmp)){
                     ::send(fd, "461 PASS :Not enough parameters\n", 32, 0);}
@@ -49,3 +50,31 @@ bool    authenticate(std::string &msg , const int fd, user *user_)
     }
     return (false);
 }
+
+
+
+
+		// input.erase(std::remove(input.begin(), input.end(), '\n'), input.end());
+		// input.erase(std::remove(input.begin(), input.end(), '\r'), input.end());
+		// str = const_cast<char *>(input.c_str());
+		// str = strtok(str, " ");
+		// if (str != NULL)
+		// {
+		// 	int x = 0;
+		// 	while (str != NULL)
+		// 	{
+		// 		if(x == 0)
+		// 		{
+		// 			int i = 0;
+		// 			while (str[i])
+		// 			{
+		// 				toupper(str[i]);
+		// 				i++;
+		// 			}
+					
+		// 		}
+		// 		x++;
+		// 		splited_line.push_back(str);
+		// 		str = strtok(NULL, " ");
+		// 	}
+			

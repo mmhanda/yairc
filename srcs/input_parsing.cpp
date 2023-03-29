@@ -28,55 +28,31 @@ int parse_command(std::string &input, const int fd, user *user_)
 				splited_line.push_back(str);
 				str = strtok(NULL, " ");
 			}
-
+			std::transform(splited_line[0].begin(), splited_line[0].end(), splited_line[0].begin(), toupper);
 			if (splited_line[0] == "PASS")
-			{
 				check_PASS(splited_line, user_);
-			}
 			else if (splited_line[0] == "NICK")
-			{
 				check_NICK(splited_line, user_);
-			}
 			else if (splited_line[0] == "USER")
-			{
 				check_USER(splited_line, user_);
-			}
-			else if (splited_line[0] == "OPER")
-			{
-				check_OPER(splited_line);
-			}
 			else if (splited_line[0] == "QUIT")
-			{
 				check_QUIT(back_up_input, user_);
-			}
-			else if (splited_line[0] == "JOIN")
-			{
-				check_JOIN(splited_line, user_);
-			}
 			else if (splited_line[0] == "PART")
-			{
 				check_PART(splited_line, user_);
-			}
-			else if (splited_line[0] == "MODE")
-			{
-				std::cout << "MODE COMMAND" << std::endl;
-			}
+			else if (splited_line[0] == "JOIN")
+				check_JOIN(splited_line, user_);
 			else if (splited_line[0] == "PRIVMSG")
-			{
 				check_PRIVMSG(splited_line, back_up_input, user_);
-			}
+			else if (splited_line[0] == "OPER")
+				check_OPER(splited_line);
+			else if (splited_line[0] == "MODE")
+					std::cout << "MODE COMMAND" << std::endl;
 			else if (splited_line[0] == "NOTICE")
-			{
 				check_NOTICE(splited_line, back_up_input, user_);
-			}
 			else if (splited_line[0] == "TOPIC")
-			{
 				check_TOPIC(splited_line, back_up_input, user_);
-			}
 			else if (splited_line[0] == "KICK")
-			{
 				check_KICK(back_up_input, user_); // the user sould be an operator to do this
-			}
 		}
 	}
 	return 0;
