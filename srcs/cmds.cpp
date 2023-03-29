@@ -150,7 +150,7 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 							sen = USERS_LIST(user->username() , it->first,  user->chan->users_list());
 							send(user->client_fd(), sen.c_str(), sen.size(), 0);
 
-							sen = END_LIST(user->username(), user->chan->name());
+							sen = LIST_EN(user->username(), user->chan->name());
 							send(user->client_fd(), sen.c_str(), sen.size(), 0);
 						}
 				}
@@ -174,8 +174,16 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 				sen = USERS_LIST(user->username(), user->chan->name(), user->chan->users_list());
 				send(user->client_fd(), sen.c_str(), sen.size(), 0);
 
-				sen = END_LIST(user->username(), user->chan->name());
+				sen = LIST_EN(user->username(), user->chan->name());
 				send(user->client_fd(), sen.c_str(), sen.size(), 0);
+
+				sen = "NOTICE " + user->username() + " :Mode: +nt test only!\r\n";
+				send(user->client_fd(), sen.c_str(), sen.size(), 0);
+				std::string tim = "NOTICE " + user->chan->name() + " :This channel was created at " + get_tim() + "\r\n";
+				time_t now = time(NULL);
+				char message[256];
+				snprintf(message, 256, "NOTICE %s :This channel was created at %s\n", user->chan->name().c_str(), ctime(&now));
+				send(user->client_fd(), tim.c_str(), tim.length(), 0);
 			}
 			it++;
 		}
@@ -237,17 +245,14 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up, 
 		std::cout << "hada howa message  " << splited_line[2] << std::endl;
 		if (user_->chan != nullptr)
 		{
-			std::string broad = "PRIVMSG " + user_->chan->name() + " " + splited_line[2] + "\r\n";
+			std::string broad = SEND_TO_USRS(user_->username(), user_->username(), user_->chan->name(), splited_line[2]);
 			std::map<std::string, class channel *>::iterator iter;
 			iter = channels.begin();
 			for (int user_fd : user_->chan->users_fd)
 			{
-
+				if (user_->client_fd() != user_fd)
 				{
-					if (user_->client_fd() != user_fd)
-					{
-						send(user_fd, broad.c_str(), broad.size(), 0);
-					}
+					send(user_fd, broad.c_str(), broad.size(), 0);
 				}
 			}
 		}
@@ -343,7 +348,7 @@ int check_KICK(std::string &input, user *tmp)
 
 int check_TOPIC(std::vector<std::string> &splited_line, std::string &back_up_input, user *user_)
 {
-	if (splited_line.size() == 1) // return topic only
+	if (splited_line.size() == 1)
 	{
 		if (user_->chan != nullptr)
 		{
@@ -360,8 +365,4 @@ int check_TOPIC(std::vector<std::string> &splited_line, std::string &back_up_inp
 			return 0;
 		}
 	}
-	/*
-		hna khas txiki  wax user 3ando permission ybdal topic dyal channel OK? mhanda
-
-	*/
 }
