@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 13:13:03 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/29 21:48:04 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/29 21:57:34 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 
 				sen = "NOTICE " + user->username() + " :Mode: +nt test only!\r\n";
 				send(user->client_fd(), sen.c_str(), sen.size(), 0);
-				std::string tim = "NOTICE " + user->chan->name() + " :This channel was created at " + get_tim() + "\r\n";
+				std::string tim = "NOTICE " + user->chan->name() + " :This channel was created at " + get_tim() + msg_delim;
 				time_t now = time(NULL);
 				char message[256];
 				snprintf(message, 256, "NOTICE %s :This channel was created at %s\n", user->chan->name().c_str(), ctime(&now));

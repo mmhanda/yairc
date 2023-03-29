@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 13:16:29 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/29 21:48:04 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/29 21:57:34 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, user *user_)
 		if (splited_line.size() == 3)
 		{
 
-			broad = ":" + user_->username() + "!" + user_->username() + "@ircserv PRIVMSG " + splited_line[1] + " " + splited_line[2] + "\r\n";
+			broad = ":" + user_->username() + "!" + user_->username() + "@ircserv PRIVMSG " + splited_line[1] + " " + splited_line[2] + msg_delim;
 		}
 		else
 		{
-			broad = ":" + user_->username() + "!" + user_->username() + "@ircserv PRIVMSG " + splited_line[1] + " " + append_msgs(splited_line) + "\r\n";
+			broad = ":" + user_->username() + "!" + user_->username() + "@ircserv PRIVMSG " + splited_line[1] + " " + append_msgs(splited_line) + msg_delim;
 		}
 		send(map_for_privat_msg.at(splited_line[1]), broad.c_str(), broad.size(), 0);
 	}
@@ -40,10 +40,10 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, user *user_)
 		{
 			std::string broad;
 			if (splited_line.size() == 3) {
-				broad = "PRIVMSG " + user_->chan->name() + " " + splited_line[2] + "\r\n";
+				broad = "PRIVMSG " + user_->chan->name() + " " + splited_line[2] + msg_delim;
 			}
 			else {
-				broad = "PRIVMSG " + user_->chan->name() + " " + append_msgs(splited_line) + "\r\n";
+				broad = "PRIVMSG " + user_->chan->name() + " " + append_msgs(splited_line) + msg_delim;
 			}
 			std::map<std::string, class channel *>::iterator iter;
 			iter = channels.begin();

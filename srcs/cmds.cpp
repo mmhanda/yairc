@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 13:01:15 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/29 21:51:57 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/29 21:58:46 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int check_TOPIC(std::vector<std::string> &splited_line, user *user_)
 			else
 			{
 				mesg = ":irserv 332 ";
-				mesg = mesg + user_->username() + " " + splited_line[1] + " :" + user_->chan->topic() + "\r\n";
+				mesg = mesg + user_->username() + " " + splited_line[1] + " :" + user_->chan->topic() + msg_delim;
 				send(user_->client_fd(), mesg.c_str(), mesg.length(), 0);
 				return 0;
 			}
@@ -138,7 +138,7 @@ int check_TOPIC(std::vector<std::string> &splited_line, user *user_)
 		// to do else if oper
 		
 		
-		if (user_->chan != NULL)
+		if (user_->chan != )
 		{
 			std::map<std::string, class channel *>::iterator iter = map_channels.find(splited_line[1]); // find the exact chan
 			if (iter != map_channels.end())

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 01:13:18 by archid            #+#    #+#             */
-/*   Updated: 2023/03/29 16:43:06 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/29 21:57:34 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,13 @@ void send_confirm_msg(user *user_){
 		&&user_->USER_authenticated && user_->PRINTER) {
 		std::string sen = ":ircserv 001 " + user_->nickname()
 		+ " :Welcome to the Internet Relay Network "
-		+ user_->username() + "!"+ user_->nickname() + "@" + "127.0.0.1" + "\r\n";
+		+ user_->username() + "!"+ user_->nickname() + "@" + "127.0.0.1" + msg_delim;
 		send(user_->client_fd(), sen.c_str(), sen.size(), 0);
 		sen = ":ircserv 002 " + user_->nickname() +
 		  " :Your host is ft_irc_server, running version 1.1.2\r\n";
 		send(user_->client_fd(), sen.c_str(), sen.size(), 0);
 		sen = ":ircserv 003 " + user_->nickname() +  " :This server was created "
-		+ get_tim() + "\r\n";
+		+ get_tim() + msg_delim;
 		send(user_->client_fd(), sen.c_str(), sen.size(), 0);
 		sen = ":ircserv 004 " + user_->nickname() +  " :ircserv 1.0 - -\r\n";
 		send(user_->client_fd(), sen.c_str(), sen.size(), 0);

@@ -136,7 +136,7 @@ void server::run() {
 	}
 }
 
-const char *msg_delim = "\n";
+const char *msg_delim = "\r\n";
 std::map<int, std::string> map_msgs;
 std::map<int, class user *> map_users;
 std::vector<std::string> server_user_names;

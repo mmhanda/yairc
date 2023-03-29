@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_PART.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 13:14:50 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/29 14:38:19 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/29 21:57:34 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ int check_PART(std::vector<std::string> &splited_line, user *user)
 			{
 				if (user->chan != nullptr && map_channels.at(channels_[h])->how_many_usr() >= 2)
 				{
-					std::string send_to_others = PART(user->username(), user->username(), user->chan->name()) + "\r\n";
+					std::string send_to_others = PART(user->username(), user->username(), user->chan->name()) + msg_delim;
 					user->chan->broadcast(send_to_others);
 					map_channels.at(channels_[h])->part_user(user);
 				}
 				else if (user->chan != nullptr && map_channels.at(channels_[h])->how_many_usr() == 1)
 				{
-					std::string send_to_others = PART(user->username(), user->username(), user->chan->name()) + "\r\n";
+					std::string send_to_others = PART(user->username(), user->username(), user->chan->name()) + msg_delim;
 					user->chan->broadcast(send_to_others);
 					map_channels.at(channels_[h])->part_user(user);
 					map_channels.erase(channels_[h]);
