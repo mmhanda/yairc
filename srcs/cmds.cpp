@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 13:01:15 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/29 21:58:46 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/29 22:13:59 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,19 +138,26 @@ int check_TOPIC(std::vector<std::string> &splited_line, user *user_)
 		// to do else if oper
 		
 		
-		if (user_->chan != )
-		{
-			std::map<std::string, class channel *>::iterator iter = map_channels.find(splited_line[1]); // find the exact chan
-			if (iter != map_channels.end())
-			{
-				std::string topic(append_msgs(splited_line));
-				iter->second->set_topic(topic); // here i change the topic of the chan
+		if (user_->chan != nullptr) {
+
+			if (std::find(user_->chan->get_admins_list().begin(), user_->chan->get_admins_list().end(), user_->username()) != user_->chan->get_admins_list().end()) {
+
+				std::map<std::string, class channel *>::iterator iter = map_channels.find(splited_line[1]); // find the exact chan
+				if (iter != map_channels.end())
+				{
+					std::string topic(append_msgs(splited_line));
+					iter->second->set_topic(topic); // here i change the topic of the chan
+				}
+				else
+				{
+					std::string msg("403: * No such channel\r\n");
+					send(user_->client_fd(), msg.c_str(), msg.length(), 0);
+					return 0;
+				}
 			}
-			else
-			{
-				std::string msg("403: * No such channel\r\n");
+			else {
+				std::string msg = ":ircserv 401 :You are not operator\r\n";
 				send(user_->client_fd(), msg.c_str(), msg.length(), 0);
-				return 0;
 			}
 		}
 	}
