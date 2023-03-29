@@ -110,3 +110,22 @@ New client joined number [ 2 ]
 ==1881== 
 ==1881== For lists of detected and suppressed errors, rerun with: -s
 ==1881== ERROR SUMMARY: 18 errors from 6 contexts (suppressed: 0 from 0)
+
+
+
+from limchat= join #f
+
+==210== Conditional jump or move depends on uninitialised value(s)
+==210==    at 0x416FE3: check_JOIN(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >&, user*) (check_JOIN.cpp:76)
+==210==    by 0x412621: parse_command(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, user*) (input_parsing.cpp:55)
+==210==    by 0x406EAE: server::run() (server.cpp:127)
+==210==    by 0x4052DE: main (main.cpp:50)
+==210==  Uninitialised value was created by a heap allocation
+==210==    at 0x4835DEF: operator new(unsigned long) (vg_replace_malloc.c:334)
+==210==    by 0x406ABA: server::accept_clients() (server.cpp:92)
+==210==    by 0x406D30: server::run() (server.cpp:118)
+==210==    by 0x4052DE: main (main.cpp:50)
+==210== 
+
+valgrind  --track-origins=yes  use this 
+

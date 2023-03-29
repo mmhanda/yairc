@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 13:13:03 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/29 13:13:19 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/29 16:31:18 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,7 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 			h++;
 		}
 
-		std::map<std::string, std::string>::iterator it;
-		it = channels_parse.begin();
+		std::map<std::string, std::string>::iterator it = channels_parse.begin();
 		while (it != channels_parse.end())
 		{
 			std::map<std::string, class channel *>::iterator is_found;

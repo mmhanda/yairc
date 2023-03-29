@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 03:21:35 by archid            #+#    #+#             */
-/*   Updated: 2023/03/29 14:39:23 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/29 15:55:39 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <string>
 #include <set>
 #include <map>
+#include <vector>
 
 enum user_roles { normal_user, _operator };
 
