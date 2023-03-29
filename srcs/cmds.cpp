@@ -41,6 +41,7 @@ int check_USER(std::vector<std::string> const &splited_line, user *user)
 	{
 		user->username(splited_line[1]);
 		server_user_names.push_back(user->username());
+		map_for_privat_msg.insert(std::pair<std::string, int>(user->username(), user->client_fd()));
 		user->PRINTER = true;
 		user->USER_authenticated = true;
 	}
@@ -240,25 +241,19 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up, 
 	char *str1;
 
 	x = 0;
-	if (splited_line.size() == 3 && (std::find(server_user_names.begin(), server_user_names.end(), splited_line[1]) != server_user_names.end()))
+	if (splited_line.size() >= 3 && (std::find(server_user_names.begin(), server_user_names.end(), splited_line[1]) != server_user_names.end()))
 	{
 		std::cout << "USER \n";
-		std::cout << "hada howa message  " << splited_line[2] << std::endl;
 		if (user_->chan != nullptr)
 		{
-			std::string broad = SEND_TO_USRS(user_->username(), user_->username(), user_->chan->name(), splited_line[2]);
-			std::map<std::string, class channel *>::iterator iter;
-			iter = channels.begin();
-			for (int user_fd : user_->chan->users_fd)
-			{
-				if (user_->client_fd() != user_fd)
-				{
-					send(user_fd, broad.c_str(), broad.size(), 0);
-				}
-			}
+			std::string broad = ":" + user_->username() + "!" + user_->username() + "@localhost PRIVMSG "
+									+ splited_line[1] + " " + splited_line[2] + "\r\n";
+
+			send(map_for_privat_msg.at(splited_line[1]), broad.c_str(), broad.size(), 0);
 		}
 	}
-	else if (splited_line.size() == 3 && std::find(channels_name.begin(), channels_name.end(), splited_line[1]) != channels_name.end())
+
+	else if (splited_line.size() >= 1 && std::find(channels_name.begin(), channels_name.end(), splited_line[1]) != channels_name.end())
 	{
 		std::cout << "CHANNEL \n";
 		std::string message;
@@ -266,13 +261,13 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up, 
 		std::istringstream line_to_stream(back_up);
 		std::getline(line_to_stream, channel_name, ':');
 		std::getline(line_to_stream, message, ':');
-		std::cerr << "input  = " << back_up << std::endl;
-		std::cerr << "message  = " << message << std::endl;
+		// std::cerr << "input  = " << back_up << std::endl;
+		// std::cerr << "message  = " << message << std::endl;
 		std::string remove_command("PRIVMSG");
 		size_t i = channel_name.find(remove_command);
 		if (i < channel_name.npos)
 			channel_name.erase(i, remove_command.length());
-		std::cerr << "part_one  removed = " << channel_name << std::endl;
+		// std::cerr << "part_one  removed = " << channel_name << std::endl;
 		if (user_->chan != nullptr)
 		{
 			if (user_->chan != nullptr)
@@ -292,7 +287,7 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up, 
 	}
 	else
 	{
-		std::string sen = "461 PRIVMSG  :Not enough parameters \r\n";
+		std::string sen = ":loacalhost 401 :No such channel/user name\r\n";
 		send(user_->client_fd(), sen.c_str(), sen.size(), 0);
 		return (0);
 	}

@@ -145,3 +145,4 @@ std::vector<std::string> server_user_names;
 std::vector<std::string> server_nick_names;
 std::map<std::string, class channel *> map_channels;
 std::vector<std::string> channels_name;
+std::map<std::string, int> map_for_privat_msg;

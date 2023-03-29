@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             */
-/*   Updated: 2023/03/29 03:12:10 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/29 08:13:45 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,3 +128,4 @@ extern std::map<int, class user *> map_users;
 extern std::map<std::string, class channel *> map_channels;
 extern std::vector<std::string> server_nick_names;
 extern server ircserv;
+extern std::map<std::string, int> map_for_privat_msg;
