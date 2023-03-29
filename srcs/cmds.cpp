@@ -240,8 +240,9 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up, 
 	char *str1;
 
 	x = 0;
-	if (splited_line.size() == 3)
+	if (splited_line.size() == 3 && (std::find(server_user_names.begin(), server_user_names.end(), splited_line[1]) != server_user_names.end()))
 	{
+		std::cout << "USER \n";
 		std::cout << "hada howa message  " << splited_line[2] << std::endl;
 		if (user_->chan != nullptr)
 		{
@@ -257,8 +258,9 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up, 
 			}
 		}
 	}
-	else if (splited_line.size() > 3)
+	else if (splited_line.size() == 3 && std::find(channels_name.begin(), channels_name.end(), splited_line[1]) != channels_name.end())
 	{
+		std::cout << "CHANNEL \n";
 		std::string message;
 		std::string channel_name;
 		std::istringstream line_to_stream(back_up);
@@ -280,12 +282,9 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up, 
 				iter = channels.begin();
 				for (int user_fd : user_->chan->users_fd)
 				{
-
+					if (user_->client_fd() != user_fd)
 					{
-						if (user_->client_fd() != user_fd)
-						{
-							send(user_fd, broad.c_str(), broad.size(), 0);
-						}
+						send(user_fd, broad.c_str(), broad.size(), 0);
 					}
 				}
 			}
