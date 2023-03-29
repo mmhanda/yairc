@@ -6,16 +6,12 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 13:01:15 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/29 13:16:46 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/29 13:34:40 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "server.hpp"
 #include "channel.hpp"
-
-
-
 
 int check_OPER(std::vector<std::string> const &splited_line)
 {
@@ -51,7 +47,6 @@ int check_QUIT(std::string &back_up_input, user *user)
 	return (0);
 }
 
-
 std::string append_msgs(std::vector<std::string> splited_msg)
 {
 
@@ -76,8 +71,6 @@ std::string append_msgs(std::vector<std::string> splited_msg)
 	return ret;
 }
 
-
-
 int check_KICK(std::string &input, user *tmp)
 {
 	std::string message;
@@ -96,33 +89,42 @@ int check_KICK(std::string &input, user *tmp)
 
 int check_TOPIC(std::vector<std::string> &splited_line, std::string &back_up_input, user *user_)
 {
-	// if (splited_line.size() == 1)
-	// {
-	if (user_->chan != nullptr)
+	//(332) "<client> <channel> :<topic>"
+	if (splited_line.size() == 2)
 	{
-		std::string mesg;
-
-		if (user_->chan->topic().empty())
+		if (user_->chan != nullptr)
 		{
+			std::string mesg;
 
-			mesg = ":ircserv 331 " + user_->chan->name() + " :No topic is set\r\n";
-			send(user_->client_fd(), mesg.c_str(), mesg.length(), 0);
-			return 0;
+			if (user_->chan->topic().empty())
+			{
+				mesg = ":ircserv 331 " + user_->chan->name() + " :No topic is set\r\n";
+				send(user_->client_fd(), mesg.c_str(), mesg.length(), 0);
+				return 0;
+			}
+			else
+			{
+				mesg = ":irserv 332 ";
+				mesg = mesg + user_->username() + " " + splited_line[1] + " :" + user_->chan->topic() + "\r\n";
+				send(user_->client_fd(), mesg.c_str(), mesg.length(), 0);
+				return 0;
+			}
 		}
 		else
 		{
-			mesg = "TOPIC: ";
-			mesg = mesg + user_->chan->topic() + "\r\n";
-			send(user_->client_fd(), mesg.c_str(), mesg.length(), 0);
+			std::string msg("403: * No such channel\r\n");
+			send(user_->client_fd(), msg.c_str(), msg.length(), 0);
 			return 0;
 		}
 	}
-	else
+	else // set topic
 	{
-		std::string msg("403: * No such channel\r\n");
-		send(user_->client_fd(), msg.c_str(), msg.length(), 0);
-		return 0;
+		// to do else if oper
+		if (user_->chan != nullptr)
+		{
+			std::map<std::string, class channel *>::iterator iter = map_channels.find(splited_line[1]); // find the exact chan
+			std::string topic(append_msgs(splited_line));
+			iter->second->set_topic(topic);
+		}
 	}
-	// to do else if oper
-	// }
 }

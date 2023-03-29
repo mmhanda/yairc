@@ -19,6 +19,7 @@ class channel {
 
 		const std::string &name() const { return name_; }
 		const std::string &topic() const { return topic_; }
+		void set_topic(const std::string &top) {topic_ = top;}
 
 		int 	how_many_usr() const {return users_fd.size();}
 		bool	check_if_user_in();
