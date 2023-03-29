@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 03:21:35 by archid            #+#    #+#             */
-/*   Updated: 2023/03/29 13:05:41 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/29 14:39:23 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ class user {
 		const std::string &username() const;
 		void username(std::string username);
 
-		class channel *chan = nullptr;
+		class channel *chan; // i changed this
+		// class channel *chan = nullptr;
 
 
 		bool PASS_authenticated;

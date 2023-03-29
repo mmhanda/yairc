@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 13:01:15 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/29 13:45:42 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/29 14:55:35 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,15 +90,14 @@ int check_KICK(std::vector<std::string> const &splited_line, std::string &input,
 		send(tmp->client_fd(), error_.c_str(), error_.length(), 0);
 		return (0);
 	}
-	//kick the user from the channel here
 	
-
+	//kick the user from the channel here
 	return (0);
 }
 
 
 
-int check_TOPIC(std::vector<std::string> &splited_line, std::string &back_up_input, user *user_)
+int check_TOPIC(std::vector<std::string> &splited_line,  user *user_)
 {
 	//(332) "<client> <channel> :<topic>"
 	if (splited_line.size() == 2)
@@ -138,4 +137,5 @@ int check_TOPIC(std::vector<std::string> &splited_line, std::string &back_up_inp
 			iter->second->set_topic(topic); // here i change the topic of the chan
 		}
 	}
+	return 0;
 }

@@ -6,20 +6,16 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 13:16:29 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/29 13:16:46 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/29 15:14:24 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "server.hpp"
 #include "channel.hpp"
 
-
-int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up, user *user_)
+int check_PRIVMSG(std::vector<std::string> &splited_line, user *user_)
 {
 	size_t x;
-	char *str1;
-
 	x = 0;
 	if (splited_line.size() >= 3 && (std::find(server_user_names.begin(), server_user_names.end(),
 											   splited_line[1]) != server_user_names.end()))
@@ -53,13 +49,23 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up, 
 			}
 			std::map<std::string, class channel *>::iterator iter;
 			iter = channels.begin();
-			for (int user_fd : user_->chan->users_fd)
+
+			for (std::vector<int>::iterator it = user_->chan->users_fd.begin(); it != user_->chan->users_fd.end(); ++it)
 			{
+				int user_fd = *it;
 				if (user_->client_fd() != user_fd)
 				{
 					send(user_fd, broad.c_str(), broad.size(), 0);
 				}
 			}
+
+			// for (int user_fd : user_->chan->users_fd)
+			// {
+			// 	if (user_->client_fd() != user_fd)
+			// 	{
+			// 		send(user_fd, broad.c_str(), broad.size(), 0);
+			// 	}
+			// }
 		}
 	}
 	else

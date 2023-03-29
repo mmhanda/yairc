@@ -9,7 +9,7 @@ class channel {
 	public:
 		channel(std::string name, std::string passwd = "", std::string topic = "");
 		std::string passwrd(void);
-		void broadcast(std::string msg, user *sender);
+		void broadcast(std::string msg);
 		
 		std::string users_list();
 		void notif_new_client_joined(user *sender);
@@ -28,7 +28,7 @@ class channel {
 	private:
 		std::vector<std::string> admin_names;
 		std::vector<std::string> r_user_names;
-		std::string name_, topic_, passwd;
+		std::string name_,  passwd,topic_;
 };
 
 void	send_msg(std::string, user *user);
