@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 01:13:18 by archid            #+#    #+#             */
-/*   Updated: 2023/03/29 16:41:41 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/29 16:43:06 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ user::user(int client_fd) : PASS_authenticated(false),
 				NICK_authenticated(false),
 				USER_authenticated(false) {
 	client_fd_ = client_fd;
-	chan = nullptr; 
+	chan = NULL; 
 	// i removed this
 }
 
