@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 13:12:06 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/29 13:12:07 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/29 13:41:18 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int parse_command(std::string &input, const int fd, user *user_)
 			else if (splited_line[0] == "TOPIC")
 				check_TOPIC(splited_line, back_up_input, user_);
 			else if (splited_line[0] == "KICK")
-				check_KICK(back_up_input, user_); // the user sould be an operator to do this
+				check_KICK(splited_line,back_up_input, user_); // the user sould be an operator to do this
 		}
 	}
 	return 0;

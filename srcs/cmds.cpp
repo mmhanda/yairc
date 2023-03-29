@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 13:01:15 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/29 13:34:40 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/29 13:45:42 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,21 +71,32 @@ std::string append_msgs(std::vector<std::string> splited_msg)
 	return ret;
 }
 
-int check_KICK(std::string &input, user *tmp)
+int check_KICK(std::vector<std::string> const &splited_line, std::string &input, user *tmp)
 {
 	std::string message;
 	std::string part_one;
 	std::string chan;
 	std::string user;
-
 	std::istringstream line_to_stream(input);
 	std::getline(line_to_stream, part_one, ':');
 	std::getline(line_to_stream, message, ':');
 	std::cerr << "input  = " << input << std::endl;
 	std::cerr << "message  = " << message << std::endl;
 	std::cerr << "part_one  = " << part_one << std::endl;
+
+	if (splited_line[1].find('#') > splited_line[1].size())
+	{
+		std::string error_(":localhost 476 KICK Bad Channel Mask\r\n");
+		send(tmp->client_fd(), error_.c_str(), error_.length(), 0);
+		return (0);
+	}
+	//kick the user from the channel here
+	
+
 	return (0);
 }
+
+
 
 int check_TOPIC(std::vector<std::string> &splited_line, std::string &back_up_input, user *user_)
 {
@@ -124,7 +135,7 @@ int check_TOPIC(std::vector<std::string> &splited_line, std::string &back_up_inp
 		{
 			std::map<std::string, class channel *>::iterator iter = map_channels.find(splited_line[1]); // find the exact chan
 			std::string topic(append_msgs(splited_line));
-			iter->second->set_topic(topic);
+			iter->second->set_topic(topic); // here i change the topic of the chan
 		}
 	}
 }
