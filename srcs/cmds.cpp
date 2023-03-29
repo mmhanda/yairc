@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmds.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/29 13:01:15 by atabiti           #+#    #+#             */
+/*   Updated: 2023/03/29 13:02:05 by atabiti          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #include "server.hpp"
 #include "channel.hpp"
@@ -101,7 +113,8 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 
 		std::istringstream line_to_stream(splited_line[1]);
 		std::string read_here;
-		if (splited_line.size() == 3) {
+		if (splited_line.size() == 3)
+		{
 
 			std::istringstream line_to_stream_2(splited_line[2]);
 
@@ -138,22 +151,24 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 			if (map_channels.find(it->first) != map_channels.end())
 			{
 				is_found = map_channels.find(it->first);
-				if (is_found->second->passwrd() == it->second) {
-					if (user->chan == nullptr || user->chan->name() != it->first) {
-							channel *tmp = map_channels.at(it->first);
+				if (is_found->second->passwrd() == it->second)
+				{
+					if (user->chan == nullptr || user->chan->name() != it->first)
+					{
+						channel *tmp = map_channels.at(it->first);
 
-							tmp->insert_users(user);
-							user->chan->notif_new_client_joined(user);
+						tmp->insert_users(user);
+						user->chan->notif_new_client_joined(user);
 
-							std::string sen = SEND_CHAN(user->username(), user->username() , user->chan->name());
-							send(user->client_fd(), sen.c_str(), sen.length(), 0);
+						std::string sen = SEND_CHAN(user->username(), user->username(), user->chan->name());
+						send(user->client_fd(), sen.c_str(), sen.length(), 0);
 
-							sen = USERS_LIST(user->username() , it->first,  user->chan->users_list());
-							send(user->client_fd(), sen.c_str(), sen.size(), 0);
+						sen = USERS_LIST(user->username(), it->first, user->chan->users_list());
+						send(user->client_fd(), sen.c_str(), sen.size(), 0);
 
-							sen = LIST_EN(user->username(), user->chan->name());
-							send(user->client_fd(), sen.c_str(), sen.size(), 0);
-						}
+						sen = LIST_EN(user->username(), user->chan->name());
+						send(user->client_fd(), sen.c_str(), sen.size(), 0);
+					}
 				}
 				else
 				{
@@ -235,19 +250,23 @@ int check_PART(std::vector<std::string> &splited_line, user *user)
 	return (0);
 }
 
-std::string append_msgs(std::vector<std::string> splited_msg) {
+std::string append_msgs(std::vector<std::string> splited_msg)
+{
 
 	std::string ret;
 	int dots = 0;
 
-	for (size_t i = 2; i < splited_msg.size(); i++) {
-		
+	for (size_t i = 2; i < splited_msg.size(); i++)
+	{
+
 		if (std::find(splited_msg[i].begin(), splited_msg[i].end(),
-						':' ) == splited_msg[i].end() && dots == 0) {
-			dots ++;
+					  ':') == splited_msg[i].end() &&
+			dots == 0)
+		{
+			dots++;
 			ret += ":";
 		}
-		dots ++;
+		dots++;
 		ret += splited_msg[i];
 		ret += " ";
 	}
@@ -261,19 +280,19 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up, 
 	char *str1;
 
 	x = 0;
-	if (splited_line.size() >= 3 && (std::find(server_user_names.begin(), server_user_names.end(),\
-		splited_line[1]) != server_user_names.end()))
+	if (splited_line.size() >= 3 && (std::find(server_user_names.begin(), server_user_names.end(),
+											   splited_line[1]) != server_user_names.end()))
 	{
 		std::cout << "USER \n";
 		std::string broad;
-		if (splited_line.size() == 3) {
-		
-			broad = ":" + user_->username() + "!" + user_->username() + "@localhost PRIVMSG "
-									+ splited_line[1] + " " + splited_line[2] + "\r\n";
+		if (splited_line.size() == 3)
+		{
+
+			broad = ":" + user_->username() + "!" + user_->username() + "@localhost PRIVMSG " + splited_line[1] + " " + splited_line[2] + "\r\n";
 		}
-		else {
-			broad = ":" + user_->username() + "!" + user_->username() + "@localhost PRIVMSG "
-									+ splited_line[1] + " " + append_msgs(splited_line) + "\r\n";
+		else
+		{
+			broad = ":" + user_->username() + "!" + user_->username() + "@localhost PRIVMSG " + splited_line[1] + " " + append_msgs(splited_line) + "\r\n";
 		}
 		send(map_for_privat_msg.at(splited_line[1]), broad.c_str(), broad.size(), 0);
 	}
@@ -283,10 +302,12 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up, 
 		if (user_->chan != nullptr)
 		{
 			std::string broad;
-			if (splited_line.size() == 3) {
+			if (splited_line.size() == 3)
+			{
 				broad = "PRIVMSG " + user_->chan->name() + " " + splited_line[2] + "\r\n";
 			}
-			else {
+			else
+			{
 				broad = "PRIVMSG " + user_->chan->name() + " " + append_msgs(splited_line) + "\r\n";
 			}
 			std::map<std::string, class channel *>::iterator iter;
@@ -309,35 +330,6 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up, 
 	return (0);
 }
 
-int check_NOTICE(std::vector<std::string> &splited_line, std::string &back_up_input, user *user_)
-{
-	if (splited_line.size() >= 3)
-	{
-		std::string message;
-		std::string nickname;
-		nickname = splited_line[1];
-		back_up_input.erase(back_up_input.find("NOTICE"), splited_line[0].length());
-		back_up_input.erase(back_up_input.find(splited_line[1]), splited_line[1].length());
-		back_up_input.erase(std::remove(back_up_input.begin(), back_up_input.end(), '\r'), back_up_input.end());
-		back_up_input.erase(std::remove(back_up_input.begin(), back_up_input.end(), '\n'), back_up_input.end());
-		std::cout << "nickname " << nickname << std::endl
-				  << std::endl
-				  << std::endl
-				  << std::endl;
-		std::cout << "MESSAGE:" << back_up_input << std::endl;
-		if (user_->chan != nullptr)
-		{
-			user_->chan->broadcast(back_up_input, user_);
-		}
-	}
-	else
-	{
-		std::string sen = "461 NOTICE  :Not enough parameters \r\n";
-		send(user_->client_fd(), sen.c_str(), sen.size(), 0);
-		return (0);
-	}
-	return (0);
-}
 
 int check_KICK(std::string &input, user *tmp)
 {
@@ -359,28 +351,31 @@ int check_TOPIC(std::vector<std::string> &splited_line, std::string &back_up_inp
 {
 	// if (splited_line.size() == 1)
 	// {
-		if (user_->chan != nullptr) {
-			std::string mesg;
+	if (user_->chan != nullptr)
+	{
+		std::string mesg;
 
-			if (user_->chan->topic().empty()) {
+		if (user_->chan->topic().empty())
+		{
 
-				mesg =	":ircserv 331 " + user_->chan->name() + " :No topic is set\r\n";
-				send(user_->client_fd(), mesg.c_str(), mesg.length(), 0);
-				return 0;
-			}
-			else {
-				mesg = "TOPIC: ";
-				mesg = mesg + user_->chan->topic() + "\r\n";
-				send(user_->client_fd(), mesg.c_str(), mesg.length(), 0);
-				return 0;
-			}
+			mesg = ":ircserv 331 " + user_->chan->name() + " :No topic is set\r\n";
+			send(user_->client_fd(), mesg.c_str(), mesg.length(), 0);
+			return 0;
 		}
 		else
 		{
-			std::string msg("403: * No such channel\r\n");
-			send(user_->client_fd(), msg.c_str(), msg.length(), 0);
+			mesg = "TOPIC: ";
+			mesg = mesg + user_->chan->topic() + "\r\n";
+			send(user_->client_fd(), mesg.c_str(), mesg.length(), 0);
 			return 0;
 		}
-		// to do else if oper
+	}
+	else
+	{
+		std::string msg("403: * No such channel\r\n");
+		send(user_->client_fd(), msg.c_str(), msg.length(), 0);
+		return 0;
+	}
+	// to do else if oper
 	// }
 }

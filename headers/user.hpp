@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 03:21:35 by archid            #+#    #+#             */
-/*   Updated: 2023/03/29 11:37:13 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/29 13:05:41 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,5 @@ class user {
 };
 
 void send_confirm_msg(user *user_);
+std::string append_msgs(std::vector<std::string> splited_msg);
 #endif
