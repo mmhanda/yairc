@@ -6,12 +6,13 @@
 #    By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/24 23:57:31 by mhanda            #+#    #+#              #
-#    Updated: 2023/03/29 13:11:08 by atabiti          ###   ########.fr        #
+#    Updated: 2023/03/29 13:16:26 by atabiti          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC = srcs/main.cpp srcs/server.cpp srcs/command.cpp srcs/user.cpp srcs/channel.cpp \
-./srcs/args_checker.cpp ./srcs/input_parsing.cpp ./srcs/cmds.cpp ./commands/check_NOTICE.cpp  ./commands/check_NICK.cpp   ./commands/check_USER.cpp       
+./srcs/args_checker.cpp ./srcs/input_parsing.cpp ./srcs/cmds.cpp ./commands/check_NOTICE.cpp \
+ ./commands/check_NICK.cpp   ./commands/check_USER.cpp ./commands/check_JOIN.cpp ./commands/check_PART.cpp  ./commands/check_PRIVMSG.cpp
 
 OBJF = $(SRC:.cpp=.o)
 
