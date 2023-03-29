@@ -257,17 +257,22 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, std::string &back_up, 
 	{
 		std::cout << "CHANNEL \n";
 		std::string message;
-		std::string channel_name;
-		std::istringstream line_to_stream(back_up);
-		std::getline(line_to_stream, channel_name, ':');
-		std::getline(line_to_stream, message, ':');
-		// std::cerr << "input  = " << back_up << std::endl;
-		// std::cerr << "message  = " << message << std::endl;
-		std::string remove_command("PRIVMSG");
-		size_t i = channel_name.find(remove_command);
-		if (i < channel_name.npos)
-			channel_name.erase(i, remove_command.length());
-		// std::cerr << "part_one  removed = " << channel_name << std::endl;
+
+		if (splited_line.size() == 3) {
+
+			std::string channel_name;
+			std::istringstream line_to_stream(back_up);
+			std::getline(line_to_stream, channel_name, ':');
+			std::getline(line_to_stream, message, ':');
+			std::string remove_command("PRIVMSG");
+			size_t i = channel_name.find(remove_command);
+			if (i < channel_name.npos)
+				channel_name.erase(i, remove_command.length());
+		}
+		else {
+			message = splited_line[2];
+		}
+
 		if (user_->chan != nullptr)
 		{
 			if (user_->chan != nullptr)
