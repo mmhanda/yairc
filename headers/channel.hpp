@@ -6,6 +6,9 @@ enum channel_properties { disabled_n, enabled_n };
 
 class channel {
 	public:
+		std::vector<std::string> banned_kicked_users;
+		std::map<std::string,user *> all_users; 
+
 		typedef std::map<std::string, class user *> for_kick;
 		channel(std::string name, std::string passwd = "", std::string topic = "");
 		std::string passwrd(void);
@@ -28,10 +31,11 @@ class channel {
 
 		int 	how_many_usr() const {return users_fd.size();}
 		bool	check_if_user_in(user *user_to_check);
-
+		
 		std::vector<int> users_fd;
 	private:
 		for_kick map_users_for_kick;
+
 		std::vector<std::string> admin_names;
 		std::vector<std::string> r_user_names;
 		std::string name_,  passwd,topic_;

@@ -44,10 +44,14 @@ channel::channel(std::string name, std::string passwd, std::string topic)
 void channel::insert_users(user *user)
 {
 	if (how_many_usr() == 0)
+	{
 		this->admin_names.push_back(user->username());
+		all_users.insert(std::make_pair(user->username() , user));
+	}
 	else
 	{
 		this->r_user_names.push_back(user->username());
+		all_users.insert(std::make_pair(user->username() , user));
 	}
 	user->chan = this;
 	this->users_fd.push_back(user->client_fd());

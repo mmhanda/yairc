@@ -61,7 +61,15 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 					if (user->chan == nullptr || user->chan->name() != it->first)
 					{
 						channel *tmp = map_channels.at(it->first);
-
+						// std::vector <std::string>  check_ban = tmp->banned_kicked_users;
+						// if(check_ban[1].f find(user->username()) !=tmp->banned_kicked_users.end() )
+						if(std::find(tmp->banned_kicked_users.begin(),tmp->banned_kicked_users.end(),  user->username())  != tmp->banned_kicked_users.end())
+						{
+							std::string sen = ":ircerv 474 ";
+							sen = sen + user->username() + it->first + " :Cannot join channel (banned/kicked)\r\n";
+							send(user->client_fd(), sen.c_str(), sen.length(), 0);
+							return 0;
+						}
 						tmp->insert_users(user);
 						user->chan->notif_new_client_joined(user);
 
