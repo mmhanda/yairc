@@ -60,9 +60,8 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 				{
 					if (user->chan == nullptr || user->chan->name() != it->first)
 					{
+						if (user->chan.)
 						channel *tmp = map_channels.at(it->first);
-						// std::vector <std::string>  check_ban = tmp->banned_kicked_users;
-						// if(check_ban[1].f find(user->username()) !=tmp->banned_kicked_users.end() )
 						if(std::find(tmp->banned_kicked_users.begin(),tmp->banned_kicked_users.end(),  user->username())  != tmp->banned_kicked_users.end())
 						{
 							std::string sen = ":ircerv 474 ";

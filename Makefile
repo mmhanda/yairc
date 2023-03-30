@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+         #
+#    By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/24 23:57:31 by mhanda            #+#    #+#              #
-#    Updated: 2023/03/30 10:50:50 by atabiti          ###   ########.fr        #
+#    Updated: 2023/03/30 20:43:07 by mhanda           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC = srcs/main.cpp srcs/server.cpp srcs/command.cpp srcs/user.cpp srcs/channel.cpp \
 ./srcs/args_checker.cpp ./srcs/input_parsing.cpp ./srcs/cmds.cpp ./commands/check_NOTICE.cpp \
 ./commands/check_NICK.cpp   ./commands/check_USER.cpp ./commands/check_JOIN.cpp ./commands/check_PART.cpp\
-./commands/check_PRIVMSG.cpp ./commands/check_MODE.cpp ./commands/check_KICK.cpp ./bot.cpp
+./commands/check_PRIVMSG.cpp ./commands/check_MODE.cpp ./commands/check_TOPIC.cpp ./commands/check_KICK.cpp ./bot.cpp
 
 OBJF = $(SRC:.cpp=.o)
 
