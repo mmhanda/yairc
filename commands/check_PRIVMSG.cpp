@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 13:16:29 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/29 21:48:04 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/30 04:13:18 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,16 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, user *user_)
 	size_t x;
 	x = 0;
 	if (splited_line.size() >= 3 && (std::find(server_user_names.begin(), server_user_names.end(),
-											   splited_line[1]) != server_user_names.end()))
-	{
+											   splited_line[1]) != server_user_names.end())) {
 		std::cout << "USER \n";
 		std::string broad;
 		if (splited_line.size() == 3)
-		{
-
-			broad = ":" + user_->username() + "!" + user_->username() + "@ircserv PRIVMSG " + splited_line[1] + " " + splited_line[2] + "\r\n";
-		}
+			broad = ":" + user_->username() + "!" + user_->username()
+				+ "@ircserv PRIVMSG " + splited_line[1] + " " + splited_line[2] + "\r\n";
 		else
-		{
-			broad = ":" + user_->username() + "!" + user_->username() + "@ircserv PRIVMSG " + splited_line[1] + " " + append_msgs(splited_line) + "\r\n";
-		}
+			broad = ":" + user_->username() + "!" + user_->username()
+				+ "@ircserv PRIVMSG " + splited_line[1] + " " + append_msgs(splited_line) + "\r\n";
+
 		send(map_for_privat_msg.at(splited_line[1]), broad.c_str(), broad.size(), 0);
 	}
 
@@ -56,14 +53,6 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, user *user_)
 					send(user_fd, broad.c_str(), broad.size(), 0);
 				}
 			}
-
-			// for (int user_fd : user_->chan->users_fd)
-			// {
-			// 	if (user_->client_fd() != user_fd)
-			// 	{
-			// 		send(user_fd, broad.c_str(), broad.size(), 0);
-			// 	}
-			// }
 		}
 	}
 	else
