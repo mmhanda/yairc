@@ -25,10 +25,11 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, user *user_)
 			std::cout << "AFTER \n";
 			std::string broad;
 			if (splited_line.size() == 3)
-				broad = "PRIVMSG " + user_->chan->name() + " " + splited_line[2] + "\r\n";
+				broad = SEND_TO_USRS(user_->username(), user_->username(), user_->chan->name(), splited_line[2]);
 			else
-				broad = "PRIVMSG " + user_->chan->name() + " " + append_msgs(splited_line) + "\r\n";
+				broad = SEND_TO_USRS(user_->username(), user_->username(), user_->chan->name(), append_msgs(splited_line));
 			std::map<std::string, class channel *>::iterator iter;
+			std::cout << broad << std::endl;
 
 			iter = channels.begin();
 
