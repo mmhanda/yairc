@@ -50,7 +50,7 @@ int parse_command(std::string &input, user *user_)
 			else if (splited_line[0] == "MODE")
 				check_MODE(splited_line, user_);
 			else if (splited_line[0] == "KICK")
-				check_KICK(splited_line,back_up_input, user_); // the user sould be an operator to do this
+				check_KICK(splited_line, back_up_input, user_); // the user sould be an operator to do this
 		}
 	}
 	return 0;

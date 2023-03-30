@@ -47,6 +47,12 @@
            "!"+nick_name1+"@ircserv PART "+\
            channel_name
 
+///":" + a + " KICK " + b + " " + c + " "
+
+#define KICK(nick_name, nick_name1,\
+           channel_name)      ":"+ nick_name+\
+           " KICK " + nick_name1 + " " + channel_name + " "
+
 #define SEND_TO_USRS(nick_name, user_name,\
            channel_name, msg)         ":"+\
            nick_name+"!"+user_name+"@ircserv PRIVMSG "\
