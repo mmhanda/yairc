@@ -11,20 +11,14 @@
 /* ************************************************************************** */
 
 #pragma once
-#include <iostream>
-#include <string>
 #include "server.hpp"
-#include "channel.hpp"
-#include <vector>
-#include "user.hpp"
 
 class bot
 {
-private:
-public:
-    void start(std::vector<std::string> splited_line, int fd);
-    void channel_list(int fd);
-    void random_join(user *);
-    bot();
-    ~bot();
+    public:
+        void start(int fd);
+        void channel_list(int fd);
+        void random_join(user *);
+        bot();
+        ~bot();
 };

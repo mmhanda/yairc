@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   server.hpp                                         :+:      :+:    :+:   */
-/*                                                   +:++:+        +:+     */
-/*   By: mhanda <mhanda@student.42.fr>             +#+ +:+      +#+        */
-/*                                               +#+#+#+#+#+  +#+           */
-/*   Created: 2023/03/05 02:31:40 by archid            #+#    #+#             */
-/*   Updated: 2023/03/29 09:18:55 by mhanda           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #pragma once
 
 #include <assert.h>
@@ -29,6 +17,7 @@
 #include <vector>
 #include <map>
 #include <time.h>
+#include <sstream>
 
 #define SEND_CHAN(nick_name, user_name,\
            channel_name)  ":"+nick_name+"!"+\
@@ -47,10 +36,6 @@
            "!"+nick_name1+"@ircserv PART "+\
            channel_name
 
-//:dan!d@localhost KICK #test alice :dan
-#define KICK(nick_name, nick_name1, channel_name)      ":"+ nick_name+ "!" " KICK " + nick_name1 + " " + channel_name + " "
-
-
 #define SEND_TO_USRS(nick_name, user_name,\
            channel_name, msg)         ":"+\
            nick_name+"!"+user_name+"@ircserv PRIVMSG "\
@@ -59,6 +44,7 @@
 #include "user.hpp"
 #include "channel.hpp"
 #include "parser.hpp"
+#include "bot.hpp"
 
 #define str_error() strerror(errno)
 
@@ -96,10 +82,6 @@ class server {
 
     public:
       server() {};
-      
-      // ~server() {
-      //   std::cout << "des called" << std::endl;
-      //   terminate(); };
       server(int port, std::string passwd);
       server &operator = (const server &copyfrom);
 

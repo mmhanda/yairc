@@ -60,9 +60,9 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 				{
 					if (user->chan == nullptr || user->chan->name() != it->first)
 					{
-						if (user->chan->get_limit_state())
-							if ((user->chan->how_many_usr() + 1) >= user->chan->get_limit()) {
-								std::string broad = "NOTICE " + user->chan->name() + " :channel limit reached\r\n";
+						if (is_found->second->get_limit_state() == true)
+							if ((is_found->second->how_many_usr() + 1) > is_found->second->get_limit()) {
+								std::string broad = "NOTICE " + is_found->second->name() + " :channel limit reached\r\n";
 								send(user->client_fd(), broad.c_str(), broad.size(), 0);
 								return (0);
 							}

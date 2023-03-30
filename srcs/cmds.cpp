@@ -1,24 +1,4 @@
 #include "server.hpp"
-#include "channel.hpp"
-
-int check_OPER(std::vector<std::string> const &splited_line, user *tmp)
-{
-	if (splited_line.size() != 2)
-	{
-		std::cerr << "461 " << splited_line[0] << " :Not enough parameters" << std::endl;
-	}
-	// else
-	// {
-	// 	/*ERR_PASSWDMISMATCH (464)  "<client> :Password incorrect"*/
-	// 	/*RPL_YOUREOPER (381)  "<client> :You are now an IRC operator"*/
-	// 	tmp->chan();
-	// 	// if(tmp->) //   OPER foo bar
-	// 	// {
-
-	// 	// }
-	// }
-	return (0);
-}
 
 int check_QUIT(std::string &back_up_input, user *user)
 {

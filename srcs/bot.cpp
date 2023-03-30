@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   bot.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 10:42:00 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/30 13:08:55 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/30 21:56:21 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bot.hpp"
 
-void bot::start(std::vector<std::string> splited_line, int fd)
+void bot::start(int fd)
 {
 
   std::string sen1 = ":ircserv 704   val *  :*** WELCOME YIRC_BoT ***\r\n";
