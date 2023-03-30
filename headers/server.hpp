@@ -32,11 +32,11 @@
 
 #define SEND_CHAN(nick_name, user_name,\
            channel_name)  ":"+nick_name+"!"+\
-           user_name+"@ircserv JOIN "+channel_name+msg_delim
+           user_name+"@ircserv JOIN "+channel_name+"\r\n"
 
 #define USERS_LIST(nick_name, channel_name,\
            user_list) ":ircserv 353 "+nick_name+\
-           " = " +channel_name+" "+user_list+msg_delim
+           " = " +channel_name+" "+user_list+"\r\n"
 
 #define LIST_EN(nick_name, channel_name)\
            ":ircserv 366 "+nick_name+" "\
@@ -50,7 +50,7 @@
 #define SEND_TO_USRS(nick_name, user_name,\
            channel_name, msg)         ":"+\
            nick_name+"!"+user_name+"@ircserv PRIVMSG "\
-          +channel_name+ " :"+msg+msg_delim
+          +channel_name+ " :"+msg+"\r\n"
 
 #include "user.hpp"
 #include "channel.hpp"

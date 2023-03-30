@@ -20,10 +20,11 @@ class channel {
 		const std::string &topic() const { return topic_; }
 		void set_topic(const std::string &top) {topic_ = top;}
 
+		std::vector<std::string> get_admins_list() { return admin_names; }
+
 		int 	how_many_usr() const {return users_fd.size();}
 		bool	check_if_user_in(user *user_to_check);
 
-		std::vector<std::string> get_admins_list() { return admin_names; }
 		std::vector<int> users_fd;
 	private:
 		std::vector<std::string> admin_names;

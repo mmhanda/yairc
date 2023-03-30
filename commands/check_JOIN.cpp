@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 13:13:03 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/29 21:57:34 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/30 02:05:19 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,27 +99,34 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 			}
 			else
 			{
-				channel *tmp = new channel(it->first, it->second);
-				map_channels.insert(std::pair<std::string, channel *>(it->first, tmp));
-				tmp->insert_users(user);
-				channels_name.push_back(it->first);
+				if (std::find(channels_name.begin(), channels_name.end(), it->first) == channels_name.end()) {
+					
+					channel *tmp = new channel(it->first, it->second);
+					map_channels.insert(std::pair<std::string, channel *>(it->first, tmp));
+					tmp->insert_users(user);
+					channels_name.push_back(it->first);
 
-				std::string sen = SEND_CHAN(user->username(), user->username(), user->chan->name());
-				send(user->client_fd(), sen.c_str(), sen.size(), 0);
+					std::string sen = SEND_CHAN(user->username(), user->username(), user->chan->name());
+					send(user->client_fd(), sen.c_str(), sen.size(), 0);
 
-				sen = USERS_LIST(user->username(), user->chan->name(), user->chan->users_list());
-				send(user->client_fd(), sen.c_str(), sen.size(), 0);
+					sen = USERS_LIST(user->username(), user->chan->name(), user->chan->users_list());
+					send(user->client_fd(), sen.c_str(), sen.size(), 0);
 
-				sen = LIST_EN(user->username(), user->chan->name());
-				send(user->client_fd(), sen.c_str(), sen.size(), 0);
+					sen = LIST_EN(user->username(), user->chan->name());
+					send(user->client_fd(), sen.c_str(), sen.size(), 0);
 
-				sen = "NOTICE " + user->username() + " :Mode: +nt test only!\r\n";
-				send(user->client_fd(), sen.c_str(), sen.size(), 0);
-				std::string tim = "NOTICE " + user->chan->name() + " :This channel was created at " + get_tim() + msg_delim;
-				time_t now = time(NULL);
-				char message[256];
-				snprintf(message, 256, "NOTICE %s :This channel was created at %s\n", user->chan->name().c_str(), ctime(&now));
-				send(user->client_fd(), tim.c_str(), tim.length(), 0);
+					sen = "NOTICE " + user->username() + " :Mode: +nt test only!\r\n";
+					send(user->client_fd(), sen.c_str(), sen.size(), 0);
+					std::string tim = "NOTICE " + user->chan->name() + " :This channel was created at " + get_tim() + "\r\n";
+					time_t now = time(NULL);
+					char message[256];
+					snprintf(message, 256, "NOTICE %s :This channel was created at %s\n", user->chan->name().c_str(), ctime(&now));
+					send(user->client_fd(), tim.c_str(), tim.length(), 0);
+				}
+				else {
+					std::string msg("403: * channel already exist\r\n");
+					send(user->client_fd(), msg.c_str(), msg.length(), 0);
+				}
 			}
 			it++;
 		}
