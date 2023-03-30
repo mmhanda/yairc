@@ -4,11 +4,12 @@
 int check_MODE(std::vector<std::string> &splited_line, user *user_)
 {
     std::string	broad ;
-    if (user_->chan->how_many_usr() > 1 && splited_line.size() == 3 && std::find(server_user_names.begin(),
-            server_user_names.end(), splited_line[1]) != server_user_names.end()
-                && user_->username() != splited_line[1] && std::find(splited_line[1].begin(),
-                    splited_line[1].end(), '#') == splited_line[1].end()) {
 
+    if (std::find(server_user_names.begin(), server_user_names.end(), splited_line[1]) != server_user_names.end())
+        if (user_->chan->how_many_usr() > 1 && splited_line.size() == 3
+            && user_->username() != splited_line[1] && std::find(splited_line[1].begin(),
+                splited_line[1].end(), '#') == splited_line[1].end()) {
+    std::cout << "HERE\n";
                 if ((std::find(splited_line[2].begin(), splited_line[2].end(), '+') != splited_line[2].end()
                         && std::find(splited_line[2].begin(), splited_line[2].end(), 'o') != splited_line[2].end())) {
                                     
@@ -51,7 +52,7 @@ int check_MODE(std::vector<std::string> &splited_line, user *user_)
                     send(user_->client_fd(), broad.c_str(), broad.size(), 0);
                     return 0;
                 }
-    }
+        }
     
     // else if (splited_line.size() == 3 && std::find(channels_name.begin(),
     //         channels_name.end(), splited_line[1]) != channels_name.end()

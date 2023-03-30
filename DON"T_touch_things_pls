@@ -25,3 +25,7 @@ Must be fixed : (check this https://stackoverflow.com/questions/3598556/g-warnin
  warning: comparison of unsigned expression in ‘< 0’ is always false [-Wtype-limits]
    23 |         if (addr.sin_addr.s_addr < 0)
       |             ~~~~~~~~~~~~~~~~~~~~~^~~ 
+
+
+
+JUST charachters are allowed in the channel name
