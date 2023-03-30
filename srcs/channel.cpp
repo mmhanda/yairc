@@ -92,6 +92,24 @@ bool channel::check_if_user_in(user *user_to_check)
 		return (false);
 }
 
+bool channel::check_if_s_user_in_by_name(std::string user_to_check)
+{
+	std::vector<std::string>::iterator it_s = std::find(this->admin_names.begin(), this->admin_names.end(), user_to_check);
+	if (it_s != admin_names.end())
+		return (true);
+	else
+		return (false);
+}
+
+bool channel::check_if_r_user_in_by_name(std::string user_to_check)
+{
+	std::vector<std::string>::iterator it_r = std::find(this->r_user_names.begin(), this->r_user_names.end(), user_to_check);
+	if (it_r != this->r_user_names.end())
+		return (true);
+	else
+		return (false);
+}
+
 std::ostream &operator<<(std::ostream &oss, const channel chan)
 {
 	return oss << "#" << chan.name() << " [" << chan.topic() << "]";

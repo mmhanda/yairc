@@ -3,9 +3,6 @@
 
 int check_NOTICE(std::vector<std::string> &splited_line, user *user_)
 {
-	size_t x;
-
-	x = 0;
 	if (splited_line.size() >= 3 && (std::find(server_user_names.begin(), server_user_names.end(),
 											   splited_line[1]) != server_user_names.end())) {
 		std::string broad;

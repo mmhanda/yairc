@@ -28,14 +28,17 @@ class channel {
 		void set_topic(const std::string &top) {topic_ = top;}
 
 		std::vector<std::string> get_admins_list() { return admin_names; }
+		void set_in_admins_list(std::string admin) { this->admin_names.push_back(admin); }
+		void remove_from_s_list(std::string old_admin) { std::remove(admin_names.begin(), admin_names.end(), old_admin); }
 
-		int 	how_many_usr() const {return users_fd.size();}
-		bool	check_if_user_in(user *user_to_check);
-		
+		int  how_many_usr() const {return users_fd.size();}
+		bool check_if_user_in(user *user_to_check);
+		bool check_if_r_user_in_by_name(std::string user_to_check);
+		bool check_if_s_user_in_by_name(std::string user_to_check);
+
 		std::vector<int> users_fd;
 	private:
 		for_kick map_users_for_kick;
-
 		std::vector<std::string> admin_names;
 		std::vector<std::string> r_user_names;
 		std::string name_,  passwd,topic_;

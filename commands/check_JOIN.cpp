@@ -106,7 +106,7 @@ int check_JOIN(std::vector<std::string> &splited_line, user *user)
 				sen = LIST_EN(user->username(), user->chan->name());
 				send(user->client_fd(), sen.c_str(), sen.size(), 0);
 
-				sen = "NOTICE " + user->username() + " :Mode: +nt test only!\r\n";
+				sen = "NOTICE " + user->username() + " :Mode: +sn\r\n";
 				send(user->client_fd(), sen.c_str(), sen.size(), 0);
 				std::string tim = "NOTICE " + user->chan->name() + " :This channel was created at " + get_tim() + "\r\n";
 				time_t now = time(NULL);

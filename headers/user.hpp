@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 03:21:35 by archid            #+#    #+#             */
-/*   Updated: 2023/03/30 08:05:07 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/30 10:36:33 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 #include <set>
 #include <map>
 #include <vector>
-
-enum user_roles { normal_user, _operator };
 
 class user {
 
@@ -34,9 +32,7 @@ class user {
 		const std::string &username() const;
 		void username(std::string username);
 
-		class channel *chan; // i changed this
-		// class channel *chan = nullptr;
-
+		class channel *chan;
 
 		bool PASS_authenticated;
 		bool NICK_authenticated;
