@@ -6,7 +6,7 @@
 /*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 13:01:15 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/30 02:30:42 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/30 03:00:55 by mhanda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,8 @@ int check_TOPIC(std::vector<std::string> &splited_line, user *user_)
 			}
 			else
 			{
-				if (std::find(channels_name.begin(), channels_name.end(), splited_line[1]) != channels_name.end()) {
+				if (std::find(channels_name.begin(), channels_name.end(), splited_line[1]) != channels_name.end()
+						 && user_->chan->name() == splited_line[1]) {
 
 					mesg = ":irserv 332 ";
 					mesg = mesg + user_->username() + " " + splited_line[1] + " :" + user_->chan->topic() + "\r\n";
@@ -121,6 +122,10 @@ int check_TOPIC(std::vector<std::string> &splited_line, user *user_)
 					return 0;
 				}
 			}
+
+			std::string msg("403: * You are not currently in the channel or channel not found\r\n");
+			send(user_->client_fd(), msg.c_str(), msg.length(), 0);
+			return (0);
 		}
 		else
 		{
@@ -136,13 +141,15 @@ int check_TOPIC(std::vector<std::string> &splited_line, user *user_)
 		{
 			if (std::find(channels_name.begin(), channels_name.end(), splited_line[1]) != channels_name.end()
 				&& user_->chan->name() == splited_line[1] ) {
-
+				std::cout << "user_->chan->name() " << user_->chan->name() << std::endl;
 				std::map<std::string, class channel *>::iterator iter = map_channels.find(splited_line[1]);
 				std::string topic(append_msgs(splited_line));
 				iter->second->set_topic(topic);
+				std::string msg(":ircserv NOTICE : Topic has been set \r\n");
+				send(user_->client_fd(), msg.c_str(), msg.length(), 0);
 			}
 			else {
-				std::string msg("403: * You are not in the channel or channel not found\r\n");
+				std::string msg("403: * You are not currently in the channel or channel not found\r\n");
 				send(user_->client_fd(), msg.c_str(), msg.length(), 0);
 			}
 		}
