@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 01:13:18 by archid            #+#    #+#             */
-/*   Updated: 2023/03/29 16:43:06 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/30 06:54:06 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ user::user(int client_fd) : PASS_authenticated(false),
 user::~user() {
 	
 	delete map_users.at(this->client_fd());
+ 	map_users.erase(this->client_fd());
+	
 }
 
 const std::string &user::nickname() const { return nickname_; }
