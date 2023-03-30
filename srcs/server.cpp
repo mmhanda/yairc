@@ -99,7 +99,6 @@ void server::accept_clients() {
 		terminate_and_throw();
 	}
 }
-
 int count;
 
 void server::run() {
@@ -115,17 +114,18 @@ void server::run() {
 		for (unsigned i = 0; i < clients_.size(); ++i)
 		{
 			if (clients_[i].revents & POLLIN) {
-				if (clients_[i].fd == sock_fd_) {
+				if (clients_[i].fd == sock_fd_) 
+				{
 					accept_clients();
 				} else {
 					if(!recieve_message(clients_.begin() + i))
 						continue;
-
 					if (map_msgs.at(clients_[i].fd).find(msg_delim) != std::string::npos)
 					{
 						std::string msg = map_msgs.at(clients_[i].fd);
 						if (authenticate(msg, clients_[i].fd, map_users.at(clients_[i].fd)))
 							parse_command(msg,map_users.at(clients_[i].fd));
+						
 
 						map_msgs.erase(clients_[i].fd);
 						msg.erase();

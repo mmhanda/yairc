@@ -1,6 +1,8 @@
 #include "parser.hpp"
 #include "server.hpp"
 #include "user.hpp"
+#include "../bot.hpp"
+class bot Helper_BoT;
 
 int parse_command(std::string &input, user *user_)
 {
@@ -51,6 +53,15 @@ int parse_command(std::string &input, user *user_)
 				check_MODE(splited_line, user_);
 			else if (splited_line[0] == "KICK")
 				check_KICK(splited_line, back_up_input, user_); // the user sould be an operator to do this
+			else if (splited_line[0] == "BOT")
+			{
+				if (splited_line.size() == 1)
+					Helper_BoT.start(splited_line, user_->client_fd());
+				if (splited_line.size() == 2 && splited_line[1] == "chan")
+					Helper_BoT.channel_list(user_->client_fd());
+				if (splited_line.size() == 2 && splited_line[1] == "random")
+					Helper_BoT.random_join(user_);
+			}
 		}
 	}
 	return 0;
