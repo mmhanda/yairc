@@ -23,3 +23,4 @@ int	check_KICK(std::vector<std::string> const &splited_line,std::string &input, 
 int	check_PRIVMSG(std::vector<std::string> &splited_line ,user *user_);
 int check_NOTICE(std::vector<std::string> &splited_line, user *user);
 int check_TOPIC(std::vector<std::string> &splited_line,  user *user_);
+int check_MODE(std::vector<std::string> &splited_line,  user *user_);

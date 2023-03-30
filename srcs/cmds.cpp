@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cmds.cpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/29 13:01:15 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/30 03:00:55 by mhanda           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "server.hpp"
 #include "channel.hpp"
 
@@ -76,10 +64,11 @@ int check_KICK(std::vector<std::string> const &splited_line, std::string &input,
 	std::string message;
 	std::string part_one;
 	std::string chan;
-	std::string user;
-	std::istringstream line_to_stream(input);
-	std::getline(line_to_stream, part_one, ':');
-	std::getline(line_to_stream, message, ':');
+	if (splited_line.size() > 3) {
+		std::istringstream line_to_stream(input);
+		std::getline(line_to_stream, part_one, ':');
+		std::getline(line_to_stream, message, ':');
+	}
 	std::cerr << "input  = " << input << std::endl;
 	std::cerr << "message  = " << message << std::endl;
 	std::cerr << "part_one  = " << part_one << std::endl;
@@ -94,7 +83,6 @@ int check_KICK(std::vector<std::string> const &splited_line, std::string &input,
 	// kick the user from the channel here
 	return (0);
 }
-
 
 int check_TOPIC(std::vector<std::string> &splited_line, user *user_)
 {
@@ -122,7 +110,6 @@ int check_TOPIC(std::vector<std::string> &splited_line, user *user_)
 					return 0;
 				}
 			}
-
 			std::string msg("403: * You are not currently in the channel or channel not found\r\n");
 			send(user_->client_fd(), msg.c_str(), msg.length(), 0);
 			return (0);
@@ -134,7 +121,7 @@ int check_TOPIC(std::vector<std::string> &splited_line, user *user_)
 			return 0;
 		}
 	}
-	else // set topic
+	else
 	{
 		// to do else if oper
 		if (user_->chan != nullptr)
@@ -145,7 +132,7 @@ int check_TOPIC(std::vector<std::string> &splited_line, user *user_)
 				std::map<std::string, class channel *>::iterator iter = map_channels.find(splited_line[1]);
 				std::string topic(append_msgs(splited_line));
 				iter->second->set_topic(topic);
-				std::string msg(":ircserv NOTICE : Topic has been set \r\n");
+				std::string msg = "NOTICE " + user_->username() + " : Topic has been set \r\n";
 				send(user_->client_fd(), msg.c_str(), msg.length(), 0);
 			}
 			else {
@@ -156,75 +143,3 @@ int check_TOPIC(std::vector<std::string> &splited_line, user *user_)
 	}
 	return (0);
 }
-
-
-// int check_TOPIC(std::vector<std::string> &splited_line, user *user_)
-// {
-// 	//(332) "<client> <channel> :<topic>"
-
-// 	// if (std::find(channels_name.begin(), channels_name.end(), splited_line[1]) == channels_name.end()) {
-// 	// 	std::string msg = ":ircserv 401 " + splited_line[1] + " :Topic No such channel\r\n";
-// 	// 	send(user_->client_fd(), msg.c_str(), msg.length(), 0);
-// 	// 	std::cout << "here\n";
-// 	// 	return (0);
-// 	// }
-
-// 	if (splited_line.size() == 3 && std::find(channels_name.begin(), channels_name.end(), splited_line[1]) != channels_name.end())
-// 	{
-// 		if (user_->chan != nullptr)
-// 		{
-// 			std::cout << "ZMLA1\n";
-// 			std::string mesg;
-
-// 			if (user_->chan->topic().empty())
-// 			{
-// 				std::cout << "ZMLA2\n";
-// 				mesg = ":ircserv 331 " + user_->username() + " " + user_->chan->name() + " :No is set\r\n";
-// 				send(user_->client_fd(), mesg.c_str(), mesg.length(), 0);
-// 				return 0;
-// 			}
-// 			else
-// 			{
-// 				std::cout << "ZMLA\n";
-// 				mesg = ":irserv 332 ";
-// 				mesg = mesg + user_->username() + " " + splited_line[1] + " :" + user_->chan->topic() + "\r\n";
-// 				send(user_->client_fd(), mesg.c_str(), mesg.length(), 0);
-// 				return 0;
-// 			}
-// 		}
-// 		else
-// 		{
-// 			std::string msg("403: * No such channel\r\n");
-// 			send(user_->client_fd(), msg.c_str(), msg.length(), 0);
-// 			return 0;
-// 		}
-// 	}
-// 	else
-// 	{	
-// 		if (user_->chan != nullptr) {
-
-// 			if (std::find(user_->chan->get_admins_list().begin(), user_->chan->get_admins_list().end(),
-// 					user_->username()) != user_->chan->get_admins_list().end()) {
-
-// 				std::map<std::string, class channel *>::iterator iter = map_channels.find(splited_line[1]); // find the exact chan
-// 				if (iter != map_channels.end())
-// 				{
-// 					std::cout << "SET TOPIC\n";
-// 					std::string topic(append_msgs(splited_line));
-// 					iter->second->set_topic(topic); // here i change the topic of the chan
-// 				}
-// 				else
-// 				{
-// 					std::string msg("403: * No such channel\r\n");
-// 					send(user_->client_fd(), msg.c_str(), msg.length(), 0);
-// 					return 0;
-// 				}
-// 			}
-// 			else {
-// 				std::string msg = ":ircserv 401 :You are not operator\r\n";
-// 				send(user_->client_fd(), msg.c_str(), msg.length(), 0);
-// 			}
-// 		}
-// 	}
-// 	return 0;
-// }

@@ -1,16 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   check_PART.cpp                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/29 13:14:50 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/30 03:50:59 by mhanda           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-
 #include "server.hpp"
 #include "channel.hpp"
 
@@ -45,9 +32,6 @@ int check_PART(std::vector<std::string> &splited_line, user *user)
 				}
 				else if (user->chan != nullptr && map_channels.at(channels_[h])->how_many_usr() == 1)
 				{
-					std::cout << "FOR ONE\n" ;/////han 
-					std::cout << "channels_ " << channels_[h] << std::endl;/////han 
-					std::cout << "map_channels.at(channels_[h])  [" << map_channels.at(channels_[h])->name() << "]" << std::endl;
 					std::string send_to_others = PART(user->username(), user->username(), user->chan->name()) + "\r\n";
 					user->chan->broadcast(send_to_others);
 					map_channels.at(channels_[h])->part_user(user);

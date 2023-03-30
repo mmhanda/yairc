@@ -2,10 +2,11 @@
 
 #include "server.hpp"
 
-enum channel_properties { chan_public, chan_invite, chan_private };
+enum channel_properties { disabled_n, enabled_n };
 
 class channel {
 	public:
+	
 		channel(std::string name, std::string passwd = "", std::string topic = "");
 		std::string passwrd(void);
 		void broadcast(std::string msg);
@@ -15,6 +16,7 @@ class channel {
 		
 		void insert_users(user *user);
 		void part_user(user *user);
+		enum channel_properties out_side_msg = enabled_n;
 
 		const std::string &name() const { return name_; }
 		const std::string &topic() const { return topic_; }

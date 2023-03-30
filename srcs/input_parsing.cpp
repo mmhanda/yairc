@@ -1,17 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   input_parsing.cpp                                  :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/29 13:12:06 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/29 15:01:03 by atabiti          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-
-
 #include "parser.hpp"
 #include "server.hpp"
 #include "user.hpp"
@@ -55,14 +41,14 @@ int parse_command(std::string &input, user *user_)
 				check_JOIN(splited_line, user_);
 			else if (splited_line[0] == "PRIVMSG")
 				check_PRIVMSG(splited_line, user_);
-			else if (splited_line[0] == "OPER")
-				check_OPER(splited_line);
-			else if (splited_line[0] == "MODE")
-					std::cout << "MODE COMMAND" << std::endl;
 			else if (splited_line[0] == "NOTICE")
 				check_NOTICE(splited_line, user_);
+			else if (splited_line[0] == "OPER")
+				check_OPER(splited_line);
 			else if (splited_line[0] == "TOPIC")
 				check_TOPIC(splited_line, user_);
+			else if (splited_line[0] == "MODE")
+				check_MODE(splited_line, user_);
 			else if (splited_line[0] == "KICK")
 				check_KICK(splited_line,back_up_input, user_); // the user sould be an operator to do this
 		}
