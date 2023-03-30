@@ -71,22 +71,22 @@ std::string append_msgs(std::vector<std::string> splited_msg)
 
 int check_TOPIC(std::vector<std::string> &splited_line, user *user_)
 {
-			std::map<std::string, class channel *>::iterator it = map_channels.find(splited_line[1]);
-			if(it  == map_channels.end())
-			{
-				std::string msg("403: * No such channel\r\n");
-				send(user_->client_fd(), msg.c_str(), msg.length(), 0);
-				return 0;
-			}
-			std::vector<std::string> admins_list = it->second->get_admins_list();
-			// if(admins_list.find(splited_line[2]) == admins_list.end())
-			if (std::find(admins_list.begin(), admins_list.end(), user_->username()) == admins_list.end())
-			{
-				// ERR_CHANOPRIVSNEEDED (482)  "<client> <channel> :You're not channel operator"
-				std::string error_(":ircserv 482 KICK : :You're not channel operator\r\n");
-				send(user_->client_fd(), error_.c_str(), error_.length(), 0);
-				return 0;
-			}
+	std::map<std::string, class channel *>::iterator it = map_channels.find(splited_line[1]);
+	if (it == map_channels.end())
+	{
+		std::string msg("403: * No such channel\r\n");
+		send(user_->client_fd(), msg.c_str(), msg.length(), 0);
+		return 0;
+	}
+	std::vector<std::string> admins_list = it->second->get_admins_list();
+	// if(admins_list.find(splited_line[2]) == admins_list.end())
+	if (std::find(admins_list.begin(), admins_list.end(), user_->username()) == admins_list.end())
+	{
+		// ERR_CHANOPRIVSNEEDED (482)  "<client> <channel> :You're not channel operator"
+		std::string error_(":ircserv 482 KICK : :You're not channel operator\r\n");
+		send(user_->client_fd(), error_.c_str(), error_.length(), 0);
+		return 0;
+	}
 	if (splited_line.size() == 2)
 	{
 		if (user_->chan != nullptr)
@@ -109,15 +109,6 @@ int check_TOPIC(std::vector<std::string> &splited_line, user *user_)
 					return 0;
 				}
 			}
-			std::string msg("403: * You are not currently in the channel or channel not found\r\n");
-			send(user_->client_fd(), msg.c_str(), msg.length(), 0);
-			return (0);
-		}
-		else
-		{
-			std::string msg("403: * No such channel\r\n");
-			send(user_->client_fd(), msg.c_str(), msg.length(), 0);
-			return 0;
 		}
 	}
 	else
@@ -135,11 +126,6 @@ int check_TOPIC(std::vector<std::string> &splited_line, user *user_)
 				send(user_->client_fd(), msg.c_str(), msg.length(), 0);
 			}
 		}
-			else
-			{
-				std::string msg("403: * You are not currently in the channel or channel not found\r\n");
-				send(user_->client_fd(), msg.c_str(), msg.length(), 0);
-			}
 	}
 	return (0);
 }
