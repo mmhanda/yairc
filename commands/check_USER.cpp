@@ -1,5 +1,4 @@
 #include "server.hpp"
-#include "channel.hpp"
 
 int check_USER(std::vector<std::string> const &splited_line, user *user)
 {

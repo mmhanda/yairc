@@ -1,5 +1,5 @@
-
 #include "server.hpp"
+
 std::string PASSWORD;
 
 int	check_PASS(std::vector<std::string> const &splited_line , user *user)

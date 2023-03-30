@@ -1,8 +1,5 @@
 #pragma once
-
 #include "server.hpp"
-
-enum channel_properties { disabled_n, enabled_n };
 
 class channel {
 	public:
@@ -23,7 +20,6 @@ class channel {
 		for_kick kick_list() { return map_users_for_kick; }
 		void part_user(user *user);
 		int  how_many_usr() const {return users_fd.size();}
-		// enum channel_properties out_side_msg = enabled_n;
 
 		const std::string &name() const { return name_; }
 		const std::string &topic() const { return topic_; }

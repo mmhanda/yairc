@@ -1,5 +1,3 @@
-
-
 #include "server.hpp"
 
 bool    authenticate(std::string &msg , const int fd, user *user_)

@@ -1,5 +1,4 @@
 #include "server.hpp"
-#include "channel.hpp"
 
 int check_NOTICE(std::vector<std::string> &splited_line, user *user_)
 {

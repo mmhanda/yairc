@@ -18,6 +18,7 @@
 #include <map>
 #include <time.h>
 #include <sstream>
+#include <signal.h>
 
 #define SEND_CHAN(nick_name, user_name,\
            channel_name)  ":"+nick_name+"!"+\

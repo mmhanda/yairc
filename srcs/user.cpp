@@ -1,13 +1,11 @@
 #include "user.hpp"
 #include "channel.hpp"
-#include <iostream>
 
 user::user(int client_fd) : PASS_authenticated(false),
 				NICK_authenticated(false),
 				USER_authenticated(false) {
 	client_fd_ = client_fd;
 	chan = NULL; 
-	// i removed this
 }
 
 user::~user() {
@@ -62,14 +60,8 @@ void send_confirm_msg(user *user_){
 		send(user_->client_fd(), sen.c_str(), sen.size(), 0);
 		sen = ":ircserv 376 " + user_->nickname() +  " :Made by Anas and Anas and Simo\r\n";
 		send(user_->client_fd(), sen.c_str(), sen.size(), 0);
-
-		
 		sen = ":ircserv 376 " + user_->nickname() +  " :If you want help use BOT \r\n";
-		send(user_->client_fd(), sen.c_str(), sen.size(), 0);
-
-
-
-		
+		send(user_->client_fd(), sen.c_str(), sen.size(), 0);		
 		user_->PRINTER = true;
 	}
 }

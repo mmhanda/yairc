@@ -1,6 +1,5 @@
 #include "server.hpp"
 #include <iostream>
-#include <sstream>
 
 void channel::notif_new_client_joined(user *sender)
 {

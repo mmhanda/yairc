@@ -1,5 +1,4 @@
 #include "server.hpp"
-#include "channel.hpp"
 
 int check_PRIVMSG(std::vector<std::string> &splited_line, user *user_)
 {
@@ -26,8 +25,6 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, user *user_)
 			else
 				broad = SEND_TO_USRS(user_->username(), user_->username(), user_->chan->name(), append_msgs(splited_line));
 			std::map<std::string, class channel *>::iterator iter;
-			std::cout << broad << std::endl;
-
 			iter = channels.begin();
 
 			for (std::vector<int>::iterator it = user_->chan->users_fd.begin(); it != user_->chan->users_fd.end(); ++it)

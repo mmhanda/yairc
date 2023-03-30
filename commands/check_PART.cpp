@@ -1,5 +1,4 @@
 #include "server.hpp"
-#include "channel.hpp"
 
 int check_PART(std::vector<std::string> &splited_line, user *user)
 {

@@ -1,17 +1,5 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   check_NICK.cpp                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/29 13:09:01 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/29 21:48:04 by mhanda           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "server.hpp"
-#include "channel.hpp"
+
 int check_NICK(std::vector<std::string> const &splited_line, user *user)
 {
 	if (splited_line.size() != 2)

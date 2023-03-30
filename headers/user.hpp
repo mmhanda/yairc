@@ -1,17 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   user.hpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/05 03:21:35 by archid            #+#    #+#             */
-/*   Updated: 2023/03/30 10:36:33 by mhanda           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#ifndef USER_HPP
-# define USER_HPP
+#pragma once
 
 #include <string>
 #include <set>
@@ -46,4 +33,3 @@ class user {
 
 void send_confirm_msg(user *user_);
 std::string append_msgs(std::vector<std::string> splited_msg);
-#endif

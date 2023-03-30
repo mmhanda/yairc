@@ -18,9 +18,6 @@ int check_KICK(std::vector<std::string> const &splited_line, std::string &input,
 		std::istringstream line_to_stream(input);
 		std::getline(line_to_stream, part_one, ':');
 		std::getline(line_to_stream, message, ':');
-		std::cerr << "input  = " << input << std::endl;
-		std::cerr << "message  = " << message << std::endl;
-		std::cerr << "part_one  = " << part_one << std::endl;
 	}
 
 	if (splited_line[1].find('#') > splited_line[1].size())
@@ -40,10 +37,8 @@ int check_KICK(std::vector<std::string> const &splited_line, std::string &input,
 	{
 		std::map<std::string, class channel *>::iterator it = map_channels.find(splited_line[1]); 
 		std::vector<std::string> admins_list  = it->second->get_admins_list();
-		// if(admins_list.find(splited_line[2]) == admins_list.end())
 		if(std::find(admins_list.begin(), admins_list.end(),  tmp->username()) == admins_list.end())
 		{
-				//ERR_CHANOPRIVSNEEDED (482)  "<client> <channel> :You're not channel operator"
 			std::string error_(":ircserv 482 KICK : :You're not channel operator\r\n");
 			send(tmp->client_fd(), error_.c_str(), error_.length(), 0);
 			return 0;
@@ -69,7 +64,7 @@ int check_KICK(std::vector<std::string> const &splited_line, std::string &input,
 			if (iter != map_channels.end())
 			{
 
-				iter->second->banned_kicked_users.push_back(splited_line[2]); // user is added to  the  ban list
+				iter->second->banned_kicked_users.push_back(splited_line[2]);
 				std::string send_to_others(":");
 				send_to_others = send_to_others + tmp->nickname() + "!" + tmp->username() + "localhost" + " KICK " + splited_line[1] + " " + splited_line[2] + "\r\n";
 				tmp->chan->broadcast(send_to_others);
@@ -78,7 +73,6 @@ int check_KICK(std::vector<std::string> const &splited_line, std::string &input,
 
 				user *to_kick = iter->second->all_users.at(splited_line[2]);
 				iter->second->part_user(to_kick);
-				// map_channels.at(splited_line[1])->part_user(to_kick);
 			}
 
 		}

@@ -49,7 +49,6 @@ int check_TOPIC(std::vector<std::string> &splited_line, user *user_)
 		{
 			if (std::find(channels_name.begin(), channels_name.end(), splited_line[1]) != channels_name.end() && user_->chan->name() == splited_line[1])
 			{
-				std::cout << "user_->chan->name() " << user_->chan->name() << std::endl;
 				std::map<std::string, class channel *>::iterator iter = map_channels.find(splited_line[1]);
 				std::string topic(append_msgs(splited_line));
 				iter->second->set_topic(topic);

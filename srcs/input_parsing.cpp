@@ -9,7 +9,6 @@ int parse_command(std::string &input, user *user_)
 
 	str = NULL;
 	str1 = NULL;
-	std::cout << "from limchat= " << input << std::endl;
 	std::vector<std::string> splited_line;
 	std::string back_up_input;
 	back_up_input = input;
