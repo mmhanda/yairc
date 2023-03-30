@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhanda <mhanda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 03:13:39 by archid            #+#    #+#             */
-/*   Updated: 2023/03/25 06:40:09 by mhanda           ###   ########.fr       */
+/*   Updated: 2023/03/30 10:54:59 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
 #include "server.hpp"
-
 
 void handler(int) {
     ircserv.terminate();
@@ -34,7 +33,6 @@ server& server::operator = (const server &copyfrom) {
 }
 
 int main(int argc, char *argv[]) {
-
     int port;
     std::string passwd = "abc";
 

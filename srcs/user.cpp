@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 01:13:18 by archid            #+#    #+#             */
-/*   Updated: 2023/03/30 06:54:06 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/30 11:29:26 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,14 @@ void send_confirm_msg(user *user_){
 		send(user_->client_fd(), sen.c_str(), sen.size(), 0);
 		sen = ":ircserv 376 " + user_->nickname() +  " :Made by Anas and Anas and Simo\r\n";
 		send(user_->client_fd(), sen.c_str(), sen.size(), 0);
+
+		
+		sen = ":ircserv 376 " + user_->nickname() +  " :If you want help use BOT \r\n";
+		send(user_->client_fd(), sen.c_str(), sen.size(), 0);
+
+
+
+		
 		user_->PRINTER = true;
 	}
 }
