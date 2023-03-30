@@ -15,7 +15,7 @@ int	checker(int ac, char **av,int		&port);
 int	check_PASS(std::vector<std::string> const &splited_line , user *tmp);
 int	check_NICK(std::vector<std::string> const &splited_line, user *user);
 int	check_USER(std::vector<std::string> const &splited_line, user *tmp);
-int check_OPER(std::vector<std::string> const & splited_line);
+int check_OPER(std::vector<std::string> const & splited_line, user *tmp);
 int check_QUIT(std::string  & back_up_input, user *user);
 int check_JOIN(std::vector<std::string>  & splited_line, user *user);
 int check_PART(std::vector<std::string>  & splited_line, user *user);

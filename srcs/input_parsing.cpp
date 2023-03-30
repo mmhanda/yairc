@@ -46,7 +46,7 @@ int parse_command(std::string &input, user *user_)
 			else if (splited_line[0] == "NOTICE")
 				check_NOTICE(splited_line, user_);
 			else if (splited_line[0] == "OPER")
-				check_OPER(splited_line);
+				check_OPER(splited_line,user_);
 			else if (splited_line[0] == "TOPIC")
 				check_TOPIC(splited_line, user_);
 			else if (splited_line[0] == "MODE")

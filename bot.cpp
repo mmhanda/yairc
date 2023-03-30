@@ -6,7 +6,7 @@
 /*   By: atabiti <atabiti@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 10:42:00 by atabiti           #+#    #+#             */
-/*   Updated: 2023/03/30 12:45:13 by atabiti          ###   ########.fr       */
+/*   Updated: 2023/03/30 13:08:55 by atabiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void bot::start(std::vector<std::string> splited_line, int fd)
   sen1 = ":ircserv 704 \t\t TOPIC               ex:   TOPIC #test new_topic\r\n";
   send(fd, sen1.c_str(), sen1.size(), 0);
   sen1 = ":ircserv 704 \t\t KICK               ex: KICK #Finnish John\r\n";
+  send(fd, sen1.c_str(), sen1.size(), 0);
+  sen1 = ":ircserv 704 \t\t  OPER                         ex:foo bar\r\n";
   send(fd, sen1.c_str(), sen1.size(), 0);
    sen1 = ":ircserv 704   val *  :*** YIRC_BoT commands ***\r\n";
   send(fd, sen1.c_str(), sen1.size(), 0);
