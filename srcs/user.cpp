@@ -44,19 +44,19 @@ void send_confirm_msg(user *user_){
 	if (user_->NICK_authenticated && user_->PASS_authenticated
 		&&user_->USER_authenticated && user_->PRINTER) {
 		std::string sen = ":ircserv 001 " + user_->nickname()
-		+ " :Welcome to the Internet Relay Network "
+		+ " :Welcome To Internet Relay Chat "
 		+ user_->username() + "!"+ user_->nickname() + "@" + "127.0.0.1" + "\r\n";
 		send(user_->client_fd(), sen.c_str(), sen.size(), 0);
 		sen = ":ircserv 002 " + user_->nickname() +
-		  " :Your host is ft_irc_server, running version 1.1.2\r\n";
+		  " :Host is ircserv, running version 1.1.2\r\n";
 		send(user_->client_fd(), sen.c_str(), sen.size(), 0);
-		sen = ":ircserv 003 " + user_->nickname() +  " :This server was created "
+		sen = ":ircserv 003 " + user_->nickname() +  " :Server created at "
 		+ get_tim() + "\r\n";
 		send(user_->client_fd(), sen.c_str(), sen.size(), 0);
-		sen = ":ircserv 004 " + user_->nickname() +  " :ircserv 1.0 - -\r\n";
+		sen = ":ircserv 004 " + user_->nickname() +  " :ircserv 1.1.2 - -\r\n";
 		send(user_->client_fd(), sen.c_str(), sen.size(), 0);
 		sen = ":ircserv 251 " + user_->nickname() +  " :There are "
-		+ std::to_string(server_user_names.size()) + " users and 1 server\r\n";
+		+ std::to_string(server_user_names.size()) + " connected clients\r\n";
 		send(user_->client_fd(), sen.c_str(), sen.size(), 0);
 		sen = ":ircserv 372 " + user_->nickname() +  " :ENJOY\r\n";
 		send(user_->client_fd(), sen.c_str(), sen.size(), 0);

@@ -55,13 +55,13 @@ void server::terminate_and_throw() {
 
 void server::message(int client_fd, std::string msg, int flags) {
 
-	msg = ":ircserv NOTICE AUTH :*** Looking up for your ident...\r\n";
+	msg = ":ircserv NOTICE AUTH :*** Enter your ident...\r\n";
 	send(client_fd, msg.c_str(), msg.length(), flags);
-	msg = ":ircserv NOTICE AUTH :*** Looking up for your hostname\r\n";
+	msg = ":ircserv NOTICE AUTH :*** Enter your hostname\r\n";
 	send(client_fd, msg.c_str(), msg.length(), flags);
-	msg = ":ircserv NOTICE AUTH :*** You are now connected to the YAIRC server\r\n";
+	msg = ":ircserv NOTICE AUTH :*** Connected to the YAIRC server\r\n";
 	send(client_fd, msg.c_str(), msg.length(), flags);
-	msg = ":ircserv NOTICE AUTH :*** Enter your identity below: \n          NICK: <nickname>\n          USER: username> <unused> <unused> <realname>\n          PASS: <password>\r\n";
+	msg = ":ircserv NOTICE AUTH :*** Enter your identity below: \n     NICK: <Your nickname>\n     USER: <Your username> <unused> <unused> <Your realname>\n     PASS: <server password>\r\n";
 	send(client_fd, msg.c_str(), msg.length(), flags);
 }
 
