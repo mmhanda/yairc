@@ -27,24 +27,11 @@ int check_QUIT(std::string &back_up_input, user *user)
 
 std::string append_msgs(std::vector<std::string> splited_msg)
 {
-
 	std::string ret;
-	int dots = 0;
-
 	for (size_t i = 2; i < splited_msg.size(); i++)
 	{
-		if (std::find(splited_msg[i].begin(), splited_msg[i].end(),
-					  ':') == splited_msg[i].end() &&
-			dots == 0)
-		{
-			dots++;
-			// ret += ":";
-		}
-		dots++;
 		ret += splited_msg[i];
 		ret += " ";
 	}
-
 	return ret;
 }
-
