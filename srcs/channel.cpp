@@ -56,10 +56,10 @@ void channel::insert_users(user *user)
 	this->users_fd.push_back(user->client_fd());
 }
 
-void channel::insert_in_kick_list(user *user_) {
-	this->map_users_for_kick.insert(std::pair<std::string, user*>(
-		user_->username(), user_));
-}
+// void channel::insert_in_kick_list(user *user_) {
+// 	this->map_users_for_kick.insert(std::pair<std::string, user*>(
+// 		user_->username(), user_));
+// }
 
 std::string channel::passwrd(void)
 {

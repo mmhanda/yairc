@@ -33,13 +33,12 @@ std::string append_msgs(std::vector<std::string> splited_msg)
 
 	for (size_t i = 2; i < splited_msg.size(); i++)
 	{
-
 		if (std::find(splited_msg[i].begin(), splited_msg[i].end(),
 					  ':') == splited_msg[i].end() &&
 			dots == 0)
 		{
 			dots++;
-			ret += ":";
+			// ret += ":";
 		}
 		dots++;
 		ret += splited_msg[i];

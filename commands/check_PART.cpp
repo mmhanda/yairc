@@ -34,6 +34,7 @@ int check_PART(std::vector<std::string> &splited_line, user *user)
 					std::string send_to_others = PART(user->username(), user->username(), user->chan->name()) + "\r\n";
 					user->chan->broadcast(send_to_others);
 					map_channels.at(channels_[h])->part_user(user);
+					delete map_channels.at(channels_[h]);
 					map_channels.erase(channels_[h]);
 				}
 			}

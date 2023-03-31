@@ -4,6 +4,7 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, user *user_)
 {
 	if (splited_line.size() >= 3 && (std::find(server_user_names.begin(), server_user_names.end(),
 											   splited_line[1]) != server_user_names.end())) {
+splited_line[2].erase(std::remove(splited_line[2].begin(), splited_line[2].end(), ':'), splited_line[2].end());
 		std::string broad;
 		if (splited_line.size() == 3)
 			broad = ":" + user_->username() + "!" + user_->username()
@@ -17,6 +18,7 @@ int check_PRIVMSG(std::vector<std::string> &splited_line, user *user_)
 
 	else if (splited_line.size() >= 1 && std::find(channels_name.begin(), channels_name.end(), splited_line[1]) != channels_name.end())
 	{
+splited_line[2].erase(std::remove(splited_line[2].begin(), splited_line[2].end(), ':'), splited_line[2].end());
 		if (user_->chan != nullptr)
 		{
 			std::string broad;

@@ -71,7 +71,7 @@ int check_MODE(std::vector<std::string> &splited_line, user *user_)
                     && splited_line.size() == 4 && splited_line[2].size() == 2) {
 
                 if (user_->chan->check_if_s_user_in_by_name(user_->username())) {
-                    
+
                     if (atoi(splited_line[3].c_str()) >= 1) {
 
                         user_->chan->set_chan_limit(atoi(splited_line[3].c_str()));
