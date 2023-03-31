@@ -66,50 +66,44 @@ int check_MODE(std::vector<std::string> &splited_line, user *user_)
     else if (splited_line.size() <= 4 && std::find(channels_name.begin(), channels_name.end(),
                 splited_line[1]) != channels_name.end() && user_->chan->name() == splited_line[1]) {
 
-            if ((std::find(splited_line[2].begin(), splited_line[2].end(), '+') != splited_line[2].end()
-                    && std::find(splited_line[2].begin(), splited_line[2].end(), 'l') != splited_line[2].end())
-                    && splited_line.size() == 4 && splited_line[2].size() == 2) {
+        if ((std::find(splited_line[2].begin(), splited_line[2].end(), '+') != splited_line[2].end()
+                && std::find(splited_line[2].begin(), splited_line[2].end(), 'l') != splited_line[2].end())
+                && splited_line.size() == 4 && splited_line[2].size() == 2) {
 
-                if (user_->chan->check_if_s_user_in_by_name(user_->username())) {
+            if (user_->chan->check_if_s_user_in_by_name(user_->username())) {
 
-                    if (atoi(splited_line[3].c_str()) >= 1) {
+                if (atoi(splited_line[3].c_str()) >= 1) {
 
-                        user_->chan->set_chan_limit(atoi(splited_line[3].c_str()));
-                        broad = "NOTICE " + user_->chan->name() + " :limit has changed\r\n";
-                        send(user_->client_fd(), broad.c_str(), broad.size(), 0);
-                    }
-                    return (0);
-                }
-                else {
-                    broad = "NOTICE " + user_->chan->name() + " :Only operators allowed\r\n";
+                    user_->chan->set_chan_limit(atoi(splited_line[3].c_str()));
+                    broad = "NOTICE " + user_->chan->name() + " :limit has changed\r\n";
                     send(user_->client_fd(), broad.c_str(), broad.size(), 0);
-                    return 0;
                 }
+                return (0);
             }
-
-            else if ((std::find(splited_line[2].begin(), splited_line[2].end(), '-') != splited_line[2].end()
-                    && std::find(splited_line[2].begin(), splited_line[2].end(), 'l') != splited_line[2].end())
-                    && splited_line.size() == 3 && splited_line[2].size() == 2) {
-
-                if (user_->chan->check_if_s_user_in_by_name(user_->username())) {
-
-                    user_->chan->remove_limit();
-                    broad = "NOTICE " + user_->chan->name() + " :limit has disabled\r\n";
-                    send(user_->client_fd(), broad.c_str(), broad.size(), 0);
-                    return (0);
-                }
-                else {
-                    broad = "NOTICE " + user_->chan->name() + " :Only operators allowed\r\n";
-                    send(user_->client_fd(), broad.c_str(), broad.size(), 0);
-                    return 0;
-                }
-            }
-            else if (splited_line[2] != "+sn")
-            {
-                broad = "NOTICE " + user_->chan->name() + " :invalid operation\r\n";
+            else {
+                broad = "NOTICE " + user_->chan->name() + " :Only operators allowed\r\n";
                 send(user_->client_fd(), broad.c_str(), broad.size(), 0);
                 return 0;
             }
+        }
+
+        else if ((std::find(splited_line[2].begin(), splited_line[2].end(), '-') != splited_line[2].end()
+                && std::find(splited_line[2].begin(), splited_line[2].end(), 'l') != splited_line[2].end())
+                && splited_line.size() == 3 && splited_line[2].size() == 2) {
+
+            if (user_->chan->check_if_s_user_in_by_name(user_->username())) {
+
+                user_->chan->remove_limit();
+                broad = "NOTICE " + user_->chan->name() + " :limit has disabled\r\n";
+                send(user_->client_fd(), broad.c_str(), broad.size(), 0);
+                return (0);
+            }
+            else {
+                broad = "NOTICE " + user_->chan->name() + " :Only operators allowed\r\n";
+                send(user_->client_fd(), broad.c_str(), broad.size(), 0);
+                return 0;
+            }
+        }
     }
 
     return 0;
