@@ -9,10 +9,9 @@ user::user(int client_fd) : PASS_authenticated(false),
 }
 
 user::~user() {
-	
+
 	delete map_users.at(this->client_fd());
  	map_users.erase(this->client_fd());
-	
 }
 
 const std::string &user::nickname() const { return nickname_; }

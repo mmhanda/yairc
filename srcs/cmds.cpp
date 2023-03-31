@@ -11,16 +11,14 @@ int check_QUIT(std::string &back_up_input, user *user)
 	if (str1 != NULL)
 	{
 		if (user->chan != nullptr) {
-		std::vector<std::string> msg;
-		msg.push_back("PART");
-		msg.push_back(user->username() );
-		msg.push_back(user->chan->name());
-			check_PART(msg, user);
-			// user->chan->part_user(user);
+			std::vector<std::string> msg;
+			msg.push_back("PART");
+			msg.push_back(user->username() );
+			msg.push_back(user->chan->name());
+				check_PART(msg, user);
 		}
 		std::string message = "QUIT ERROR :Closing link: [";
 		message = message + str1 + "]\n";
-		// ::send(user->client_fd(), message.c_str(), message.length(), 0);
 		user->NICK_authenticated = false;
 		user->PASS_authenticated = false;
 		user->USER_authenticated = false;
@@ -28,9 +26,7 @@ int check_QUIT(std::string &back_up_input, user *user)
 			server_nick_names.end(),user->nickname()),server_nick_names.end());
 		server_user_names.erase(std::remove(server_user_names.begin(),
 			server_user_names.end(),user->username()),server_user_names.end());
-
 		close(user->client_fd());
-
 	}
 	if (str1 == NULL)
 	{
@@ -42,9 +38,7 @@ int check_QUIT(std::string &back_up_input, user *user)
 		msg.push_back(user->username() );
 		msg.push_back(user->chan->name());
 			check_PART(msg, user);
-			// user->chan->part_user(user);
 		}
-		// ::send(user->client_fd(), message.c_str(), message.length(), 0);
 		user->NICK_authenticated = false;
 		user->PASS_authenticated = false;
 		user->USER_authenticated = false;
@@ -52,7 +46,6 @@ int check_QUIT(std::string &back_up_input, user *user)
 			server_nick_names.end(),user->nickname()),server_nick_names.end());
 		server_user_names.erase(std::remove(server_user_names.begin(),
 			server_user_names.end(),user->username()),server_user_names.end());
-
 		close(user->client_fd());
 	}
 

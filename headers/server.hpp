@@ -93,15 +93,6 @@ class server {
 };
 
 void authenticate(const std::string &msg, const int fd);
-
-extern const char *msg_delim;
-extern std::map<int, std::string> map_msgs;
-extern std::map<int, class user *> map_users;
-extern std::vector<std::string> server_user_names;
-extern server ircserv;
-
-
-void authenticate(const std::string &msg, const int fd);
 bool join_or_create_channel(const std::string &chan_name);
 bool private_message(const user *user, const std::string &msg);
 void leave_channel(class channel *chan, class user *usr);
@@ -109,7 +100,8 @@ void leave_channel(class channel *chan, class user *usr);
 extern const char *msg_delim;
 extern std::map<int, std::string> map_msgs;
 extern std::map<int, class user *> map_users;
+extern std::vector<std::string> server_user_names;
 extern std::map<std::string, class channel *> map_channels;
 extern std::vector<std::string> server_nick_names;
-extern server ircserv;
 extern std::map<std::string, int> map_for_privat_msg;
+extern server ircserv;
