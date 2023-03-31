@@ -90,7 +90,6 @@ void server::accept_clients() {
 		user * created_user  = new user(client_fd);
 		map_users.insert(std::pair<int, user *>(client_fd,created_user ));
 		clients_.push_back(client_pollfd(client_fd));
-		std::cerr << "New client joined number " << "[ "<< map_users.size() << " ]\n";
 	}
 
 	if (client_fd < 0 && errno != EWOULDBLOCK) {
