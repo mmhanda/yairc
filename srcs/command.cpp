@@ -3,9 +3,7 @@
 bool    authenticate(std::string &msg , const int fd, user *user_)
 {
 	char	*str;
-	char	*str1;
 	str = NULL;
-	str1 = NULL;
     std::vector<std::string> splited_line;
     user *tmp = NULL;
     tmp = map_users.at(fd);

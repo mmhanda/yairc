@@ -9,7 +9,7 @@ NAME = ircserv
 
 CXX = c++
 
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98  -Iheaders
+CXXFLAGS =  -Iheaders
 
 $(NAME) : $(OBJF) headers/server.hpp headers/user.hpp headers/channel.hpp headers/bot.hpp headers/parser.hpp
 		$(CXX) $(CXXFLAGS) $(OBJF) -o $(NAME)
